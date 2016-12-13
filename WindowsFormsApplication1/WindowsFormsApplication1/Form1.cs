@@ -39,6 +39,14 @@ namespace MainControl
             userFormText = "Please enter your password.";
             userPassword = Prompt.ShowDialog(userFormText, userFormCaption);
             byte[] finalPassword = PasswordManagement.HashPassword(userPassword, md5Hash);
+
+            string configPath = @"config\";
+            string configName = "users.cfg";
+            bool configExists = FileManagement.CheckFileExists(configName, configPath);
+            if (configExists == false)
+            {
+                FileManagement.CreateNewConfig();
+            }
         }
     }
 
@@ -203,19 +211,42 @@ namespace MainControl
     {
         public static bool CheckFileExists(string fileName, string subFolder)
         {
-            bool configFileExists = false;
+            bool reportFileExists = false;
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, subFolder, fileName);
-            configFileExists = File.Exists(path);
+            reportFileExists = File.Exists(path);
 
-            return configFileExists;
+            return reportFileExists;
         }
 
-        public static void CreateNewConfig()
+        public static bool CreateNewConfig()
         {
             string path = AppDomain.CurrentDomain.BaseDirectory;
-            string folder = @"\config";
+            string folder = @"config\";
+            string configName = "users.cfg";
+            string[] emptyContentStructure = { "Users:", "", "Passwords:", "", "Flags:", "" };
+            bool configFolderCreated = false;
 
+            // Check to see if the config folder exists.
+            bool configFolderExists = Directory.Exists(path + folder);
+
+            // Handle folder creation and return a value depending on what happens.
+            if (configFolderExists == false)
+            {
+                configFolderCreated = true;
+                Directory.CreateDirectory(path + folder);
+            }
+            else
+            {
+                configFolderCreated = false;
+            }
+
+            // Write to our new config file using the emptyContentStructure variable.
+            System.IO.File.WriteAllLines(path + folder + configName, emptyContentStructure);
+
+            return configFolderCreated;
         }
+
+
 
     }
 
