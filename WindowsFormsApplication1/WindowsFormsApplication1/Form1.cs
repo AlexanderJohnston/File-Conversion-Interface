@@ -18,6 +18,7 @@ namespace WindowsFormsApplication1
         public Form1()
         {
             InitializeComponent();
+            MainControl.InitialSetup.Start();
         }
     }
 }
@@ -33,6 +34,7 @@ namespace MainControl
             string userFormText = "Welcome to the file conversion interface." + '\n' + "Please enter your first and last name.";
             userName = Prompt.ShowDialog(userFormText, userFormCaption);
 
+            // Hash the password.
             string userPassword = null;
             MD5 md5Hash = MD5.Create();
             userFormCaption = "Password";
@@ -40,6 +42,7 @@ namespace MainControl
             userPassword = Prompt.ShowDialog(userFormText, userFormCaption);
             byte[] finalPassword = PasswordManagement.HashPassword(userPassword, md5Hash);
 
+            // Create config file if it does not exist.
             string configPath = @"config\";
             string configName = "users.cfg";
             bool configExists = FileManagement.CheckFileExists(configName, configPath);
@@ -47,6 +50,20 @@ namespace MainControl
             {
                 FileManagement.CreateNewConfig();
             }
+
+            // Read the config file into a list of strings line by line.
+            string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
+            List<string> configLines = new List<string>();
+            using (StreamReader configRead = new StreamReader(configFile))
+            {
+                string line;
+
+                while ( (line = configRead.ReadLine()) != null)
+                {
+                    configLines.Add(line);
+                }
+            }
+
         }
     }
 
@@ -223,7 +240,8 @@ namespace MainControl
             string path = AppDomain.CurrentDomain.BaseDirectory;
             string folder = @"config\";
             string configName = "users.cfg";
-            string[] emptyContentStructure = { "Users:", "", "Passwords:", "", "Flags:", "" };
+            // #\d lines are to call when a section of the config ends.
+            string[] emptyContentStructure = { "Users:", "", "#1", "Passwords:", "", "#2", "Flags:", "", "#3" };
             bool configFolderCreated = false;
 
             // Check to see if the config folder exists.
