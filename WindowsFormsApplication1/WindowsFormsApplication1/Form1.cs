@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -26,7 +28,6 @@ namespace MainControl
     {
         public static void Start()
         {
-            string testVariable = null;
             string userName = null;
             string userFormCaption = "Login";
             string userFormText = "Welcome to the file conversion interface." + '\n' + "Please enter your first and last name.";
@@ -198,6 +199,25 @@ namespace MainControl
         }
     }
 
+    public static class FileManagement
+    {
+        public static bool CheckFileExists(string fileName, string subFolder)
+        {
+            bool configFileExists = false;
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, subFolder, fileName);
+            configFileExists = File.Exists(path);
+
+            return configFileExists;
+        }
+
+        public static void CreateNewConfig()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string folder = @"\config";
+
+        }
+
+    }
 
 
 }
