@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,6 +18,7 @@ namespace WindowsFormsApplication1
         public Form1()
         {
             InitializeComponent();
+            MainControl.InitialSetup.Start();
         }
     }
 }
@@ -26,18 +29,41 @@ namespace MainControl
     {
         public static void Start()
         {
-            string testVariable = null;
             string userName = null;
             string userFormCaption = "Login";
             string userFormText = "Welcome to the file conversion interface." + '\n' + "Please enter your first and last name.";
             userName = Prompt.ShowDialog(userFormText, userFormCaption);
 
+            // Hash the password.
             string userPassword = null;
             MD5 md5Hash = MD5.Create();
             userFormCaption = "Password";
             userFormText = "Please enter your password.";
             userPassword = Prompt.ShowDialog(userFormText, userFormCaption);
             byte[] finalPassword = PasswordManagement.HashPassword(userPassword, md5Hash);
+
+            // Create config file if it does not exist.
+            string configPath = @"config\";
+            string configName = "users.cfg";
+            bool configExists = FileManagement.CheckFileExists(configName, configPath);
+            if (configExists == false)
+            {
+                FileManagement.CreateNewConfig();
+            }
+
+            // Read the config file into a list of strings line by line.
+            string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
+            List<string> configLines = new List<string>();
+            using (StreamReader configRead = new StreamReader(configFile))
+            {
+                string line;
+
+                while ( (line = configRead.ReadLine()) != null)
+                {
+                    configLines.Add(line);
+                }
+            }
+
         }
     }
 
@@ -198,6 +224,49 @@ namespace MainControl
         }
     }
 
+    public static class FileManagement
+    {
+        public static bool CheckFileExists(string fileName, string subFolder)
+        {
+            bool reportFileExists = false;
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, subFolder, fileName);
+            reportFileExists = File.Exists(path);
+
+            return reportFileExists;
+        }
+
+        public static bool CreateNewConfig()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory;
+            string folder = @"config\";
+            string configName = "users.cfg";
+            // #\d lines are to call when a section of the config ends.
+            string[] emptyContentStructure = { "Users:", "", "#1", "Passwords:", "", "#2", "Flags:", "", "#3" };
+            bool configFolderCreated = false;
+
+            // Check to see if the config folder exists.
+            bool configFolderExists = Directory.Exists(path + folder);
+
+            // Handle folder creation and return a value depending on what happens.
+            if (configFolderExists == false)
+            {
+                configFolderCreated = true;
+                Directory.CreateDirectory(path + folder);
+            }
+            else
+            {
+                configFolderCreated = false;
+            }
+
+            // Write to our new config file using the emptyContentStructure variable.
+            System.IO.File.WriteAllLines(path + folder + configName, emptyContentStructure);
+
+            return configFolderCreated;
+        }
+
+
+
+    }
 
 
 }
