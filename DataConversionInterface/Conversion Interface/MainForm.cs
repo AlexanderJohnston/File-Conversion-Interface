@@ -29,18 +29,9 @@ namespace MainControl
     {
         public static void Start()
         {
-            string userName = null;
-            string userFormCaption = "Login";
-            string userFormText = "Welcome to the file conversion interface." + '\n' + "Please enter your first and last name.";
-            userName = Prompt.ShowDialog(userFormText, userFormCaption);
-
-            // Hash the password.
-            string userPassword = null;
-            MD5 md5Hash = MD5.Create();
-            userFormCaption = "Password";
-            userFormText = "Please enter your password.";
-            userPassword = Prompt.ShowDialog(userFormText, userFormCaption);
-            byte[] finalPassword = PasswordManagement.HashPassword(userPassword, md5Hash);
+            // Log in to the application.
+            string userName = UserName();
+            byte[] finalPassword = Password();
 
             // Create config file if it does not exist.
             string configPath = @"config\";
@@ -51,19 +42,40 @@ namespace MainControl
                 FileManagement.CreateNewConfig();
             }
 
-            // Read the config file into a list of strings line by line.
+            // Read the config file into a list line by line.
             string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
             List<string> configLines = new List<string>();
             using (StreamReader configRead = new StreamReader(configFile))
             {
                 string line;
 
-                while ( (line = configRead.ReadLine()) != null)
+                while ((line = configRead.ReadLine()) != null)
                 {
                     configLines.Add(line);
                 }
             }
 
+        }
+
+        public static string UserName()
+        {
+            string userName = null;
+            string userFormCaption = "Login";
+            string userFormText = "Welcome to the file conversion interface." + '\n' + "Please enter your first and last name.";
+            userName = Prompt.ShowDialog(userFormText, userFormCaption);
+            return userName;
+        }
+
+        public static byte[] Password()
+        {
+            // Hash the password.
+            string userPassword = null;
+            MD5 md5Hash = MD5.Create();
+            string userFormCaption = "Password";
+            string userFormText = "Please enter your password.";
+            userPassword = Prompt.ShowDialog(userFormText, userFormCaption);
+            byte[] finalPassword = PasswordManagement.HashPassword(userPassword, md5Hash);
+            return finalPassword;
         }
     }
 
