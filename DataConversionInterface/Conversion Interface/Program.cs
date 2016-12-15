@@ -19,4 +19,11 @@ namespace DataConversionInterface
             Application.Run(new MainWindow.MainForm());
         }
     }
+
+    static class FileDisplay
+    {
+        /// <summary>
+        /// This is the grid view that I will use to display data.
+        /// </summary>
+    }
 }

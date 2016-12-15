@@ -20,6 +20,12 @@ namespace MainWindow
             InitializeComponent();
             MainControl.InitialSetup.Start();
         }
+
+        static void SetGridView1(List<string> configLines)
+        {
+            dataGridView1.Rows.Add(configLines);
+        }
+
     }
 }
 
@@ -43,17 +49,9 @@ namespace MainControl
             }
 
             // Read the config file into a list line by line.
-            string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
-            List<string> configLines = new List<string>();
-            using (StreamReader configRead = new StreamReader(configFile))
-            {
-                string line;
+            List<string> configLines = FileManagement.ReadConfig();
+            DataGridView configRow = MainWindow.MainForm.dataGridView1.Rows.Add(configLines);
 
-                while ((line = configRead.ReadLine()) != null)
-                {
-                    configLines.Add(line);
-                }
-            }
 
         }
 
@@ -276,6 +274,23 @@ namespace MainControl
             System.IO.File.WriteAllLines(path + folder + configName, emptyContentStructure);
 
             return configFolderCreated;
+        }
+
+        public static List<string> ReadConfig()
+        {
+            string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
+            List<string> configLines = new List<string>();
+            using (StreamReader configRead = new StreamReader(configFile))
+            {
+                string line;
+
+                while ((line = configRead.ReadLine()) != null)
+                {
+                    configLines.Add(line);
+                }
+            }
+
+            return configLines;
         }
 
 
