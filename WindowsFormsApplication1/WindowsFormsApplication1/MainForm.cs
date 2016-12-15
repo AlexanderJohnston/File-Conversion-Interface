@@ -11,11 +11,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace MainWindow
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             MainControl.InitialSetup.Start();
@@ -93,8 +93,10 @@ namespace MainControl
         }
     }
 
-    /* http://www.dreamincode.net/forums/topic/196519-basic-login-system-part-i-password-handling/
-     This document is used for the password management. I'm saving this link for personal study later on.
+    /* 
+     This password hashing block is still being studied. Once I am finished, it will be re-written from scratch.  
+     http://www.dreamincode.net/forums/topic/196519-basic-login-system-part-i-password-handling/
+     I'm saving this link for personal study this weekend.
     */
     public static class PasswordManagement
     {
