@@ -64,7 +64,8 @@ namespace MainWindow
             // Add the user to the config file if they do not exist.
             if (existingUser == false)
             {
-                ;
+                // Pass the username and hash-salt password by converting the byte array into a string.
+                FileManagement.NewUserCreate(userName, System.Text.Encoding.Default.GetString(finalPassword));
             }
 
             // Program setup is now complete.
@@ -331,7 +332,13 @@ namespace MainWindow
         {
             string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
             List<string> configContent = File.ReadAllLines(configFile).ToList();
-            FileManagement.ShowDialogue.
+
+            for (int i = 0; i < configContent.Count; i++)
+            {
+
+            }
+
+            Prompt.ShowDialog(configContent[0], configContent[1]);
 
         }
 
