@@ -18,19 +18,29 @@ namespace MainWindow
         public MainForm()
         {
             InitializeComponent();
-            MainControl.InitialSetup.Start();
+            InitialSetup.Start();
         }
 
-        static void SetGridView1(List<string> configLines)
+        private void readConfig_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Add(configLines);
+            // Set up the data grid view.
+            dataGridViewGeneral.ColumnCount = 1;
+            dataGridViewGeneral.Columns[0].HeaderCell.Value = "Config";
+
+            // Read the config file into a list line by line.
+            string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
+            List<string> configLines = new List<string>();
+            using (StreamReader configRead = new StreamReader(configFile))
+            {
+                while (configRead.Peek() > -1)
+                {
+                    dataGridViewGeneral.Rows.Add(configRead.ReadLine());
+                }
+            }
+
         }
-
     }
-}
 
-namespace MainControl
-{
     public class InitialSetup
     {
         public static void Start()
@@ -48,10 +58,10 @@ namespace MainControl
                 FileManagement.CreateNewConfig();
             }
 
-            // Read the config file into a list line by line.
-            List<string> configLines = FileManagement.ReadConfig();
-            DataGridView configRow = MainWindow.MainForm.dataGridView1.Rows.Add(configLines);
+            // Check for user in the config file.
 
+
+            // Program setup is now complete.
 
         }
 
@@ -276,23 +286,39 @@ namespace MainControl
             return configFolderCreated;
         }
 
-        public static List<string> ReadConfig()
+        public static bool UserExistsConfig(string userName)
         {
+            bool userExists = false;
             string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
-            List<string> configLines = new List<string>();
-            using (StreamReader configRead = new StreamReader(configFile))
+            using (StreamReader userRead = new StreamReader(configFile))
             {
-                string line;
+                string currentLine = userRead.ReadLine();
+                string nextLine = userRead.ReadLine();
 
-                while ((line = configRead.ReadLine()) != null)
+                while (currentLine != "Users")
                 {
-                    configLines.Add(line);
+                    currentLine = nextLine;
+                    nextLine = userRead.ReadLine();
                 }
+
+                while (currentLine != null)
+                {
+                    if (currentLine == userName)
+                    {
+                        userExists = true;
+                    }
+                    currentLine = nextLine;
+                    nextLine = userRead.ReadLine();
+                }
+
+                if (currentLine == "#1")
+                {
+                    userRead.Close();
+                }
+
+                return userExists;
             }
-
-            return configLines;
         }
-
 
 
     }

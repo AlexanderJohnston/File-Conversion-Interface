@@ -28,34 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
+            this.readConfig = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dataGridViewGeneral
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(64, 117);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 0;
+            this.dataGridViewGeneral.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewGeneral.Location = new System.Drawing.Point(64, 117);
+            this.dataGridViewGeneral.Name = "dataGridViewGeneral";
+            this.dataGridViewGeneral.Size = new System.Drawing.Size(250, 208);
+            this.dataGridViewGeneral.TabIndex = 0;
+            // 
+            // readConfig
+            // 
+            this.readConfig.Location = new System.Drawing.Point(428, 168);
+            this.readConfig.Name = "readConfig";
+            this.readConfig.Size = new System.Drawing.Size(75, 23);
+            this.readConfig.TabIndex = 1;
+            this.readConfig.Text = "View Config";
+            this.readConfig.UseVisualStyleBackColor = true;
+            this.readConfig.Click += new System.EventHandler(this.readConfig_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(873, 528);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.readConfig);
+            this.Controls.Add(this.dataGridViewGeneral);
             this.Name = "MainForm";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        public System.Windows.Forms.DataGridView dataGridView1;
+        public System.Windows.Forms.DataGridView dataGridViewGeneral;
+        private System.Windows.Forms.Button readConfig;
     }
 }
 
