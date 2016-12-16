@@ -312,7 +312,7 @@ namespace MainWindow
                     nextLine = userRead.ReadLine();
                 }
 
-                if (currentLine == "#1")
+                if (nextLine == "#1")
                 {
                     userRead.Close();
                 }
