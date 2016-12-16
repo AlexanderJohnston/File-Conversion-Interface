@@ -59,7 +59,8 @@ namespace MainWindow
             }
 
             // Check for user in the config file.
-
+            bool existingUser = FileManagement.UserExistsConfig(userName);
+            Prompt.ShowDialog(existingUser.ToString(), existingUser.ToString());
 
             // Program setup is now complete.
 
@@ -295,7 +296,7 @@ namespace MainWindow
                 string currentLine = userRead.ReadLine();
                 string nextLine = userRead.ReadLine();
 
-                while (currentLine != "Users")
+                while (currentLine != "Users:")
                 {
                     currentLine = nextLine;
                     nextLine = userRead.ReadLine();
