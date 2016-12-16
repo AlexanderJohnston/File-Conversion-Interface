@@ -302,7 +302,7 @@ namespace MainWindow
                     nextLine = userRead.ReadLine();
                 }
 
-                while (currentLine != null)
+                while (currentLine != "")
                 {
                     if (currentLine == userName)
                     {
