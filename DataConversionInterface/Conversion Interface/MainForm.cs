@@ -60,9 +60,15 @@ namespace MainWindow
 
             // Check for user in the config file.
             bool existingUser = FileManagement.UserExistsConfig(userName);
-            Prompt.ShowDialog(existingUser.ToString(), existingUser.ToString());
+            
+            // Add the user to the config file if they do not exist.
+            if (existingUser == false)
+            {
+                ;
+            }
 
             // Program setup is now complete.
+
 
         }
 
@@ -321,6 +327,13 @@ namespace MainWindow
             }
         }
 
+        public static void NewUserCreate(string userName, string userPassword)
+        {
+            string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
+            List<string> configContent = File.ReadAllLines(configFile).ToList();
+            FileManagement.ShowDialogue.
+
+        }
 
     }
 
