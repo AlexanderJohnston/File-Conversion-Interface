@@ -46,8 +46,11 @@ namespace MainWindow
         public static void Start()
         {
             // Log in to the application.
+            bool validLogin = false;
             string userName = UserName();
-            byte[] finalPassword = Password();
+            string userPass = Password();
+            MD5 md5Hash = MD5.Create();
+            byte[] finalPassword = PasswordManagement.HashPassword(userPass, md5Hash);
 
             // Create config file if it does not exist.
             string configPath = @"config\";
@@ -67,6 +70,18 @@ namespace MainWindow
                 // Pass the username and hash-salt password by converting the byte array into a string.
                 FileManagement.NewUserCreate(userName, System.Text.Encoding.Default.GetString(finalPassword));
             }
+            else
+            {
+                validLogin = FileManagement.CheckUserLogin(userName, userPass);
+            }
+
+            // Exit the application if the login is false.
+            if ( validLogin == false &&
+                MessageBox.Show("Invalid login, try again?", "Login Attempt",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
 
             // Program setup is now complete.
 
@@ -82,16 +97,14 @@ namespace MainWindow
             return userName;
         }
 
-        public static byte[] Password()
+        public static string Password()
         {
             // Hash the password.
             string userPassword = null;
-            MD5 md5Hash = MD5.Create();
             string userFormCaption = "Password";
             string userFormText = "Please enter your password.";
             userPassword = Prompt.ShowDialog(userFormText, userFormCaption);
-            byte[] finalPassword = PasswordManagement.HashPassword(userPassword, md5Hash);
-            return finalPassword;
+            return userPassword;
         }
     }
 
@@ -353,11 +366,40 @@ namespace MainWindow
 
             if (userAdded == 1)
             {
-                configContent[i * 2 + 2] = userPassword;
+                // Each config block has a footer which equals 1 lines. Each block is the same length.
+                // Multiply userName position by the config block number, and add 1 for foooter to get next data point.
+                configContent[i * 2] = userPassword;
+                configContent[i * 2 + 1] = "\r\n" + configContent[i * 2 + 1];
             }
 
             // Write the altered config file.
             System.IO.File.WriteAllLines(configFile, configContent);
+        }
+
+        public static bool CheckUserLogin(string userName, string userPass)
+        {
+            bool validLogin = false;
+
+            int i = 0;
+            MD5 md5Hash = MD5.Create();
+            byte[] finalPass = null;
+            string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
+            List<string> configContent = File.ReadAllLines(configFile).ToList();
+
+            while (i < configContent.Count)
+            {
+                if (configContent[i] == userName)
+                {
+                    finalPass = Encoding.Default.GetBytes(configContent[i * 2 + 3]);
+                    break;
+                }
+                i++;
+            }
+
+            validLogin = PasswordManagement.ComparePassword(userPass, finalPass, md5Hash);
+
+            return validLogin;
+
         }
 
     }
