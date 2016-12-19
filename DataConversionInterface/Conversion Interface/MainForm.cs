@@ -330,16 +330,34 @@ namespace MainWindow
 
         public static void NewUserCreate(string userName, string userPassword)
         {
+            int userAdded = 0;
+            int i = 0;
             string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
             List<string> configContent = File.ReadAllLines(configFile).ToList();
 
-            for (int i = 0; i < configContent.Count; i++)
+            while (userAdded != 1)
             {
+                if (configContent[i] == "" && configContent[i+1] == "#1")
+                {
+                    configContent[i] = userName + "\r\n";
+                    userAdded = 1;
+                }
+                i++;
 
+                if (i > configContent.Count)
+                {
+                    Prompt.ShowDialog("Failed to add new user to the config (NewUserCreate).", "ERROR 0001");
+                    break;
+                }
             }
 
-            Prompt.ShowDialog(configContent[0], configContent[1]);
+            if (userAdded == 1)
+            {
+                configContent[i * 2 + 2] = userPassword;
+            }
 
+            // Write the altered config file.
+            System.IO.File.WriteAllLines(configFile, configContent);
         }
 
     }
