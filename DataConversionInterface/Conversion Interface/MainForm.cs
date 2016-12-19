@@ -19,6 +19,7 @@ namespace MainWindow
         {
             InitializeComponent();
             InitialSetup.Start();
+            
         }
 
         private void readConfig_Click(object sender, EventArgs e)
@@ -69,6 +70,7 @@ namespace MainWindow
             {
                 // Pass the username and hash-salt password by converting the byte array into a string.
                 FileManagement.NewUserCreate(userName, System.Text.Encoding.Default.GetString(finalPassword));
+                validLogin = true;
             }
             else
             {
@@ -79,6 +81,12 @@ namespace MainWindow
             if ( validLogin == false &&
                 MessageBox.Show("Invalid login, try again?", "Login Attempt",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+            {
+                Start();
+            }
+            else if (validLogin == false &&
+                MessageBox.Show("Invalid login, try again?", "Login Attempt",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
             {
                 Application.Exit();
             }

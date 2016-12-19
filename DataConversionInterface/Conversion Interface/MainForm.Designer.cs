@@ -30,6 +30,7 @@
         {
             this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
             this.readConfig = new System.Windows.Forms.Button();
+            this.conversionTablesList = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,11 +52,20 @@
             this.readConfig.UseVisualStyleBackColor = true;
             this.readConfig.Click += new System.EventHandler(this.readConfig_Click);
             // 
+            // conversionTablesList
+            // 
+            this.conversionTablesList.FormattingEnabled = true;
+            this.conversionTablesList.Location = new System.Drawing.Point(64, 346);
+            this.conversionTablesList.Name = "conversionTablesList";
+            this.conversionTablesList.Size = new System.Drawing.Size(159, 21);
+            this.conversionTablesList.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(873, 528);
+            this.Controls.Add(this.conversionTablesList);
             this.Controls.Add(this.readConfig);
             this.Controls.Add(this.dataGridViewGeneral);
             this.Name = "MainForm";
@@ -69,6 +79,7 @@
 
         public System.Windows.Forms.DataGridView dataGridViewGeneral;
         private System.Windows.Forms.Button readConfig;
+        private System.Windows.Forms.ComboBox conversionTablesList;
     }
 }
 
