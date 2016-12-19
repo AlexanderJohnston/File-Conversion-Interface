@@ -19,7 +19,7 @@ namespace MainWindow
         {
             InitializeComponent();
             InitialSetup.Start();
-            
+            InitializeTableList();
         }
 
         private void readConfig_Click(object sender, EventArgs e)
@@ -40,10 +40,26 @@ namespace MainWindow
             }
 
         }
+
+        private void InitializeTableList()
+        {
+            // Replace this with a config file later.
+            string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
+            ConversionTable displayTables = new ConversionTable();
+
+            // Get a list of available tables and clean up path data for the combo box.
+            string[] cleanedTablesContent = displayTables.GetTableList(tablesPath).Select(s => s.Replace(tablesPath, "")).ToArray();
+            conversionTablesList.DataSource = cleanedTablesContent;
+        }
     }
 
     public class InitialSetup
     {
+        /* Issues to consider:
+         * The login prompt can be brute forced by throwing the wrong answers and closing it.
+         * The config file management isn't particularly elegant.
+         * I still need to fully study up on how the salt is extracted from the hashed pass.
+         */
         public static void Start()
         {
             // Log in to the application.
@@ -412,5 +428,12 @@ namespace MainWindow
 
     }
 
-
+    public class ConversionTable
+    {
+      public string[] GetTableList(string tablesPath)
+        {
+            string[] tableFiles = Directory.GetFiles(tablesPath);
+            return tableFiles;
+        }  
+    }
 }
