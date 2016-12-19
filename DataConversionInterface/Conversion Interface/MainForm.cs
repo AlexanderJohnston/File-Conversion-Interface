@@ -15,6 +15,9 @@ namespace MainWindow
 {
     public partial class MainForm : Form
     {
+        // Replace this with a config file later.
+        string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
+
         public MainForm()
         {
             InitializeComponent();
@@ -43,13 +46,32 @@ namespace MainWindow
 
         private void InitializeTableList()
         {
-            // Replace this with a config file later.
-            string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
             ConversionTable displayTables = new ConversionTable();
 
             // Get a list of available tables and clean up path data for the combo box.
             string[] cleanedTablesContent = displayTables.GetTableList(tablesPath).Select(s => s.Replace(tablesPath, "")).ToArray();
             conversionTablesList.DataSource = cleanedTablesContent;
+        }
+
+        private void conversionTablesList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Start up the grid view for this selected table.
+            DataTable selectedTable = new DataTable();
+            selectedTable.Columns.Add("Client");
+            selectedTable.Columns.Add("House");
+            string tableLocation = tablesPath + conversionTablesList.SelectedValue.ToString();
+
+            // Fill in the rows.
+            StreamReader tableReader = new StreamReader(tableLocation);
+            string[] tableContent = new string[File.ReadAllLines(tableLocation).Length];
+            while (!tableReader.EndOfStream)
+            {
+                tableContent = tableReader.ReadLine().Split(',');
+                selectedTable.Rows.Add(tableContent[0], tableContent[1]);
+            }
+
+            // Display the data table.
+            dataGridViewTables.DataSource = selectedTable;
         }
     }
 
