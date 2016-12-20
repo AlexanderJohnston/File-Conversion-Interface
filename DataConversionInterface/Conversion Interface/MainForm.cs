@@ -80,7 +80,7 @@ namespace MainWindow
             string[] dataFileContent = new string[File.ReadAllLines(dataFilePath).Length];
 
             // Determine if the file is tab or csv.
-            string fileTabOrCSV = FileManagement.fileTabOrCSV();
+            string fileTabOrCSV = FileManagement.fileTABorCSV(dataFilePath);
 
         }
     }
@@ -456,6 +456,54 @@ namespace MainWindow
 
             return validLogin;
 
+        }
+
+        public static string fileTABorCSV(string dataFilePath)
+        {
+            string finalResult = null;
+
+            // Set up the header record into a string.
+            StreamReader dataFileReader = new StreamReader(dataFilePath);
+            string dataFileContent = dataFileReader.ReadLine();
+
+            // Set up the list of integers to store count of commas and tabs.
+            List<int> fileTypeChooser = new List<int>();
+            for (int i = dataFileContent.IndexOf(','); i > -1; i = dataFileContent.IndexOf(',', i + 1) )
+            {
+                // If no more of the character is found, then -1 will return and end it.
+                fileTypeChooser.Add(i);
+            }
+
+            // Store the CSV count into a variable for later.
+            int resultIsFileCSV = fileTypeChooser.Count;
+            fileTypeChooser = null;
+
+            // Determine if the file is tab delimited now.
+            for (int i = dataFileContent.IndexOf(@"\t"); i > -1; i = dataFileContent.IndexOf(@"\t", i + 1))
+            {
+                // If no more of the character is found, then -1 will return and end it.
+                fileTypeChooser.Add(i);
+            }
+
+            // Store the TAB count into a variable for soon.
+            int resultIsFileTAB = fileTypeChooser.Count();
+
+            if (resultIsFileTAB > resultIsFileCSV)
+            {
+                finalResult = "TAB";
+            }
+
+            else if (resultIsFileCSV > resultIsFileTAB)
+            {
+                finalResult = "CSV";
+            }
+
+            else if (resultIsFileTAB + resultIsFileCSV == 0)
+            {
+                finalResult = "UNKNOWN";
+            }
+
+            return finalResult;
         }
 
     }
