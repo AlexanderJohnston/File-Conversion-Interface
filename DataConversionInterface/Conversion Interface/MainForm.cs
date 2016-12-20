@@ -25,34 +25,19 @@ namespace MainWindow
             InitializeTableList();
         }
 
-        private void readConfig_Click(object sender, EventArgs e)
-        {
-            // Set up the data grid view.
-            dataGridViewGeneral.ColumnCount = 1;
-            dataGridViewGeneral.Columns[0].HeaderCell.Value = "Config";
-
-            // Read the config file into a list line by line.
-            string configFile = AppDomain.CurrentDomain.BaseDirectory + @"config\users.cfg";
-            List<string> configLines = new List<string>();
-            using (StreamReader configRead = new StreamReader(configFile))
-            {
-                while (configRead.Peek() > -1)
-                {
-                    dataGridViewGeneral.Rows.Add(configRead.ReadLine());
-                }
-            }
-
-        }
-
+        // Set up the table list and remove the definition file from an array of existing files.
         private void InitializeTableList()
         {
             ConversionTable displayTables = new ConversionTable();
 
             // Get a list of available tables and clean up path data for the combo box.
             string[] cleanedTablesContent = displayTables.GetTableList(tablesPath).Select(s => s.Replace(tablesPath, "")).ToArray();
+            // Remove the house fields reference table.
+            cleanedTablesContent = cleanedTablesContent.Where(s => s!= "HOUSE_FIELDS.txt").ToArray();
             conversionTablesList.DataSource = cleanedTablesContent;
         }
 
+        // This event fires whenever a new lookup table is selected by the user.
         private void conversionTablesList_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Start up the grid view for this selected table.
@@ -72,6 +57,31 @@ namespace MainWindow
 
             // Display the data table.
             dataGridViewTables.DataSource = selectedTable;
+        }
+
+        // Open a new file selection window when a user select Load File.
+        private void buttonOpenDataFile_Click(object sender, EventArgs e)
+        {
+            string dataFilePath = null;
+            OpenFileDialog selectFile = new OpenFileDialog();
+            if (selectFile.ShowDialog() == DialogResult.OK)
+            {
+                dataFilePath = selectFile.FileName;
+            }
+
+            labelFilePath.Text = dataFilePath;
+        }
+
+        private void buttonLoadDataFile_Click(object sender, EventArgs e)
+        {
+            // Set up variables to read the data file.
+            string dataFilePath = labelFilePath.Text.ToString();
+            StreamReader dataFileReader = new StreamReader(dataFilePath);
+            string[] dataFileContent = new string[File.ReadAllLines(dataFilePath).Length];
+
+            // Determine if the file is tab or csv.
+            string fileTabOrCSV = FileManagement.fileTabOrCSV();
+
         }
     }
 

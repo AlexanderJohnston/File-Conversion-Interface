@@ -29,11 +29,15 @@
         private void InitializeComponent()
         {
             this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
-            this.readConfig = new System.Windows.Forms.Button();
             this.conversionTablesList = new System.Windows.Forms.ComboBox();
             this.tablesListLabel = new System.Windows.Forms.Label();
             this.dataGridViewTables = new System.Windows.Forms.DataGridView();
             this.tablesSelectLabel = new System.Windows.Forms.Label();
+            this.generalDataViewLabel = new System.Windows.Forms.Label();
+            this.buttonOpenDataFile = new System.Windows.Forms.Button();
+            this.buttonLoadDataFile = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.labelFilePath = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.SuspendLayout();
@@ -41,25 +45,15 @@
             // dataGridViewGeneral
             // 
             this.dataGridViewGeneral.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewGeneral.Location = new System.Drawing.Point(12, 12);
+            this.dataGridViewGeneral.Location = new System.Drawing.Point(12, 32);
             this.dataGridViewGeneral.Name = "dataGridViewGeneral";
-            this.dataGridViewGeneral.Size = new System.Drawing.Size(849, 150);
+            this.dataGridViewGeneral.Size = new System.Drawing.Size(1107, 205);
             this.dataGridViewGeneral.TabIndex = 0;
-            // 
-            // readConfig
-            // 
-            this.readConfig.Location = new System.Drawing.Point(517, 376);
-            this.readConfig.Name = "readConfig";
-            this.readConfig.Size = new System.Drawing.Size(75, 23);
-            this.readConfig.TabIndex = 1;
-            this.readConfig.Text = "View Config";
-            this.readConfig.UseVisualStyleBackColor = true;
-            this.readConfig.Click += new System.EventHandler(this.readConfig_Click);
             // 
             // conversionTablesList
             // 
             this.conversionTablesList.FormattingEnabled = true;
-            this.conversionTablesList.Location = new System.Drawing.Point(12, 495);
+            this.conversionTablesList.Location = new System.Drawing.Point(12, 608);
             this.conversionTablesList.Name = "conversionTablesList";
             this.conversionTablesList.Size = new System.Drawing.Size(159, 21);
             this.conversionTablesList.TabIndex = 2;
@@ -68,7 +62,7 @@
             // tablesListLabel
             // 
             this.tablesListLabel.AutoSize = true;
-            this.tablesListLabel.Location = new System.Drawing.Point(13, 170);
+            this.tablesListLabel.Location = new System.Drawing.Point(9, 284);
             this.tablesListLabel.Name = "tablesListLabel";
             this.tablesListLabel.Size = new System.Drawing.Size(95, 13);
             this.tablesListLabel.TabIndex = 3;
@@ -78,7 +72,7 @@
             // 
             this.dataGridViewTables.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridViewTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewTables.Location = new System.Drawing.Point(12, 187);
+            this.dataGridViewTables.Location = new System.Drawing.Point(12, 300);
             this.dataGridViewTables.Name = "dataGridViewTables";
             this.dataGridViewTables.Size = new System.Drawing.Size(295, 282);
             this.dataGridViewTables.TabIndex = 4;
@@ -86,22 +80,71 @@
             // tablesSelectLabel
             // 
             this.tablesSelectLabel.AutoSize = true;
-            this.tablesSelectLabel.Location = new System.Drawing.Point(14, 478);
+            this.tablesSelectLabel.Location = new System.Drawing.Point(14, 591);
             this.tablesSelectLabel.Name = "tablesSelectLabel";
             this.tablesSelectLabel.Size = new System.Drawing.Size(95, 13);
             this.tablesSelectLabel.TabIndex = 5;
             this.tablesSelectLabel.Text = "Choose your table.";
             // 
+            // generalDataViewLabel
+            // 
+            this.generalDataViewLabel.AutoSize = true;
+            this.generalDataViewLabel.Location = new System.Drawing.Point(9, 16);
+            this.generalDataViewLabel.Name = "generalDataViewLabel";
+            this.generalDataViewLabel.Size = new System.Drawing.Size(65, 13);
+            this.generalDataViewLabel.TabIndex = 6;
+            this.generalDataViewLabel.Text = "Data Viewer";
+            // 
+            // buttonOpenDataFile
+            // 
+            this.buttonOpenDataFile.Location = new System.Drawing.Point(941, 243);
+            this.buttonOpenDataFile.Name = "buttonOpenDataFile";
+            this.buttonOpenDataFile.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpenDataFile.TabIndex = 7;
+            this.buttonOpenDataFile.Text = "Select File";
+            this.buttonOpenDataFile.UseVisualStyleBackColor = true;
+            this.buttonOpenDataFile.Click += new System.EventHandler(this.buttonOpenDataFile_Click);
+            // 
+            // buttonLoadDataFile
+            // 
+            this.buttonLoadDataFile.Location = new System.Drawing.Point(1022, 243);
+            this.buttonLoadDataFile.Name = "buttonLoadDataFile";
+            this.buttonLoadDataFile.Size = new System.Drawing.Size(75, 23);
+            this.buttonLoadDataFile.TabIndex = 8;
+            this.buttonLoadDataFile.Text = "Analyze";
+            this.buttonLoadDataFile.UseVisualStyleBackColor = true;
+            this.buttonLoadDataFile.Click += new System.EventHandler(this.buttonLoadDataFile_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(471, 246);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(464, 20);
+            this.textBox1.TabIndex = 9;
+            // 
+            // labelFilePath
+            // 
+            this.labelFilePath.AutoSize = true;
+            this.labelFilePath.Location = new System.Drawing.Point(402, 249);
+            this.labelFilePath.Name = "labelFilePath";
+            this.labelFilePath.Size = new System.Drawing.Size(48, 13);
+            this.labelFilePath.TabIndex = 10;
+            this.labelFilePath.Text = "File Path";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(873, 528);
+            this.ClientSize = new System.Drawing.Size(1148, 636);
+            this.Controls.Add(this.labelFilePath);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.buttonLoadDataFile);
+            this.Controls.Add(this.buttonOpenDataFile);
+            this.Controls.Add(this.generalDataViewLabel);
             this.Controls.Add(this.tablesSelectLabel);
             this.Controls.Add(this.dataGridViewTables);
             this.Controls.Add(this.tablesListLabel);
             this.Controls.Add(this.conversionTablesList);
-            this.Controls.Add(this.readConfig);
             this.Controls.Add(this.dataGridViewGeneral);
             this.Name = "MainForm";
             this.Text = "Form1";
@@ -115,11 +158,15 @@
         #endregion
 
         public System.Windows.Forms.DataGridView dataGridViewGeneral;
-        private System.Windows.Forms.Button readConfig;
         private System.Windows.Forms.ComboBox conversionTablesList;
         private System.Windows.Forms.Label tablesListLabel;
         private System.Windows.Forms.DataGridView dataGridViewTables;
         private System.Windows.Forms.Label tablesSelectLabel;
+        private System.Windows.Forms.Label generalDataViewLabel;
+        private System.Windows.Forms.Button buttonOpenDataFile;
+        private System.Windows.Forms.Button buttonLoadDataFile;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label labelFilePath;
     }
 }
 
