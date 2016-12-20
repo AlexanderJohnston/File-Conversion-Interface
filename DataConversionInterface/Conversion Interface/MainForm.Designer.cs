@@ -1,6 +1,6 @@
 ﻿namespace MainWindow
 {
-    partial class textBoxSelectedFile
+    partial class fileConversionInterface
     {
         /// <summary>
         /// Required designer variable.
@@ -159,8 +159,10 @@
             // progressBarConversion
             // 
             this.progressBarConversion.Location = new System.Drawing.Point(5, 27);
+            this.progressBarConversion.Maximum = 9;
             this.progressBarConversion.Name = "progressBarConversion";
             this.progressBarConversion.Size = new System.Drawing.Size(282, 23);
+            this.progressBarConversion.Step = 1;
             this.progressBarConversion.TabIndex = 12;
             // 
             // labelConversionStatus
@@ -180,7 +182,7 @@
             this.panel1.Controls.Add(this.progressBarConversion);
             this.panel1.Location = new System.Drawing.Point(371, 276);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(291, 357);
+            this.panel1.Size = new System.Drawing.Size(291, 110);
             this.panel1.TabIndex = 14;
             // 
             // buttonSaveTable
@@ -212,10 +214,10 @@
             this.textBoxStatusMessages.Multiline = true;
             this.textBoxStatusMessages.Name = "textBoxStatusMessages";
             this.textBoxStatusMessages.ReadOnly = true;
-            this.textBoxStatusMessages.Size = new System.Drawing.Size(282, 274);
+            this.textBoxStatusMessages.Size = new System.Drawing.Size(282, 28);
             this.textBoxStatusMessages.TabIndex = 16;
             // 
-            // textBoxSelectedFile
+            // fileConversionInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -229,8 +231,8 @@
             this.Controls.Add(this.generalDataViewLabel);
             this.Controls.Add(this.dataGridViewGeneral);
             this.KeyPreview = true;
-            this.Name = "textBoxSelectedFile";
-            this.Text = "Form1";
+            this.Name = "fileConversionInterface";
+            this.Text = "A";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).EndInit();

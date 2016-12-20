@@ -16,7 +16,7 @@ namespace DataConversionInterface
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow.textBoxSelectedFile());
+            Application.Run(new MainWindow.fileConversionInterface());
         }
     }
 

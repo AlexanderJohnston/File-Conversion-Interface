@@ -15,13 +15,18 @@ using System.Windows.Forms;
 
 namespace MainWindow
 {
-    public partial class textBoxSelectedFile : Form
+    public partial class fileConversionInterface : Form
     {
         // Replace this with a config file later.
         string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
         string statusPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
 
-        public textBoxSelectedFile()
+        // Variables for the global timer and message box.
+        List<string> statusMessages = new List<string>();
+
+        // Start methods.
+        
+        public fileConversionInterface()
         {
             InitializeComponent();
             InitialSetup.Start();
@@ -213,23 +218,64 @@ namespace MainWindow
             string dataFilePath = textBoxFileName.Text.ToString();
             if (dataFilePath == "") { buttonOpenDataFile_Click(sender, e); }
 
-            List<string> redpointStatus = new List<string>();
+            timerConvertProgress.Enabled = true;
 
         }
 
         private void timerConvertProgress_Tick(object sender, EventArgs e)
         {
             // The status messages file is 60 byte fixed width.
-            int countLines = File.ReadLines(statusPath + "CurrentStatus.txt").Count();
-            List<string> statusMessages = new List<string>();
-            var readOnlyFileStream = new FileStream(statusPath + "CurrentStatus.txt", FileMode.Open,
-                              FileAccess.Read, FileShare.ReadWrite);
-            using (var readOnlyReader = new StreamReader(readOnlyFileStream))
+            // Check to see if file size has changed.
+            using (FileStream redPointLogStream = File.Open(statusPath + "CurrentStatus.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                statusMessages.Add(readOnlyReader.ReadLine());
+                // Go to the end of the file and roll back 60 KB.
+                if (redPointLogStream.Length > 59)
+                {
+                    redPointLogStream.Seek(-60, SeekOrigin.End);
+                    // Read the bytes that were rolled back.
+                    byte[] bytesNew = new byte[60];
+                    redPointLogStream.Read(bytesNew, 0, 60);
+                    // Convert the bytes to a string.
+                    string newLogData = Encoding.Default.GetString(bytesNew);
+                    textBoxStatusMessages.Text = newLogData.ToString();
+                    switch (newLogData.ToString()[0])
+                    {
+                        case '1':
+                            progressBarConversion.Value = 1;
+                            break;
+                        case '2':
+                            progressBarConversion.Value = 2;
+                            break;
+                        case '3':
+                            progressBarConversion.Value = 3;
+                            break;
+                        case '4':
+                            progressBarConversion.Value = 4;
+                            break;
+                        case '5':
+                            progressBarConversion.Value = 5;
+                            break;
+                        case '6':
+                            progressBarConversion.Value = 6;
+                            break;
+                        case '7':
+                            progressBarConversion.Value = 7;
+                            break;
+                        case '8':
+                            progressBarConversion.Value = 8;
+                            break;
+                        case '9':
+                            progressBarConversion.Value = 9;
+                            break;
+                    }
+
+                }
+                else
+                {
+                    textBoxStatusMessages.Text = "0: Conversion has not started.";
+                        progressBarConversion.Value = 0;
+                }
             }
-            if (statusMessages[9].Contains("Conversion is complete.")) { timerConvertProgress.Enabled = false; }
-            textBoxStatusMessages.Text = string.Join(@"\r\n", statusMessages);
         }
     }
 
