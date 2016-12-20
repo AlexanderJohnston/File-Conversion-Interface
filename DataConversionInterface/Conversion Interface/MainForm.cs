@@ -76,7 +76,7 @@ namespace MainWindow
         private void buttonLoadDataFile_Click(object sender, EventArgs e)
         {
             // Set up variables to read the data file.
-            string dataFilePath = labelFilePath.Text.ToString();
+            string dataFilePath = textBoxFileName.Text.ToString();
             StreamReader dataFileReader = new StreamReader(dataFilePath);
             List<string> dataFileContent = new List<string>();
             string regexMatch = null;
