@@ -76,43 +76,92 @@ namespace MainWindow
         private void buttonLoadDataFile_Click(object sender, EventArgs e)
         {
             // Set up variables to read the data file.
-            char charDataFieldDelimiter = new char();
             string dataFilePath = labelFilePath.Text.ToString();
             StreamReader dataFileReader = new StreamReader(dataFilePath);
             string[] dataFileContent = new string[File.ReadAllLines(dataFilePath).Length];
+            string regexMatch = null;
+            // Counter for header array
+            int u = 0;
+            int i = 0;
+            // Regex for parsing.
+            Regex regexSplitFinal = new Regex("");
 
-            // Determine if the file is tab or csv.
+            // Determine which type of file we are reading.
             string fileTabOrCSV = FileManagement.fileTABorCSV(dataFilePath);
+
+            // Time to read the file into memory for display to grab header record.
+            // Load Regex to parse the strings.
             if (fileTabOrCSV == "TAB")
             {
-                // Char(9) is tab.
-                charDataFieldDelimiter = Convert.ToChar(9);
+                regexSplitFinal = new Regex("(?:^|\t)(\"(?:[^\"]+|\"\")*\"|[^\t]*)", RegexOptions.Compiled);
+                foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
+                {
+                    regexMatch = match.Value;
+                    if (0 == regexMatch.Length)
+                    {
+                        dataFileContent[u] = "";
+                        u++;
+                    }
+
+                    dataFileContent[u] = regexMatch.ToString().TrimStart(',');
+                    u++;
+                }
             }
             else if (fileTabOrCSV == "CSV")
             {
-                charDataFieldDelimiter = Convert.ToChar(44);
-            }
+                regexSplitFinal = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
+                foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
+                {
+                    regexMatch = match.Value;
+                    if (0 == regexMatch.Length)
+                    {
+                        dataFileContent[u] = "";
+                        u++;
+                    }
 
-            // Time to read the file into memory for display to grab header record.
-                dataFileContent = dataFileReader.ReadLine().Split(charDataFieldDelimiter);
+                    dataFileContent[u] = regexMatch.ToString().TrimStart(',');
+                    u++;
+                }
+            }
 
             // Build the data grid view with a variable number of columns set as the header record.
             DataTable dataTableGeneral = DataViewerControls.DataFileVariableGrid(dataFileContent.Count(), dataFileContent);
+
             // Load all lines into a list of string arrays to make a data structure with columns and rows.
-            Regex regexSplitCSV = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
-            List<String[]> dataFileLines = File.ReadAllLines(dataFilePath).Select(x => x.Split(charDataFieldDelimiter)).ToList();
+            // Skip over the header using int i = 1 as starting point.
+            List<String[]> dataFileLines = new List<String[]>();
+
+            for( i = 1; i < 20; i++)
+            {
+                // Clear out the array from current or previous iteration.
+                Array.Clear(dataFileContent, 0, dataFileContent.Count());
+                // Clear out the array counter.
+                u = 0;
+                
+                foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
+                {
+                    regexMatch = match.Value;
+                    if (0 == regexMatch.Length)
+                    {
+                        dataFileContent[u] = "";
+                        u++;
+                    }
+
+                    dataFileContent[u] = regexMatch.ToString().TrimStart(',');
+                    u++;
+                }
+                dataFileLines[i] = dataFileContent;
+            }
+            
             // Remove the header record.
-            dataFileLines.Remove(dataFileLines[0]);
-            // Add the first five rows to the data grid viewer.
-            int i = 0;
+            //dataFileLines.Remove(dataFileLines[0]);
+
+            // Add the rows to the data grid viewer.
             foreach (string[] rows in dataFileLines)
             {
                 dataTableGeneral.Rows.Add(rows);
-                i++;
-                if (i > 25) break;
             }
             dataGridViewGeneral.DataSource = dataTableGeneral;
-            ;
         }
     }
 
