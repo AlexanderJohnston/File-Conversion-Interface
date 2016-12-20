@@ -85,6 +85,8 @@ namespace MainWindow
             int i = 0;
             // Regex for parsing.
             Regex regexSplitFinal = new Regex("");
+            // Delimiter character.
+            char finalDelimiterChar = ',';
 
             // Determine which type of file we are reading.
             string fileTabOrCSV = FileManagement.fileTABorCSV(dataFilePath);
@@ -103,9 +105,10 @@ namespace MainWindow
                         u++;
                     }
 
-                    dataFileContent.Add(regexMatch.ToString().TrimStart(','));
+                    dataFileContent.Add(regexMatch.ToString().TrimStart('\t'));
                     u++;
                 }
+                finalDelimiterChar = '\t';
             }
             else if (fileTabOrCSV == "CSV")
             {
@@ -122,6 +125,7 @@ namespace MainWindow
                     dataFileContent.Add(regexMatch.ToString().TrimStart(','));
                     u++;
                 }
+                finalDelimiterChar = ',';
             }
 
             // Build the data grid view with a variable number of columns set as the header record.
@@ -148,7 +152,7 @@ namespace MainWindow
                         u++;
                     }
 
-                    dataFileContent.Add(regexMatch.ToString().TrimStart(','));
+                    dataFileContent.Add(regexMatch.ToString().TrimStart(finalDelimiterChar));
                     u++;
                 }
 
