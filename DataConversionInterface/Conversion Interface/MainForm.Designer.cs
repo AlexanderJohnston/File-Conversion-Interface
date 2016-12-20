@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
             this.conversionTablesList = new System.Windows.Forms.ComboBox();
             this.tablesListLabel = new System.Windows.Forms.Label();
@@ -44,6 +45,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonSaveTable = new System.Windows.Forms.Button();
             this.buttonStartConversion = new System.Windows.Forms.Button();
+            this.timerConvertProgress = new System.Windows.Forms.Timer(this.components);
+            this.textBoxStatusMessages = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
@@ -171,6 +174,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.textBoxStatusMessages);
             this.panel1.Controls.Add(this.buttonStartConversion);
             this.panel1.Controls.Add(this.labelConversionStatus);
             this.panel1.Controls.Add(this.progressBarConversion);
@@ -197,6 +201,19 @@
             this.buttonStartConversion.Text = "Convert";
             this.buttonStartConversion.UseVisualStyleBackColor = true;
             this.buttonStartConversion.Click += new System.EventHandler(this.buttonStartConversion_Click);
+            // 
+            // timerConvertProgress
+            // 
+            this.timerConvertProgress.Tick += new System.EventHandler(this.timerConvertProgress_Tick);
+            // 
+            // textBoxStatusMessages
+            // 
+            this.textBoxStatusMessages.Location = new System.Drawing.Point(5, 74);
+            this.textBoxStatusMessages.Multiline = true;
+            this.textBoxStatusMessages.Name = "textBoxStatusMessages";
+            this.textBoxStatusMessages.ReadOnly = true;
+            this.textBoxStatusMessages.Size = new System.Drawing.Size(282, 274);
+            this.textBoxStatusMessages.TabIndex = 16;
             // 
             // textBoxSelectedFile
             // 
@@ -244,6 +261,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonSaveTable;
         private System.Windows.Forms.Button buttonStartConversion;
+        private System.Windows.Forms.Timer timerConvertProgress;
+        private System.Windows.Forms.TextBox textBoxStatusMessages;
     }
 }
 

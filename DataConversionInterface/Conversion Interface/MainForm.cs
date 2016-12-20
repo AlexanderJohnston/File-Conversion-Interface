@@ -19,6 +19,7 @@ namespace MainWindow
     {
         // Replace this with a config file later.
         string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
+        string statusPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
 
         public textBoxSelectedFile()
         {
@@ -211,6 +212,24 @@ namespace MainWindow
         {
             string dataFilePath = textBoxFileName.Text.ToString();
             if (dataFilePath == "") { buttonOpenDataFile_Click(sender, e); }
+
+            List<string> redpointStatus = new List<string>();
+
+        }
+
+        private void timerConvertProgress_Tick(object sender, EventArgs e)
+        {
+            // The status messages file is 60 byte fixed width.
+            int countLines = File.ReadLines(statusPath + "CurrentStatus.txt").Count();
+            List<string> statusMessages = new List<string>();
+            var readOnlyFileStream = new FileStream(statusPath + "CurrentStatus.txt", FileMode.Open,
+                              FileAccess.Read, FileShare.ReadWrite);
+            using (var readOnlyReader = new StreamReader(readOnlyFileStream))
+            {
+                statusMessages.Add(readOnlyReader.ReadLine());
+            }
+            if (statusMessages[9].Contains("Conversion is complete.")) { timerConvertProgress.Enabled = false; }
+            textBoxStatusMessages.Text = string.Join(@"\r\n", statusMessages);
         }
     }
 
