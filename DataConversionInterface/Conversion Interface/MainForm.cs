@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -636,4 +637,17 @@ namespace MainWindow
             return dataVariableGrid;
         }
     }
+
+    public static class DataGridViewExtensioncs
+    {
+
+        public static void DoubleBuffered(this DataGridView dgv, bool setting)
+        {
+            var dgvType = dgv.GetType();
+            var pi = dgvType.GetProperty("DoubleBuffered",
+                  BindingFlags.Instance | BindingFlags.NonPublic);
+            pi.SetValue(dgv, setting, null);
+        }
+    }
+
 }

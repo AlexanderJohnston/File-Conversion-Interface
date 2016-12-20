@@ -49,6 +49,7 @@
             this.dataGridViewGeneral.Name = "dataGridViewGeneral";
             this.dataGridViewGeneral.Size = new System.Drawing.Size(1107, 205);
             this.dataGridViewGeneral.TabIndex = 0;
+            this.dataGridViewGeneral.DoubleBuffered(true);
             // 
             // conversionTablesList
             // 
