@@ -566,10 +566,10 @@ namespace MainWindow
             {
                 resultIsFileCSV = fileTypeChooser.Count;
             }
-            fileTypeChooser = null;
+            fileTypeChooser.Clear();
 
             // Determine if the file is tab delimited now.
-            for (int i = dataFileContent.IndexOf(@"\t"); i > -1; i = dataFileContent.IndexOf(@"\t", i + 1))
+            for (int i = dataFileContent.IndexOf('\t'); i > -1; i = dataFileContent.IndexOf('\t', i + 1))
             {
                 // If no more of the character is found, then -1 will return and end it.
                 fileTypeChooser.Add(i);
