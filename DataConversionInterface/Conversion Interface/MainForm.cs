@@ -206,6 +206,12 @@ namespace MainWindow
                 buttonLoadDataFile_Click(sender, e);
             }
         }
+
+        private void buttonStartConversion_Click(object sender, EventArgs e)
+        {
+            string dataFilePath = textBoxFileName.Text.ToString();
+            if (dataFilePath == "") { buttonOpenDataFile_Click(sender, e); }
+        }
     }
 
     public class InitialSetup

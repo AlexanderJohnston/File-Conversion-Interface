@@ -43,6 +43,7 @@
             this.labelConversionStatus = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonSaveTable = new System.Windows.Forms.Button();
+            this.buttonStartConversion = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
@@ -170,6 +171,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonStartConversion);
             this.panel1.Controls.Add(this.labelConversionStatus);
             this.panel1.Controls.Add(this.progressBarConversion);
             this.panel1.Location = new System.Drawing.Point(371, 276);
@@ -185,6 +187,16 @@
             this.buttonSaveTable.TabIndex = 15;
             this.buttonSaveTable.Text = "Save Table";
             this.buttonSaveTable.UseVisualStyleBackColor = true;
+            // 
+            // buttonStartConversion
+            // 
+            this.buttonStartConversion.Location = new System.Drawing.Point(212, 2);
+            this.buttonStartConversion.Name = "buttonStartConversion";
+            this.buttonStartConversion.Size = new System.Drawing.Size(75, 23);
+            this.buttonStartConversion.TabIndex = 15;
+            this.buttonStartConversion.Text = "Convert";
+            this.buttonStartConversion.UseVisualStyleBackColor = true;
+            this.buttonStartConversion.Click += new System.EventHandler(this.buttonStartConversion_Click);
             // 
             // textBoxSelectedFile
             // 
@@ -231,6 +243,7 @@
         private System.Windows.Forms.Label labelConversionStatus;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonSaveTable;
+        private System.Windows.Forms.Button buttonStartConversion;
     }
 }
 
