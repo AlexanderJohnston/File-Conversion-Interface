@@ -38,6 +38,7 @@
             this.buttonLoadDataFile = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.labelFilePath = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.SuspendLayout();
@@ -131,11 +132,19 @@
             this.labelFilePath.TabIndex = 10;
             this.labelFilePath.Text = "File Path";
             // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(388, 361);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(699, 20);
+            this.textBox2.TabIndex = 11;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1148, 636);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.labelFilePath);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.buttonLoadDataFile);
@@ -167,6 +176,7 @@
         private System.Windows.Forms.Button buttonLoadDataFile;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label labelFilePath;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 

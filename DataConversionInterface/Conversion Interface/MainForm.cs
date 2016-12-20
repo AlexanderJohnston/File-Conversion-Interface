@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -75,23 +76,43 @@ namespace MainWindow
         private void buttonLoadDataFile_Click(object sender, EventArgs e)
         {
             // Set up variables to read the data file.
+            char charDataFieldDelimiter = new char();
             string dataFilePath = labelFilePath.Text.ToString();
             StreamReader dataFileReader = new StreamReader(dataFilePath);
             string[] dataFileContent = new string[File.ReadAllLines(dataFilePath).Length];
 
             // Determine if the file is tab or csv.
             string fileTabOrCSV = FileManagement.fileTABorCSV(dataFilePath);
-            fileTabOrCSV.Replace("TAB", @"\t");
-            fileTabOrCSV.Replace("CSV", ",");
-
-
-            // Time to read the file into memory for display.
-            while (!dataFileReader.EndOfStream)
+            if (fileTabOrCSV == "TAB")
             {
-                dataFileContent = dataFileReader.ReadLine().Split(',');
-                Prompt.ShowDialog(dataFileContent.ToString(), dataFileContent[1]);
+                // Char(9) is tab.
+                charDataFieldDelimiter = Convert.ToChar(9);
+            }
+            else if (fileTabOrCSV == "CSV")
+            {
+                charDataFieldDelimiter = Convert.ToChar(44);
             }
 
+            // Time to read the file into memory for display to grab header record.
+                dataFileContent = dataFileReader.ReadLine().Split(charDataFieldDelimiter);
+
+            // Build the data grid view with a variable number of columns set as the header record.
+            DataTable dataTableGeneral = DataViewerControls.DataFileVariableGrid(dataFileContent.Count(), dataFileContent);
+            // Load all lines into a list of string arrays to make a data structure with columns and rows.
+            Regex regexSplitCSV = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
+            List<String[]> dataFileLines = File.ReadAllLines(dataFilePath).Select(x => x.Split(charDataFieldDelimiter)).ToList();
+            // Remove the header record.
+            dataFileLines.Remove(dataFileLines[0]);
+            // Add the first five rows to the data grid viewer.
+            int i = 0;
+            foreach (string[] rows in dataFileLines)
+            {
+                dataTableGeneral.Rows.Add(rows);
+                i++;
+                if (i > 25) break;
+            }
+            dataGridViewGeneral.DataSource = dataTableGeneral;
+            ;
         }
     }
 
@@ -472,6 +493,8 @@ namespace MainWindow
         public static string fileTABorCSV(string dataFilePath)
         {
             string finalResult = null;
+            int resultIsFileCSV = 0;
+            int resultIsFileTAB = 0;
 
             // Set up the header record into a string.
             StreamReader dataFileReader = new StreamReader(dataFilePath);
@@ -486,7 +509,10 @@ namespace MainWindow
             }
 
             // Store the CSV count into a variable for later.
-            int resultIsFileCSV = fileTypeChooser.Count;
+            if (fileTypeChooser != null)
+            {
+                resultIsFileCSV = fileTypeChooser.Count;
+            }
             fileTypeChooser = null;
 
             // Determine if the file is tab delimited now.
@@ -497,7 +523,10 @@ namespace MainWindow
             }
 
             // Store the TAB count into a variable for soon.
-            int resultIsFileTAB = fileTypeChooser.Count();
+            if (fileTypeChooser != null)
+            {
+                resultIsFileTAB = fileTypeChooser.Count;
+            }
 
             if (resultIsFileTAB > resultIsFileCSV)
             {
@@ -526,5 +555,19 @@ namespace MainWindow
             string[] tableFiles = Directory.GetFiles(tablesPath);
             return tableFiles;
         }  
+    }
+
+    public class DataViewerControls
+    {
+        public static DataTable DataFileVariableGrid(int numberOfColumns, string[]headerRecord)
+        {
+            // Define a new data grid view to build.
+            DataTable dataVariableGrid = new DataTable();
+            for (int i = 0; i < numberOfColumns; i++)
+            {
+                dataVariableGrid.Columns.Add(headerRecord[i]);
+            }
+            return dataVariableGrid;
+        }
     }
 }
