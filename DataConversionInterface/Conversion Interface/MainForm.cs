@@ -174,6 +174,11 @@ namespace MainWindow
             {
                 buttonOpenDataFile_Click(sender, e);
             }
+
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                buttonLoadDataFile_Click(sender, e);
+            }
         }
     }
 
