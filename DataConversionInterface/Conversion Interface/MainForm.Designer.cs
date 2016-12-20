@@ -117,17 +117,16 @@
             // 
             // textBoxFileName
             // 
-            this.textBoxFileName.Location = new System.Drawing.Point(418, 246);
+            this.textBoxFileName.Location = new System.Drawing.Point(490, 246);
             this.textBoxFileName.MaxLength = 256;
             this.textBoxFileName.Name = "textBoxFileName";
-            this.textBoxFileName.Size = new System.Drawing.Size(517, 20);
+            this.textBoxFileName.Size = new System.Drawing.Size(445, 20);
             this.textBoxFileName.TabIndex = 9;
-            this.textBoxFileName.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // labelFilePath
             // 
             this.labelFilePath.AutoSize = true;
-            this.labelFilePath.Location = new System.Drawing.Point(364, 249);
+            this.labelFilePath.Location = new System.Drawing.Point(436, 249);
             this.labelFilePath.Name = "labelFilePath";
             this.labelFilePath.Size = new System.Drawing.Size(48, 13);
             this.labelFilePath.TabIndex = 10;
