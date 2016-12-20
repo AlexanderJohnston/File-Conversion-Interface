@@ -81,6 +81,16 @@ namespace MainWindow
 
             // Determine if the file is tab or csv.
             string fileTabOrCSV = FileManagement.fileTABorCSV(dataFilePath);
+            fileTabOrCSV.Replace("TAB", @"\t");
+            fileTabOrCSV.Replace("CSV", ",");
+
+
+            // Time to read the file into memory for display.
+            while (!dataFileReader.EndOfStream)
+            {
+                dataFileContent = dataFileReader.ReadLine().Split(',');
+                Prompt.ShowDialog(dataFileContent.ToString(), dataFileContent[1]);
+            }
 
         }
     }
@@ -446,7 +456,8 @@ namespace MainWindow
             {
                 if (configContent[i] == userName)
                 {
-                    finalPass = Encoding.Default.GetBytes(configContent[i * 2 + 3]);
+                    // Get the index of "Passwords:" and add the index of username to receive password.
+                    finalPass = Encoding.Default.GetBytes(configContent[configContent.IndexOf("Passwords:") + i]);
                     break;
                 }
                 i++;
