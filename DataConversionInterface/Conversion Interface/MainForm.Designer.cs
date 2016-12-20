@@ -1,6 +1,6 @@
 ﻿namespace MainWindow
 {
-    partial class MainForm
+    partial class textBoxSelectedFile
     {
         /// <summary>
         /// Required designer variable.
@@ -36,7 +36,7 @@
             this.generalDataViewLabel = new System.Windows.Forms.Label();
             this.buttonOpenDataFile = new System.Windows.Forms.Button();
             this.buttonLoadDataFile = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxFileName = new System.Windows.Forms.TextBox();
             this.labelFilePath = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
@@ -116,17 +116,19 @@
             this.buttonLoadDataFile.UseVisualStyleBackColor = true;
             this.buttonLoadDataFile.Click += new System.EventHandler(this.buttonLoadDataFile_Click);
             // 
-            // textBox1
+            // textBoxFileName
             // 
-            this.textBox1.Location = new System.Drawing.Point(471, 246);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(464, 20);
-            this.textBox1.TabIndex = 9;
+            this.textBoxFileName.Location = new System.Drawing.Point(306, 246);
+            this.textBoxFileName.MaxLength = 256;
+            this.textBoxFileName.Name = "textBoxFileName";
+            this.textBoxFileName.Size = new System.Drawing.Size(629, 20);
+            this.textBoxFileName.TabIndex = 9;
+            this.textBoxFileName.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // labelFilePath
             // 
             this.labelFilePath.AutoSize = true;
-            this.labelFilePath.Location = new System.Drawing.Point(402, 249);
+            this.labelFilePath.Location = new System.Drawing.Point(236, 249);
             this.labelFilePath.Name = "labelFilePath";
             this.labelFilePath.Size = new System.Drawing.Size(48, 13);
             this.labelFilePath.TabIndex = 10;
@@ -139,14 +141,14 @@
             this.textBox2.Size = new System.Drawing.Size(699, 20);
             this.textBox2.TabIndex = 11;
             // 
-            // MainForm
+            // textBoxSelectedFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1148, 636);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.labelFilePath);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxFileName);
             this.Controls.Add(this.buttonLoadDataFile);
             this.Controls.Add(this.buttonOpenDataFile);
             this.Controls.Add(this.generalDataViewLabel);
@@ -155,8 +157,10 @@
             this.Controls.Add(this.tablesListLabel);
             this.Controls.Add(this.conversionTablesList);
             this.Controls.Add(this.dataGridViewGeneral);
-            this.Name = "MainForm";
+            this.KeyPreview = true;
+            this.Name = "textBoxSelectedFile";
             this.Text = "Form1";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).EndInit();
             this.ResumeLayout(false);
@@ -174,7 +178,7 @@
         private System.Windows.Forms.Label generalDataViewLabel;
         private System.Windows.Forms.Button buttonOpenDataFile;
         private System.Windows.Forms.Button buttonLoadDataFile;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxFileName;
         private System.Windows.Forms.Label labelFilePath;
         private System.Windows.Forms.TextBox textBox2;
     }

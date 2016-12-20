@@ -14,12 +14,12 @@ using System.Windows.Forms;
 
 namespace MainWindow
 {
-    public partial class MainForm : Form
+    public partial class textBoxSelectedFile : Form
     {
         // Replace this with a config file later.
         string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
 
-        public MainForm()
+        public textBoxSelectedFile()
         {
             InitializeComponent();
             InitialSetup.Start();
@@ -70,7 +70,7 @@ namespace MainWindow
                 dataFilePath = selectFile.FileName;
             }
 
-            labelFilePath.Text = dataFilePath;
+            textBoxFileName.Text = dataFilePath;
         }
 
         private void buttonLoadDataFile_Click(object sender, EventArgs e)
@@ -166,6 +166,14 @@ namespace MainWindow
                 dataTableGeneral.Rows.Add(rows);
             }
             dataGridViewGeneral.DataSource = dataTableGeneral;
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                buttonOpenDataFile_Click(sender, e);
+            }
         }
     }
 
