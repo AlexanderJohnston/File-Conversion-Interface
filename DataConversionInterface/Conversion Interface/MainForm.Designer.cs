@@ -38,8 +38,15 @@
             this.buttonLoadDataFile = new System.Windows.Forms.Button();
             this.textBoxFileName = new System.Windows.Forms.TextBox();
             this.labelFilePath = new System.Windows.Forms.Label();
+            this.panelConversionTable = new System.Windows.Forms.Panel();
+            this.progressBarConversion = new System.Windows.Forms.ProgressBar();
+            this.labelConversionStatus = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonSaveTable = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
+            this.panelConversionTable.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridViewGeneral
@@ -53,7 +60,7 @@
             // conversionTablesList
             // 
             this.conversionTablesList.FormattingEnabled = true;
-            this.conversionTablesList.Location = new System.Drawing.Point(12, 608);
+            this.conversionTablesList.Location = new System.Drawing.Point(30, 329);
             this.conversionTablesList.Name = "conversionTablesList";
             this.conversionTablesList.Size = new System.Drawing.Size(159, 21);
             this.conversionTablesList.TabIndex = 2;
@@ -62,7 +69,7 @@
             // tablesListLabel
             // 
             this.tablesListLabel.AutoSize = true;
-            this.tablesListLabel.Location = new System.Drawing.Point(9, 284);
+            this.tablesListLabel.Location = new System.Drawing.Point(120, 10);
             this.tablesListLabel.Name = "tablesListLabel";
             this.tablesListLabel.Size = new System.Drawing.Size(95, 13);
             this.tablesListLabel.TabIndex = 3;
@@ -72,7 +79,7 @@
             // 
             this.dataGridViewTables.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridViewTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewTables.Location = new System.Drawing.Point(12, 300);
+            this.dataGridViewTables.Location = new System.Drawing.Point(30, 26);
             this.dataGridViewTables.Name = "dataGridViewTables";
             this.dataGridViewTables.Size = new System.Drawing.Size(295, 282);
             this.dataGridViewTables.TabIndex = 4;
@@ -80,7 +87,7 @@
             // tablesSelectLabel
             // 
             this.tablesSelectLabel.AutoSize = true;
-            this.tablesSelectLabel.Location = new System.Drawing.Point(14, 591);
+            this.tablesSelectLabel.Location = new System.Drawing.Point(62, 312);
             this.tablesSelectLabel.Name = "tablesSelectLabel";
             this.tablesSelectLabel.Size = new System.Drawing.Size(95, 13);
             this.tablesSelectLabel.TabIndex = 5;
@@ -132,20 +139,65 @@
             this.labelFilePath.TabIndex = 10;
             this.labelFilePath.Text = "File Path";
             // 
+            // panelConversionTable
+            // 
+            this.panelConversionTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelConversionTable.Controls.Add(this.buttonSaveTable);
+            this.panelConversionTable.Controls.Add(this.dataGridViewTables);
+            this.panelConversionTable.Controls.Add(this.conversionTablesList);
+            this.panelConversionTable.Controls.Add(this.tablesListLabel);
+            this.panelConversionTable.Controls.Add(this.tablesSelectLabel);
+            this.panelConversionTable.Location = new System.Drawing.Point(12, 276);
+            this.panelConversionTable.Name = "panelConversionTable";
+            this.panelConversionTable.Size = new System.Drawing.Size(353, 357);
+            this.panelConversionTable.TabIndex = 11;
+            // 
+            // progressBarConversion
+            // 
+            this.progressBarConversion.Location = new System.Drawing.Point(5, 27);
+            this.progressBarConversion.Name = "progressBarConversion";
+            this.progressBarConversion.Size = new System.Drawing.Size(282, 23);
+            this.progressBarConversion.TabIndex = 12;
+            // 
+            // labelConversionStatus
+            // 
+            this.labelConversionStatus.AutoSize = true;
+            this.labelConversionStatus.Location = new System.Drawing.Point(2, 2);
+            this.labelConversionStatus.Name = "labelConversionStatus";
+            this.labelConversionStatus.Size = new System.Drawing.Size(110, 13);
+            this.labelConversionStatus.TabIndex = 13;
+            this.labelConversionStatus.Text = "Redpoint Status Feed";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.labelConversionStatus);
+            this.panel1.Controls.Add(this.progressBarConversion);
+            this.panel1.Location = new System.Drawing.Point(371, 276);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(291, 357);
+            this.panel1.TabIndex = 14;
+            // 
+            // buttonSaveTable
+            // 
+            this.buttonSaveTable.Location = new System.Drawing.Point(250, 327);
+            this.buttonSaveTable.Name = "buttonSaveTable";
+            this.buttonSaveTable.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveTable.TabIndex = 15;
+            this.buttonSaveTable.Text = "Save Table";
+            this.buttonSaveTable.UseVisualStyleBackColor = true;
+            // 
             // textBoxSelectedFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1148, 636);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelConversionTable);
             this.Controls.Add(this.labelFilePath);
             this.Controls.Add(this.textBoxFileName);
             this.Controls.Add(this.buttonLoadDataFile);
             this.Controls.Add(this.buttonOpenDataFile);
             this.Controls.Add(this.generalDataViewLabel);
-            this.Controls.Add(this.tablesSelectLabel);
-            this.Controls.Add(this.dataGridViewTables);
-            this.Controls.Add(this.tablesListLabel);
-            this.Controls.Add(this.conversionTablesList);
             this.Controls.Add(this.dataGridViewGeneral);
             this.KeyPreview = true;
             this.Name = "textBoxSelectedFile";
@@ -153,6 +205,10 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).EndInit();
+            this.panelConversionTable.ResumeLayout(false);
+            this.panelConversionTable.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,6 +226,11 @@
         private System.Windows.Forms.Button buttonLoadDataFile;
         private System.Windows.Forms.TextBox textBoxFileName;
         private System.Windows.Forms.Label labelFilePath;
+        private System.Windows.Forms.Panel panelConversionTable;
+        private System.Windows.Forms.ProgressBar progressBarConversion;
+        private System.Windows.Forms.Label labelConversionStatus;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button buttonSaveTable;
     }
 }
 
