@@ -47,12 +47,14 @@ namespace MainWindow
         {
             // Start up the grid view for this selected table.
             DataTable selectedTable = new DataTable();
-            selectedTable.Columns.Add("Client");
-            selectedTable.Columns.Add("House");
+            selectedTable.Columns.Add("CLIENT");
+            selectedTable.Columns.Add("HOUSE");
             string tableLocation = tablesPath + conversionTablesList.SelectedValue.ToString();
 
             // Fill in the gridviewer rows with the new conversion table.
             StreamReader tableReader = new StreamReader(tableLocation);
+            // Get rid of the header.
+            tableReader.ReadLine();
             string[] tableContent = new string[File.ReadAllLines(tableLocation).Length];
             while (!tableReader.EndOfStream)
             {
@@ -144,8 +146,12 @@ namespace MainWindow
             List<string[]> dataFileLines = new List<string[]>(sizeArray);
 
             // Load 60 arrays where each value is a column, one at a time into the list dataFileLines.
-
-            for( i = 1; i < 60; i++)
+            // First, find out if there are less than 60 lines.
+            string[] lineCounter = new string[File.ReadAllLines(dataFilePath).Length];
+            // Initialize a variable to determine line count.
+            int displayTotalLines = 0;
+            if (lineCounter.Count() < 60) { displayTotalLines = lineCounter.Count(); }
+            for( i = 1; i < displayTotalLines; i++)
             {   
                 foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
                 {
