@@ -47,7 +47,7 @@ namespace MainWindow
             selectedTable.Columns.Add("House");
             string tableLocation = tablesPath + conversionTablesList.SelectedValue.ToString();
 
-            // Fill in the rows.
+            // Fill in the gridviewer rows with the new conversion table.
             StreamReader tableReader = new StreamReader(tableLocation);
             string[] tableContent = new string[File.ReadAllLines(tableLocation).Length];
             while (!tableReader.EndOfStream)
@@ -78,7 +78,7 @@ namespace MainWindow
             // Set up variables to read the data file.
             string dataFilePath = labelFilePath.Text.ToString();
             StreamReader dataFileReader = new StreamReader(dataFilePath);
-            string[] dataFileContent = new string[File.ReadAllLines(dataFilePath).Length];
+            List<string> dataFileContent = new List<string>();
             string regexMatch = null;
             // Counter for header array
             int u = 0;
@@ -99,11 +99,11 @@ namespace MainWindow
                     regexMatch = match.Value;
                     if (0 == regexMatch.Length)
                     {
-                        dataFileContent[u] = "";
+                        dataFileContent.Add("");
                         u++;
                     }
 
-                    dataFileContent[u] = regexMatch.ToString().TrimStart(',');
+                    dataFileContent.Add(regexMatch.ToString().TrimStart(','));
                     u++;
                 }
             }
@@ -115,46 +115,46 @@ namespace MainWindow
                     regexMatch = match.Value;
                     if (0 == regexMatch.Length)
                     {
-                        dataFileContent[u] = "";
+                        dataFileContent.Add("");
                         u++;
                     }
 
-                    dataFileContent[u] = regexMatch.ToString().TrimStart(',');
+                    dataFileContent.Add(regexMatch.ToString().TrimStart(','));
                     u++;
                 }
             }
 
             // Build the data grid view with a variable number of columns set as the header record.
-            DataTable dataTableGeneral = DataViewerControls.DataFileVariableGrid(dataFileContent.Count(), dataFileContent);
+            DataTable dataTableGeneral = DataViewerControls.DataFileVariableGrid(dataFileContent.Count(), dataFileContent.ToArray());
+
+            // Clear out the dataFileContent array.
+            dataFileContent.Clear();
 
             // Load all lines into a list of string arrays to make a data structure with columns and rows.
             // Skip over the header using int i = 1 as starting point.
-            List<String[]> dataFileLines = new List<String[]>();
+            int sizeArray = dataFileContent.Count();
+            List<string[]> dataFileLines = new List<string[]>(sizeArray);
 
-            for( i = 1; i < 20; i++)
-            {
-                // Clear out the array from current or previous iteration.
-                Array.Clear(dataFileContent, 0, dataFileContent.Count());
-                // Clear out the array counter.
-                u = 0;
-                
+            // Load 30 arrays where each value is a column, one at a time into the list dataFileLines.
+
+            for( i = 1; i < 30; i++)
+            {   
                 foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
                 {
                     regexMatch = match.Value;
                     if (0 == regexMatch.Length)
                     {
-                        dataFileContent[u] = "";
+                        dataFileContent.Add("");
                         u++;
                     }
 
-                    dataFileContent[u] = regexMatch.ToString().TrimStart(',');
+                    dataFileContent.Add(regexMatch.ToString().TrimStart(','));
                     u++;
                 }
-                dataFileLines[i] = dataFileContent;
+
+                dataFileLines.Add(dataFileContent.ToArray());
+                dataFileContent.Clear();
             }
-            
-            // Remove the header record.
-            //dataFileLines.Remove(dataFileLines[0]);
 
             // Add the rows to the data grid viewer.
             foreach (string[] rows in dataFileLines)
