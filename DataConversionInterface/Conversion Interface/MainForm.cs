@@ -255,11 +255,9 @@ namespace MainWindow
             {
                 Start();
             }
-            else if (validLogin == false &&
-                MessageBox.Show("Invalid login, try again?", "Login Attempt",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
+            else if (validLogin == false)
             {
-                Application.Exit();
+                Environment.Exit(1);
             }
 
             // Program setup is now complete.
@@ -273,7 +271,7 @@ namespace MainWindow
             string userFormCaption = "Login";
             string userFormText = "Welcome to the file conversion interface." + '\n' + "Please enter your first and last name.";
             userName = Prompt.ShowDialog(userFormText, userFormCaption);
-            if (userName == "") { Application.Exit(); }
+            if (userName == "") { Environment.Exit(2); }
             return userName;
         }
 
