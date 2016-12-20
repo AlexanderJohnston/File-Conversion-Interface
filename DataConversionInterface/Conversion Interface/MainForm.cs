@@ -25,6 +25,9 @@ namespace MainWindow
             InitializeComponent();
             InitialSetup.Start();
             InitializeTableList();
+
+            // Double buffer the data grid view to prevent flickering.
+            dataGridViewGeneral.DoubleBuffered(true);
         }
 
         // Set up the table list and remove the definition file from an array of existing files.
@@ -140,9 +143,9 @@ namespace MainWindow
             int sizeArray = dataFileContent.Count();
             List<string[]> dataFileLines = new List<string[]>(sizeArray);
 
-            // Load 30 arrays where each value is a column, one at a time into the list dataFileLines.
+            // Load 60 arrays where each value is a column, one at a time into the list dataFileLines.
 
-            for( i = 1; i < 30; i++)
+            for( i = 1; i < 60; i++)
             {   
                 foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
                 {
@@ -638,7 +641,7 @@ namespace MainWindow
         }
     }
 
-    public static class DataGridViewExtensioncs
+    static class DataGridViewExtensioncs
     {
 
         public static void DoubleBuffered(this DataGridView dgv, bool setting)
