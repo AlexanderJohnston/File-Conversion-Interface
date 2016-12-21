@@ -410,8 +410,8 @@ namespace MainWindow
                     gridView.Rows[r.Index].HeaderCell.Value = (r.Index + 1).ToString();
                 }
             }
-            dataGridViewGeneral.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dataGridViewGeneral.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridViewGeneral.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridViewGeneral.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
         }
     }
 
