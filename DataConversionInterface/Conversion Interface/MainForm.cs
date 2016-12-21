@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -222,6 +223,7 @@ namespace MainWindow
 
         }
 
+        // This timer handles the update of the progress bar and status message below it.
         private void timerConvertProgress_Tick(object sender, EventArgs e)
         {
             // The status messages file is 60 byte fixed width.
@@ -238,6 +240,7 @@ namespace MainWindow
                     // Convert the bytes to a string.
                     string newLogData = Encoding.Default.GetString(bytesNew);
                     textBoxStatusMessages.Text = newLogData.ToString();
+                    // Run a switch based on the first byte of the line we're reading, which is numbered by Redpoint's conversion step.
                     switch (newLogData.ToString()[0])
                     {
                         case '1':
@@ -266,6 +269,12 @@ namespace MainWindow
                             break;
                         case '9':
                             progressBarConversion.Value = 9;
+                            break;
+                        case '0':
+                            Thread.Sleep(2250);
+                            System.IO.File.WriteAllText(statusPath + "CurrentStatus.txt", string.Empty);
+                            timerConvertProgress.Enabled = false;
+                            textBoxStatusMessages.Text = "";
                             break;
                     }
 
@@ -728,8 +737,11 @@ namespace MainWindow
             DataTable dataVariableGrid = new DataTable();
             for (int i = 0; i < numberOfColumns; i++)
             {
-                dataVariableGrid.Columns.Add(headerRecord[i]);
+                try { dataVariableGrid.Columns.Add(headerRecord[i]); }
+                // This is a serious exception and needs to be handled more gracefully. !FIX!
+                catch (DuplicateNameException ev) { MessageBox.Show("Your table header contains duplicate column names.", "Header Error!"); break; }
             }
+            if (ev )
             return dataVariableGrid;
         }
     }
