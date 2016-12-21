@@ -40,13 +40,16 @@
             this.textBoxFileName = new System.Windows.Forms.TextBox();
             this.labelFilePath = new System.Windows.Forms.Label();
             this.panelConversionTable = new System.Windows.Forms.Panel();
+            this.buttonSaveTable = new System.Windows.Forms.Button();
             this.progressBarConversion = new System.Windows.Forms.ProgressBar();
             this.labelConversionStatus = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.buttonSaveTable = new System.Windows.Forms.Button();
+            this.textBoxStatusMessages = new System.Windows.Forms.TextBox();
             this.buttonStartConversion = new System.Windows.Forms.Button();
             this.timerConvertProgress = new System.Windows.Forms.Timer(this.components);
-            this.textBoxStatusMessages = new System.Windows.Forms.TextBox();
+            this.buttonViewReport = new System.Windows.Forms.Button();
+            this.buttonDeclineReport = new System.Windows.Forms.Button();
+            this.buttonAcceptReport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
@@ -156,6 +159,15 @@
             this.panelConversionTable.Size = new System.Drawing.Size(353, 357);
             this.panelConversionTable.TabIndex = 11;
             // 
+            // buttonSaveTable
+            // 
+            this.buttonSaveTable.Location = new System.Drawing.Point(250, 327);
+            this.buttonSaveTable.Name = "buttonSaveTable";
+            this.buttonSaveTable.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveTable.TabIndex = 15;
+            this.buttonSaveTable.Text = "Save Table";
+            this.buttonSaveTable.UseVisualStyleBackColor = true;
+            // 
             // progressBarConversion
             // 
             this.progressBarConversion.Location = new System.Drawing.Point(5, 27);
@@ -185,14 +197,14 @@
             this.panel1.Size = new System.Drawing.Size(291, 110);
             this.panel1.TabIndex = 14;
             // 
-            // buttonSaveTable
+            // textBoxStatusMessages
             // 
-            this.buttonSaveTable.Location = new System.Drawing.Point(250, 327);
-            this.buttonSaveTable.Name = "buttonSaveTable";
-            this.buttonSaveTable.Size = new System.Drawing.Size(75, 23);
-            this.buttonSaveTable.TabIndex = 15;
-            this.buttonSaveTable.Text = "Save Table";
-            this.buttonSaveTable.UseVisualStyleBackColor = true;
+            this.textBoxStatusMessages.Location = new System.Drawing.Point(5, 74);
+            this.textBoxStatusMessages.Multiline = true;
+            this.textBoxStatusMessages.Name = "textBoxStatusMessages";
+            this.textBoxStatusMessages.ReadOnly = true;
+            this.textBoxStatusMessages.Size = new System.Drawing.Size(282, 28);
+            this.textBoxStatusMessages.TabIndex = 16;
             // 
             // buttonStartConversion
             // 
@@ -208,20 +220,44 @@
             // 
             this.timerConvertProgress.Tick += new System.EventHandler(this.timerConvertProgress_Tick);
             // 
-            // textBoxStatusMessages
+            // buttonViewReport
             // 
-            this.textBoxStatusMessages.Location = new System.Drawing.Point(5, 74);
-            this.textBoxStatusMessages.Multiline = true;
-            this.textBoxStatusMessages.Name = "textBoxStatusMessages";
-            this.textBoxStatusMessages.ReadOnly = true;
-            this.textBoxStatusMessages.Size = new System.Drawing.Size(282, 28);
-            this.textBoxStatusMessages.TabIndex = 16;
+            this.buttonViewReport.Location = new System.Drawing.Point(371, 392);
+            this.buttonViewReport.Name = "buttonViewReport";
+            this.buttonViewReport.Size = new System.Drawing.Size(75, 23);
+            this.buttonViewReport.TabIndex = 15;
+            this.buttonViewReport.Text = "View Report";
+            this.buttonViewReport.UseVisualStyleBackColor = true;
+            // 
+            // buttonDeclineReport
+            // 
+            this.buttonDeclineReport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.OrangeRed;
+            this.buttonDeclineReport.Location = new System.Drawing.Point(587, 392);
+            this.buttonDeclineReport.Name = "buttonDeclineReport";
+            this.buttonDeclineReport.Size = new System.Drawing.Size(75, 23);
+            this.buttonDeclineReport.TabIndex = 16;
+            this.buttonDeclineReport.Text = "Decline";
+            this.buttonDeclineReport.UseVisualStyleBackColor = true;
+            // 
+            // buttonAcceptReport
+            // 
+            this.buttonAcceptReport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
+            this.buttonAcceptReport.Location = new System.Drawing.Point(480, 392);
+            this.buttonAcceptReport.Name = "buttonAcceptReport";
+            this.buttonAcceptReport.Size = new System.Drawing.Size(75, 23);
+            this.buttonAcceptReport.TabIndex = 17;
+            this.buttonAcceptReport.Text = "Accept";
+            this.buttonAcceptReport.UseVisualStyleBackColor = true;
+            this.buttonAcceptReport.MouseEnter += new System.EventHandler(this.buttonAcceptReport_MouseEnter);
             // 
             // fileConversionInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1148, 636);
+            this.Controls.Add(this.buttonAcceptReport);
+            this.Controls.Add(this.buttonDeclineReport);
+            this.Controls.Add(this.buttonViewReport);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelConversionTable);
             this.Controls.Add(this.labelFilePath);
@@ -265,6 +301,9 @@
         private System.Windows.Forms.Button buttonStartConversion;
         private System.Windows.Forms.Timer timerConvertProgress;
         private System.Windows.Forms.TextBox textBoxStatusMessages;
+        private System.Windows.Forms.Button buttonViewReport;
+        private System.Windows.Forms.Button buttonDeclineReport;
+        private System.Windows.Forms.Button buttonAcceptReport;
     }
 }
 

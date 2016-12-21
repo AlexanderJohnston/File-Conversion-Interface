@@ -309,6 +309,11 @@ namespace MainWindow
                 }
             }
         }
+
+        private void buttonAcceptReport_MouseEnter(object sender, EventArgs e)
+        {
+            buttonAcceptReport.BackColor = Color.LightGreen;
+        }
     }
 
     public class InitialSetup
