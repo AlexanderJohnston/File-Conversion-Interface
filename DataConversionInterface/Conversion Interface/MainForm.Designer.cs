@@ -51,6 +51,10 @@
             this.buttonDeclineReport = new System.Windows.Forms.Button();
             this.buttonAcceptReport = new System.Windows.Forms.Button();
             this.buttonViewOriginalFile = new System.Windows.Forms.Button();
+            this.labelRecordCount = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxViewLines = new System.Windows.Forms.TextBox();
+            this.buttonViewAllLines = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
@@ -267,11 +271,51 @@
             this.buttonViewOriginalFile.UseVisualStyleBackColor = true;
             this.buttonViewOriginalFile.Click += new System.EventHandler(this.buttonViewOriginalFile_Click);
             // 
+            // labelRecordCount
+            // 
+            this.labelRecordCount.AutoSize = true;
+            this.labelRecordCount.Location = new System.Drawing.Point(12, 248);
+            this.labelRecordCount.Name = "labelRecordCount";
+            this.labelRecordCount.Size = new System.Drawing.Size(76, 13);
+            this.labelRecordCount.TabIndex = 19;
+            this.labelRecordCount.Text = "Record Count:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(181, 248);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "View Lines:";
+            // 
+            // textBoxViewLines
+            // 
+            this.textBoxViewLines.Location = new System.Drawing.Point(250, 245);
+            this.textBoxViewLines.Name = "textBoxViewLines";
+            this.textBoxViewLines.Size = new System.Drawing.Size(89, 20);
+            this.textBoxViewLines.TabIndex = 21;
+            this.textBoxViewLines.Text = "1000";
+            // 
+            // buttonViewAllLines
+            // 
+            this.buttonViewAllLines.Location = new System.Drawing.Point(345, 243);
+            this.buttonViewAllLines.Name = "buttonViewAllLines";
+            this.buttonViewAllLines.Size = new System.Drawing.Size(53, 23);
+            this.buttonViewAllLines.TabIndex = 22;
+            this.buttonViewAllLines.Text = "View All";
+            this.buttonViewAllLines.UseVisualStyleBackColor = true;
+            this.buttonViewAllLines.Click += new System.EventHandler(this.buttonViewAllLines_Click);
+            // 
             // fileConversionInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1148, 636);
+            this.Controls.Add(this.buttonViewAllLines);
+            this.Controls.Add(this.textBoxViewLines);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelRecordCount);
             this.Controls.Add(this.buttonViewOriginalFile);
             this.Controls.Add(this.buttonAcceptReport);
             this.Controls.Add(this.buttonDeclineReport);
@@ -323,6 +367,10 @@
         private System.Windows.Forms.Button buttonDeclineReport;
         private System.Windows.Forms.Button buttonAcceptReport;
         private System.Windows.Forms.Button buttonViewOriginalFile;
+        private System.Windows.Forms.Label labelRecordCount;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxViewLines;
+        private System.Windows.Forms.Button buttonViewAllLines;
     }
 }
 

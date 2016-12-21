@@ -31,6 +31,8 @@ namespace MainWindow
         const string statusPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
         const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
         const string dataPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
+        int linesViewCount = 1000;
+        bool linesViewAll = false;
 
         // Variables for the global timer and message box.
         List<string> statusMessages = new List<string>();
@@ -104,6 +106,8 @@ namespace MainWindow
             {
                 if (textBoxFileName.Text.ToString() != "")
                 {
+                    // Set up the line count variable.
+                    int displayTotalLines = 0;
                     // Set up variables to read the data file.
                     string dataFilePath = textBoxFileName.Text.ToString();
                     StreamReader dataFileReader = new StreamReader(dataFilePath);
@@ -168,12 +172,18 @@ namespace MainWindow
                     int sizeArray = dataFileContent.Count();
                     List<string[]> dataFileLines = new List<string[]>(sizeArray);
 
-                    // Load 60 arrays where each value is a column, one at a time into the list dataFileLines.
+                    // Load a number of arrays where each value is a column, one at a time into the list dataFileLines.
                     // First, find out if there are less than 60 lines.
                     var lineCounter = File.ReadLines(dataFilePath).Count();
-                    // Initialize a variable to determine line count.
-                    int displayTotalLines = 60;
-                    if (lineCounter < 60) { displayTotalLines = lineCounter; }
+
+                    // Display the line count for the file.
+                    labelRecordCount.Text = lineCounter.ToString();
+
+                    // Initialize a variable to determine line count for display.
+                    if (linesViewAll == false) { displayTotalLines = linesViewCount; }
+                    else { displayTotalLines = lineCounter; }
+                    if ( displayTotalLines > lineCounter ) { displayTotalLines = lineCounter; }
+                    // Build the data to display.
                     for (i = 1; i < displayTotalLines; i++)
                     {
                         foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
@@ -370,6 +380,11 @@ namespace MainWindow
             }*/
 
             MessageBox.Show("This function isn't working yet.", "Woops!");
+        }
+
+        private void buttonViewAllLines_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
