@@ -16,6 +16,11 @@ using System.Windows.Forms;
 
 namespace MainWindow
 {
+    /* TO-DO List:
+     * Re-write variables as constants wherever possible.
+     * Add in enough elegant error handling and log reporting for stability.
+     * Write networking functions to communicate with other users on LAN using the same software.
+     */
     public partial class fileConversionInterface : Form
     {
         // Replace this with a config file later.
