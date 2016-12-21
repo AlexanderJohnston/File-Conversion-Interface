@@ -789,7 +789,7 @@ namespace MainWindow
             // Move the data file to the conversion folder and change the name to Client Code + Extension.
             try
             {
-                File.Move(dataFilePath, conversionFolder + dataClientCode + "." + dataFileFormat);
+                File.Move(dataFilePath, conversionFolder + dataClientCode + dataFileFormat);
                 return true;
             }
             catch (IOException)
