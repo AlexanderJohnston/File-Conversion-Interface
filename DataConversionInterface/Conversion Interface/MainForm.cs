@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -20,6 +21,7 @@ namespace MainWindow
      * Re-write variables as constants wherever possible.
      * Add in enough elegant error handling and log reporting for stability.
      * Write networking functions to communicate with other users on LAN using the same software.
+     * !FIX! = marker in comments for me to attend to in the future.
      */
     public partial class fileConversionInterface : Form
     {
@@ -217,6 +219,11 @@ namespace MainWindow
             {
                 buttonLoadDataFile_Click(sender, e);
             }
+
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                buttonStartConversion_Click(sender, e);
+            }
         }
 
         private void buttonStartConversion_Click(object sender, EventArgs e)
@@ -246,6 +253,7 @@ namespace MainWindow
                     string newLogData = Encoding.Default.GetString(bytesNew);
                     textBoxStatusMessages.Text = newLogData.ToString();
                     // Run a switch based on the first byte of the line we're reading, which is numbered by Redpoint's conversion step.
+                    // I bet I could write this much smaller. !FIX!
                     switch (newLogData.ToString()[0])
                     {
                         case '1':
@@ -762,4 +770,47 @@ namespace MainWindow
         }
     }
 
+    static class ConversionUtilities
+    {
+        public static bool StartConversion(string dataFilePath, string dataClientCode, string dataFileFormat)
+        {
+            // Replace conversionFolder with a config file. !FIX!
+            const string conversionFolder = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
+
+            // Move the data file to the conversion folder and change the name to Client Code + Extension.
+            try
+            {
+                File.Move(dataFilePath, conversionFolder + dataClientCode + "." + dataFileFormat);
+                return true;
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("There is already a file in the conversion folder, or the file you selected was not found.", "File Error");
+                return false;
+            }
+            catch (ArgumentNullException)
+            {
+                MessageBox.Show("Either you do not have a file selected, or a client table isn't selected.", "File Error");
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Your filename contains invalid characters.", "Name Error");
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have access to move this file into conversion.", "Permissions Error");
+                return false;
+            }
+        }
+
+        public static bool ExcelConvert(string dataFilePath, string dataFileFormat)
+        {
+            using (Powershell instanceExcelConvert = Powershell.Create())
+            {
+
+            }
+        }
+    }
 }
