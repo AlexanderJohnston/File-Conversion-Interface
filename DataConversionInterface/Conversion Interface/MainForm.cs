@@ -177,7 +177,7 @@ namespace MainWindow
                     var lineCounter = File.ReadLines(dataFilePath).Count();
 
                     // Display the line count for the file.
-                    labelRecordCount.Text = lineCounter.ToString();
+                    labelRecordCount.Text = "Record Count: " + lineCounter.ToString();
 
                     // Initialize a variable to determine line count for display.
                     if (linesViewAll == false) { displayTotalLines = linesViewCount; }
@@ -385,19 +385,22 @@ namespace MainWindow
         private void buttonViewAllLines_Click(object sender, EventArgs e)
         {
             linesViewAll = true;
+            textBoxViewLines.Text = "";
+            buttonLoadDataFile.PerformClick();
+
         }
 
         private void textBoxViewLines_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                linesViewCount = Convert.ToInt32(textBoxViewLines.Text.ToString());
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("That is not a valid number of lines.", "Invalid Number");
-                textBoxViewLines.Text = "1000";
-            }
+                try
+                {
+                    linesViewCount = Convert.ToInt32(textBoxViewLines.Text.ToString());
+                    buttonLoadDataFile.PerformClick();
+                }
+            // Catch just so that nothing weird happens. No need to alert the user.
+                catch (Exception)
+                {
+                }
         }
 
         private void dataGridViewGeneral_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -411,8 +414,10 @@ namespace MainWindow
                 }
             }
             dataGridViewGeneral.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            dataGridViewGeneral.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewGeneral.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            //dataGridViewGeneral.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllHeaders;
         }
+
     }
 
     public class InitialSetup
