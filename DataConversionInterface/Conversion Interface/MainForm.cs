@@ -399,6 +399,20 @@ namespace MainWindow
                 textBoxViewLines.Text = "1000";
             }
         }
+
+        private void dataGridViewGeneral_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            DataGridView gridView = sender as DataGridView;
+            if (null != gridView)
+            {
+                foreach (DataGridViewRow r in gridView.Rows)
+                {
+                    gridView.Rows[r.Index].HeaderCell.Value = (r.Index + 1).ToString();
+                }
+            }
+            dataGridViewGeneral.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dataGridViewGeneral.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+        }
     }
 
     public class InitialSetup
@@ -938,4 +952,5 @@ namespace MainWindow
             
         }
     }
+
 }
