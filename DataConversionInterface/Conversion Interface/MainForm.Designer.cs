@@ -50,6 +50,7 @@
             this.buttonViewReport = new System.Windows.Forms.Button();
             this.buttonDeclineReport = new System.Windows.Forms.Button();
             this.buttonAcceptReport = new System.Windows.Forms.Button();
+            this.buttonViewOriginalFile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
@@ -256,11 +257,22 @@
             this.buttonAcceptReport.MouseEnter += new System.EventHandler(this.buttonAcceptReport_MouseEnter);
             this.buttonAcceptReport.MouseLeave += new System.EventHandler(this.buttonAcceptReport_MouseLeave);
             // 
+            // buttonViewOriginalFile
+            // 
+            this.buttonViewOriginalFile.Location = new System.Drawing.Point(371, 434);
+            this.buttonViewOriginalFile.Name = "buttonViewOriginalFile";
+            this.buttonViewOriginalFile.Size = new System.Drawing.Size(75, 23);
+            this.buttonViewOriginalFile.TabIndex = 18;
+            this.buttonViewOriginalFile.Text = "View Data";
+            this.buttonViewOriginalFile.UseVisualStyleBackColor = true;
+            this.buttonViewOriginalFile.Click += new System.EventHandler(this.buttonViewOriginalFile_Click);
+            // 
             // fileConversionInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1148, 636);
+            this.Controls.Add(this.buttonViewOriginalFile);
             this.Controls.Add(this.buttonAcceptReport);
             this.Controls.Add(this.buttonDeclineReport);
             this.Controls.Add(this.buttonViewReport);
@@ -310,6 +322,7 @@
         private System.Windows.Forms.Button buttonViewReport;
         private System.Windows.Forms.Button buttonDeclineReport;
         private System.Windows.Forms.Button buttonAcceptReport;
+        private System.Windows.Forms.Button buttonViewOriginalFile;
     }
 }
 

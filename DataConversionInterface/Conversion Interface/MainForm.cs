@@ -30,6 +30,7 @@ namespace MainWindow
         const string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
         const string statusPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
         const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
+        const string dataPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
 
         // Variables for the global timer and message box.
         List<string> statusMessages = new List<string>();
@@ -359,6 +360,16 @@ namespace MainWindow
         private void buttonDeclineReport_Click(object sender, EventArgs e)
         {
             File.Move(reportPath + "DECLINED.csv", reportPath + @"Report\DECLINED.csv");
+        }
+
+        private void buttonViewOriginalFile_Click(object sender, EventArgs e)
+        {
+            /*if (File.Exists(dataPath + "*.csv"))
+            {
+                textBoxFileName.Text = System
+            }*/
+
+            MessageBox.Show("This function isn't working yet.", "Woops!");
         }
     }
 
