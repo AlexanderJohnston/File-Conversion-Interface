@@ -741,7 +741,6 @@ namespace MainWindow
                 // This is a serious exception and needs to be handled more gracefully. !FIX!
                 catch (DuplicateNameException ev) { MessageBox.Show("Your table header contains duplicate column names.", "Header Error!"); break; }
             }
-            if (ev )
             return dataVariableGrid;
         }
     }
