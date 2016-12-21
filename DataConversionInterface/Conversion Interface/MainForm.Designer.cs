@@ -296,6 +296,7 @@
             this.textBoxViewLines.Size = new System.Drawing.Size(89, 20);
             this.textBoxViewLines.TabIndex = 21;
             this.textBoxViewLines.Text = "1000";
+            this.textBoxViewLines.TextChanged += new System.EventHandler(this.textBoxViewLines_TextChanged);
             // 
             // buttonViewAllLines
             // 
