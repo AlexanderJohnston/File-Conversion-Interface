@@ -80,6 +80,7 @@ namespace MainWindow
 
             // Display the data table.
             dataGridViewTables.DataSource = selectedTable;
+            tableReader.Close();
         }
 
         // Open a new file selection window when a user select Load File.
@@ -779,6 +780,8 @@ namespace MainWindow
             {
                 finalResult = "UNKNOWN";
             }
+
+            dataFileReader.Close();
 
             return finalResult;
         }
