@@ -319,6 +319,16 @@ namespace MainWindow
         {
             buttonAcceptReport.BackColor = default(Color);
         }
+
+        private void buttonDeclineReport_MouseEnter(object sender, EventArgs e)
+        {
+            buttonDeclineReport.BackColor = Color.OrangeRed;
+        }
+
+        private void buttonDeclineReport_MouseLeave(object sender, EventArgs e)
+        {
+            buttonDeclineReport.BackColor = default(Color);
+        }
     }
 
     public class InitialSetup

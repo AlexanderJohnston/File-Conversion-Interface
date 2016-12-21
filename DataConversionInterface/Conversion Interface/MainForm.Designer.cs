@@ -238,6 +238,8 @@
             this.buttonDeclineReport.TabIndex = 16;
             this.buttonDeclineReport.Text = "Decline";
             this.buttonDeclineReport.UseVisualStyleBackColor = true;
+            this.buttonDeclineReport.MouseEnter += new System.EventHandler(this.buttonDeclineReport_MouseEnter);
+            this.buttonDeclineReport.MouseLeave += new System.EventHandler(this.buttonDeclineReport_MouseLeave);
             // 
             // buttonAcceptReport
             // 
