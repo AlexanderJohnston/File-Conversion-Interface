@@ -189,6 +189,9 @@ namespace MainWindow
                     dataFileContent.Clear();
                 }
 
+                // Close the file.
+                dataFileReader.Close();
+                
                 // Add the rows to the data grid viewer.
                 try
                 {
