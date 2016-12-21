@@ -314,6 +314,11 @@ namespace MainWindow
         {
             buttonAcceptReport.BackColor = Color.LightGreen;
         }
+
+        private void buttonAcceptReport_MouseLeave(object sender, EventArgs e)
+        {
+            buttonAcceptReport.BackColor = default(Color);
+        }
     }
 
     public class InitialSetup

@@ -249,6 +249,7 @@
             this.buttonAcceptReport.Text = "Accept";
             this.buttonAcceptReport.UseVisualStyleBackColor = true;
             this.buttonAcceptReport.MouseEnter += new System.EventHandler(this.buttonAcceptReport_MouseEnter);
+            this.buttonAcceptReport.MouseLeave += new System.EventHandler(this.buttonAcceptReport_MouseLeave);
             // 
             // fileConversionInterface
             // 
