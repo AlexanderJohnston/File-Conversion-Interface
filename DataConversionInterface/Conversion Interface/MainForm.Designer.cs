@@ -228,6 +228,7 @@
             this.buttonViewReport.TabIndex = 15;
             this.buttonViewReport.Text = "View Report";
             this.buttonViewReport.UseVisualStyleBackColor = true;
+            this.buttonViewReport.Click += new System.EventHandler(this.buttonViewReport_Click);
             // 
             // buttonDeclineReport
             // 
@@ -238,6 +239,7 @@
             this.buttonDeclineReport.TabIndex = 16;
             this.buttonDeclineReport.Text = "Decline";
             this.buttonDeclineReport.UseVisualStyleBackColor = true;
+            this.buttonDeclineReport.Click += new System.EventHandler(this.buttonDeclineReport_Click);
             this.buttonDeclineReport.MouseEnter += new System.EventHandler(this.buttonDeclineReport_MouseEnter);
             this.buttonDeclineReport.MouseLeave += new System.EventHandler(this.buttonDeclineReport_MouseLeave);
             // 
@@ -250,6 +252,7 @@
             this.buttonAcceptReport.TabIndex = 17;
             this.buttonAcceptReport.Text = "Accept";
             this.buttonAcceptReport.UseVisualStyleBackColor = true;
+            this.buttonAcceptReport.Click += new System.EventHandler(this.buttonAcceptReport_Click);
             this.buttonAcceptReport.MouseEnter += new System.EventHandler(this.buttonAcceptReport_MouseEnter);
             this.buttonAcceptReport.MouseLeave += new System.EventHandler(this.buttonAcceptReport_MouseLeave);
             // 

@@ -27,8 +27,9 @@ namespace MainWindow
     public partial class fileConversionInterface : Form
     {
         // Replace this with a config file later.
-        string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
-        string statusPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
+        const string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
+        const string statusPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
+        const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
 
         // Variables for the global timer and message box.
         List<string> statusMessages = new List<string>();
@@ -310,6 +311,7 @@ namespace MainWindow
             }
         }
 
+        // Basic button controls and design below this comment.
         private void buttonAcceptReport_MouseEnter(object sender, EventArgs e)
         {
             buttonAcceptReport.BackColor = Color.LightGreen;
@@ -322,12 +324,29 @@ namespace MainWindow
 
         private void buttonDeclineReport_MouseEnter(object sender, EventArgs e)
         {
-            buttonDeclineReport.BackColor = Color.OrangeRed;
+            buttonDeclineReport.BackColor = Color.Tomato;
         }
 
         private void buttonDeclineReport_MouseLeave(object sender, EventArgs e)
         {
             buttonDeclineReport.BackColor = default(Color);
+        }
+
+        private void buttonViewReport_Click(object sender, EventArgs e)
+        {
+            // Load the report file path into the selected file box and then initiate a click event.
+            textBoxFileName.Text = reportPath + "ACCEPTED.csv";
+            buttonLoadDataFile.PerformClick();
+        }
+
+        private void buttonAcceptReport_Click(object sender, EventArgs e)
+        {
+            File.Move(reportPath + "ACCEPTED.csv", reportPath + @"Report\ACCEPTED.csv");
+        }
+
+        private void buttonDeclineReport_Click(object sender, EventArgs e)
+        {
+            File.Move(reportPath + "DECLINED.csv", reportPath + @"Report\DECLINED.csv");
         }
     }
 
