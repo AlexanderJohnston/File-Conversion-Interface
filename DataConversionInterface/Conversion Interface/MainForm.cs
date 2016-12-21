@@ -297,6 +297,7 @@ namespace MainWindow
                             System.IO.File.WriteAllText(statusPath + "CurrentStatus.txt", string.Empty);
                             timerConvertProgress.Enabled = false;
                             textBoxStatusMessages.Text = "";
+                            progressBarConversion.Value = 0;
                             break;
                     }
 
