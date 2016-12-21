@@ -230,10 +230,18 @@ namespace MainWindow
         private void buttonStartConversion_Click(object sender, EventArgs e)
         {
             string dataFilePath = textBoxFileName.Text.ToString();
+
+            // Open select file window if one has not been chosen.
             if (dataFilePath == "") { buttonOpenDataFile_Click(sender, e); }
 
+            // Start the timer which handles the progress bar and status messages.
             timerConvertProgress.Enabled = true;
 
+            // Start the conversion process by moving the selected file into Redpoint's automation folders.
+            string dataFileFormat = Path.GetExtension(dataFilePath);
+            string dataClientCode = conversionTablesList.Text.ToString();
+            dataClientCode = dataClientCode.Substring(0, 2);
+            bool boolConversionSuccesss = ConversionUtilities.StartConversion(dataFilePath, dataClientCode, dataFileFormat);
         }
 
         // This timer handles the update of the progress bar and status message below it.
