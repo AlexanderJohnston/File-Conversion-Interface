@@ -101,6 +101,12 @@ namespace MainWindow
 
         private void buttonLoadDataFile_Click(object sender, EventArgs e)
         {
+            int intLenCheck = FileInfo.Length(textBoxFileName.Text.ToString());
+            // Check to make sure the user isn't about to overload memory due to the data structures I am using.
+            if ( intLenCheck = FileInfo.Length(textBoxFileName.Text.ToString()) > 30000000) 
+            {   MessageBox.Show("This file is too large to view all lines!", "File Size");
+                return;
+            }
             // Ensure that we aren't loading an empty space.
             if (File.Exists(textBoxFileName.Text.ToString()))
             {
