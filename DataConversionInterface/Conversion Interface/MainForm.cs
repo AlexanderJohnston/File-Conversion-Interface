@@ -113,7 +113,16 @@ namespace MainWindow
 
         private void buttonLoadDataFile_Click(object sender, EventArgs e)
         {
-            if (File.Exists(textBoxFileName.Text.ToString()))
+            // Make sure that the file exists before opening it. Also check that it's a valid format.
+            string[] validFormats = new string[] { "csv", "tab" };
+            if (File.Exists(textBoxFileName.Text.ToString())
+                && validFormats.Contains(
+                    textBoxFileName.Text.Substring(
+                    textBoxFileName.Text.Length - 3, 3)
+                    )
+                    // End contains statement.
+                )
+                // End if statement.
             {
                 // Store the file selection textbox as a string.
                 string dataFilePath = textBoxFileName.Text.ToString();
@@ -531,6 +540,23 @@ namespace MainWindow
             }
         }
 
+        private void buttonExcelConvert_Click(object sender, EventArgs e)
+        {
+            // Get the selected file, its name, and extension.
+            string dataFilePath = textBoxFileName.Text.ToString();
+            string dataFileName = Path.GetFileNameWithoutExtension(dataFilePath);
+            string dataFileFormat = Path.GetExtension(dataFilePath);
+            // Finally, get just the directory name.
+            dataFilePath = Path.GetDirectoryName(dataFilePath);
+
+            // Pass these variables to Excel Convert.
+            ConversionUtilities.ExcelConvert(dataFilePath, dataFileName, dataFileFormat);
+
+            // Change the selected file to the new csv.
+            textBoxFileName.Text = dataFilePath + dataFileName + ".csv";
+            buttonLoadDataFile.PerformClick();
+
+        }
     }
 
     public class InitialSetup
@@ -1040,7 +1066,7 @@ namespace MainWindow
             // Move the data file to the conversion folder and change the name to Client Code + Extension.
             try
             {
-                File.Move(dataFilePath, conversionFolder + dataClientCode + dataFileFormat);
+                File.Copy(dataFilePath, conversionFolder + dataClientCode + dataFileFormat);
                 return true;
             }
             catch (IOException)
