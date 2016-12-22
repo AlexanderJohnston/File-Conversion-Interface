@@ -1094,7 +1094,8 @@ namespace MainWindow
         public static bool ExcelConvert(string dataFilePath, string dataFileName, string dataFileFormat)
         {
             // Replace this constant with a config file at some point. !FIX!
-            const string excelConvertPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Excel Convert\";
+            string excelConvertPath = AppDomain.CurrentDomain.BaseDirectory + @"scripts\";
+            string excelScript = "\"" + excelConvertPath + "Excel Convert.ps1\"";
             string dataFileFullName = dataFileName + dataFileFormat;
 
             // Now that we know the file path and name, it's time to execute a powershell script to run an excel conversion from DBF, XLS, or XLSX.
@@ -1104,8 +1105,9 @@ namespace MainWindow
                 {
                     // Move the original file into the conversion folder.
                     File.Move(dataFilePath + dataFileFullName, excelConvertPath + dataFileFullName);
-                    instanceExcelConvert.AddScript(excelConvertPath + "Excel Convert.ps1");
+                    instanceExcelConvert.AddScript(excelScript);
                     instanceExcelConvert.Invoke();
+                    var errors = instanceExcelConvert.Streams.Error.ReadAll();
                     // Move the original file back to the original folder.
                     File.Move(excelConvertPath + dataFileFullName, dataFilePath + dataFileFullName);
                     // Move the converted file back to original folder.
