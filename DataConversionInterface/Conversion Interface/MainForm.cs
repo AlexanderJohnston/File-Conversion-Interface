@@ -243,6 +243,9 @@ namespace MainWindow
                     {
                         MessageBox.Show("This program can't view that type of file yet.", "Bad file!");
                     }
+
+                    // Color the header cells.
+                    colorHeaderCellsByComparison();
                 }
 
             }
@@ -251,6 +254,42 @@ namespace MainWindow
                 MessageBox.Show("The file you have selected does not exist.", "Missing File");
             }
 
+        }
+
+        private void colorHeaderCellsByComparison()
+        {
+            // Strings will be sent .ToUpper() so that they can be compared.
+            // Gather an array of headers that are defined on the conversion table.
+            int tableRowCount = dataGridViewTables.Rows.Count;
+            string[] tableRowText = new string[tableRowCount];
+            // Counter for the foreach iteration.
+            int i = 0;
+
+            // Build the array.
+            foreach (DataGridViewRow dataRow in dataGridViewTables.Rows)
+            {
+                // Catch a null exception and add an empty string instead.
+                try { tableRowText[i] = dataRow.Cells[0].Value.ToString().ToUpper(); }
+                catch (NullReferenceException) { tableRowText[i] = string.Empty; }
+                // !FIX! add more exceptions.
+                catch (Exception) {; }
+                i++;
+            }
+
+            // Check to see if the header on the data table is in the conversion definitions.
+            // Improve the speed on this... Use caching? !FIX!
+            foreach (DataGridViewColumn dataCol in dataGridViewGeneral.Columns)
+            {
+                if (tableRowText
+                    .Contains( dataCol.HeaderText.ToString().ToUpper()
+                    .Trim('"') ) 
+                    )
+                    { dataCol.HeaderCell.Style.BackColor = Color.LightGreen; }
+                else { dataCol.HeaderCell.Style.BackColor = Color.LightSalmon; }
+            }
+
+            // Disable the default visual styles.
+            dataGridViewGeneral.EnableHeadersVisualStyles = false;
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -449,24 +488,28 @@ namespace MainWindow
             StreamWriter tablesWriter = new System.IO.StreamWriter(tablesPath + conversionTablesList.Text.ToString());
             int count = dataGridViewTables.Rows.Count;
             tablesWriter.WriteLine("CLIENT,HOUSE");
-            for (int row = 0; row < count; row++)
+
+            foreach (DataGridViewRow dataRow in dataGridViewTables.Rows)
             {
-                int rowCount = dataGridViewTables.Rows.Count;
-                    if (dataGridViewTables.Rows[row].Cells[0].Value != null)
-                    {
-                        // Join the columns for a specific row together by commas.
-                        tablesWriter.WriteLine(
-                            string.Join(",", dataGridViewTables.Rows[row].Cells
-                                .Cast<DataGridViewCell>()
-                                .Where(c => c.Value != null)
-                                .Select(c => c.Value.ToString()).ToArray())
-                                );
-                     }
-                // include a record seperator?
+                if (dataRow.Cells[0].Value.ToString() != null)
+                {
+                    // Join the columns for a specific row together by commas.
+                    tablesWriter.WriteLine(
+                        string.Join(",", dataRow.Cells
+                            .Cast<DataGridViewCell>()
+                            .Where(c => c.Value != null)
+                            .Select(c => c.Value.ToString()).ToArray())
+                            );
+                }
             }
+
             // Close the writer.
             tablesWriter.Close();
+
+            // Color cells with the new change.
+            colorHeaderCellsByComparison();
         }
+
     }
 
     public class InitialSetup
