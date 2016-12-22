@@ -93,6 +93,9 @@ namespace MainWindow
             // Display the data table.
             dataGridViewTables.DataSource = selectedTable;
             tableReader.Close();
+
+            // Color the header cells.
+            colorHeaderCellsByComparison();
         }
 
         // Open a new file selection window when a user select Load File.
