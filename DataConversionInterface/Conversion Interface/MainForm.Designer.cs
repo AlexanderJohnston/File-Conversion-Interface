@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
             this.conversionTablesList = new System.Windows.Forms.ComboBox();
             this.tablesListLabel = new System.Windows.Forms.Label();
@@ -67,14 +67,14 @@
             this.dataGridViewGeneral.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGeneral.Location = new System.Drawing.Point(12, 32);
             this.dataGridViewGeneral.Name = "dataGridViewGeneral";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridViewGeneral.RowTemplate.ReadOnly = true;
             this.dataGridViewGeneral.Size = new System.Drawing.Size(1107, 205);
             this.dataGridViewGeneral.TabIndex = 0;
@@ -281,6 +281,7 @@
             this.buttonViewOriginalFile.TabIndex = 18;
             this.buttonViewOriginalFile.Text = "View Data";
             this.buttonViewOriginalFile.UseVisualStyleBackColor = true;
+            this.buttonViewOriginalFile.Visible = false;
             this.buttonViewOriginalFile.Click += new System.EventHandler(this.buttonViewOriginalFile_Click);
             // 
             // labelRecordCount
