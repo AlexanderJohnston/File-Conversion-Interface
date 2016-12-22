@@ -263,7 +263,7 @@ namespace MainWindow
             }
             else
             {
-                MessageBox.Show("The file you have selected does not exist.", "Missing File");
+                MessageBox.Show("The file you have selected does not exist, or is not a CSV/TAB file.", "Missing File");
             }
 
         }
