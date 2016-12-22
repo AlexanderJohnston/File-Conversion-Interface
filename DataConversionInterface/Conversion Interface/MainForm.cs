@@ -27,7 +27,7 @@ namespace MainWindow
     public partial class fileConversionInterface : Form
     {
         // Replace this with a config file later.
-        const string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
+        const string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\Backup\";
         const string statusPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
         const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
         const string dataPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
@@ -75,11 +75,20 @@ namespace MainWindow
             // Get rid of the header.
             tableReader.ReadLine();
             string[] tableContent = new string[File.ReadAllLines(tableLocation).Length];
-            while (!tableReader.EndOfStream)
+            try
             {
-                tableContent = tableReader.ReadLine().Split(',');
-                selectedTable.Rows.Add(tableContent[0], tableContent[1]);
+                while (!tableReader.EndOfStream)
+                {
+                    tableContent = tableReader.ReadLine().Split(',');
+                    selectedTable.Rows.Add(tableContent[0], tableContent[1]);
+                }
             }
+            catch (Exception)
+            {
+                // !FIX! make this more detailed.
+                MessageBox.Show("Not enough columns in your table.", "Table Error");
+            }
+            
 
             // Display the data table.
             dataGridViewTables.DataSource = selectedTable;
@@ -101,21 +110,26 @@ namespace MainWindow
 
         private void buttonLoadDataFile_Click(object sender, EventArgs e)
         {
-            int intLenCheck = FileInfo.Length(textBoxFileName.Text.ToString());
-            // Check to make sure the user isn't about to overload memory due to the data structures I am using.
-            if ( intLenCheck = FileInfo.Length(textBoxFileName.Text.ToString()) > 30000000) 
-            {   MessageBox.Show("This file is too large to view all lines!", "File Size");
-                return;
-            }
-            // Ensure that we aren't loading an empty space.
             if (File.Exists(textBoxFileName.Text.ToString()))
             {
+                // Store the file selection textbox as a string.
+                string dataFilePath = textBoxFileName.Text.ToString();
+                FileInfo fileLengthCheck = new FileInfo(dataFilePath);
+                // Check to make sure the user isn't about to overload memory due to the data structures I am using.
+                // !FIX!
+                if (fileLengthCheck.Length > 30000000 && linesViewAll == true)
+                {
+                    MessageBox.Show("The file is too large. Only 2,000 lines will be displayed, but you can try more. \r\n This will be fixed soon.", "File Size");
+                    linesViewAll = false;
+                    linesViewCount = 2000;
+                }
+                // Ensure that we aren't loading an empty space.
+
                 if (textBoxFileName.Text.ToString() != "")
                 {
                     // Set up the line count variable.
                     int displayTotalLines = 0;
                     // Set up variables to read the data file.
-                    string dataFilePath = textBoxFileName.Text.ToString();
                     StreamReader dataFileReader = new StreamReader(dataFilePath);
                     List<string> dataFileContent = new List<string>();
                     string regexMatch = null;
@@ -188,7 +202,7 @@ namespace MainWindow
                     // Initialize a variable to determine line count for display.
                     if (linesViewAll == false) { displayTotalLines = linesViewCount; }
                     else { displayTotalLines = lineCounter; }
-                    if ( displayTotalLines > lineCounter ) { displayTotalLines = lineCounter; }
+                    if (displayTotalLines > lineCounter) { displayTotalLines = lineCounter; }
                     // Build the data to display.
                     for (i = 1; i < displayTotalLines; i++)
                     {
@@ -221,11 +235,11 @@ namespace MainWindow
                         }
                         dataGridViewGeneral.DataSource = dataTableGeneral;
                     }
-                    catch (NullReferenceException r)
+                    catch (NullReferenceException)
                     {
                         MessageBox.Show("The file you are trying to open does not have enough columns.", "Not a table!");
                     }
-                    catch (ArgumentException a)
+                    catch (ArgumentException)
                     {
                         MessageBox.Show("This program can't view that type of file yet.", "Bad file!");
                     }
@@ -234,7 +248,7 @@ namespace MainWindow
             }
             else
             {
-                MessageBox.Show("The file you have selected doesA not exist.", "Missing File");
+                MessageBox.Show("The file you have selected does not exist.", "Missing File");
             }
 
         }
@@ -424,6 +438,30 @@ namespace MainWindow
             //dataGridViewGeneral.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllHeaders;
         }
 
+        private void buttonSaveTable_Click(object sender, EventArgs e)
+        {
+            // Write the data table to a file using stream writer, iterating over rows and columns.
+            StreamWriter tablesWriter = new System.IO.StreamWriter(tablesPath + conversionTablesList.Text.ToString());
+            int count = dataGridViewTables.Rows.Count;
+            tablesWriter.WriteLine("CLIENT,HOUSE");
+            for (int row = 0; row < count; row++)
+            {
+                int rowCount = dataGridViewTables.Rows.Count;
+                    if (dataGridViewTables.Rows[row].Cells[0].Value != null)
+                    {
+                        // Join the columns for a specific row together by commas.
+                        tablesWriter.WriteLine(
+                            string.Join(",", dataGridViewTables.Rows[row].Cells
+                                .Cast<DataGridViewCell>()
+                                .Where(c => c.Value != null)
+                                .Select(c => c.Value.ToString()).ToArray())
+                                );
+                     }
+                // include a record seperator?
+            }
+            // Close the writer.
+            tablesWriter.Close();
+        }
     }
 
     public class InitialSetup
@@ -431,7 +469,6 @@ namespace MainWindow
         /* Issues to consider:
          * The login prompt can be brute forced by throwing the wrong answers and closing it.
          * The config file management isn't particularly elegant.
-         * I still need to fully study up on how the salt is extracted from the hashed pass.
          */
         public static void Start()
         {
@@ -445,6 +482,7 @@ namespace MainWindow
             // Create config file if it does not exist.
             string configPath = @"config\";
             string configName = "users.cfg";
+            // Re-inventing the wheel. !FIX!
             bool configExists = FileManagement.CheckFileExists(configName, configPath);
             if (configExists == false)
             {
@@ -471,6 +509,7 @@ namespace MainWindow
                 MessageBox.Show("Invalid login, try again?", "Login Attempt",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
             {
+                // !FIX!
                 Start();
             }
             else if (validLogin == false)
@@ -684,7 +723,7 @@ namespace MainWindow
             string[] emptyContentStructure = { "Users:", "", "#1", "Passwords:", "", "#2", "Flags:", "", "#3" };
             bool configFolderCreated = false;
 
-            // Check to see if the config folder exists.
+            // Check to see if the config folder exists. !FIX!
             bool configFolderExists = Directory.Exists(path + folder);
 
             // Handle folder creation and return a value depending on what happens.
@@ -879,7 +918,7 @@ namespace MainWindow
             {
                 try { dataVariableGrid.Columns.Add(headerRecord[i]); }
                 // This is a serious exception and needs to be handled more gracefully. !FIX!
-                catch (DuplicateNameException ev) { MessageBox.Show("Your table header contains duplicate column names.", "Header Error!"); break; }
+                catch (DuplicateNameException) { MessageBox.Show("Your table header contains duplicate column names.", "Header Error!"); break; }
             }
             return dataVariableGrid;
         }

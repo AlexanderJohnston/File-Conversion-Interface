@@ -183,6 +183,7 @@
             this.buttonSaveTable.TabIndex = 15;
             this.buttonSaveTable.Text = "Save Table";
             this.buttonSaveTable.UseVisualStyleBackColor = true;
+            this.buttonSaveTable.Click += new System.EventHandler(this.buttonSaveTable_Click);
             // 
             // progressBarConversion
             // 
