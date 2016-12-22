@@ -269,6 +269,11 @@ namespace MainWindow
             {
                 buttonStartConversion_Click(sender, e);
             }
+
+            if (e.Control && e.KeyCode == Keys.E)
+            {
+                buttonSaveTable_Click(sender, e);
+            }
         }
 
         private void buttonStartConversion_Click(object sender, EventArgs e)
