@@ -546,8 +546,8 @@ namespace MainWindow
             string dataFilePath = textBoxFileName.Text.ToString();
             string dataFileName = Path.GetFileNameWithoutExtension(dataFilePath);
             string dataFileFormat = Path.GetExtension(dataFilePath);
-            // Finally, get just the directory name.
-            dataFilePath = Path.GetDirectoryName(dataFilePath);
+            // Finally, get just the directory name. Add a \ character to the end for re-construction later.
+            dataFilePath = Path.GetDirectoryName(dataFilePath) + @"\";
 
             // Pass these variables to Excel Convert.
             ConversionUtilities.ExcelConvert(dataFilePath, dataFileName, dataFileFormat);
