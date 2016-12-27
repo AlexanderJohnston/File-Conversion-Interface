@@ -550,7 +550,7 @@ namespace MainWindow
             dataFilePath = Path.GetDirectoryName(dataFilePath) + @"\";
 
             // Pass these variables to Excel Convert.
-            ConversionUtilities.ExcelConvert(dataFilePath, dataFileName, dataFileFormat);
+            //ConversionUtilities.ExcelConvert(dataFilePath, dataFileName, dataFileFormat);
 
             // Change the selected file to the new csv.
             textBoxFileName.Text = dataFilePath + dataFileName + ".csv";
@@ -1091,34 +1091,6 @@ namespace MainWindow
             }
         }
 
-        public static bool ExcelConvert(string dataFilePath, string dataFileName, string dataFileFormat)
-        {
-            // Replace this constant with a config file at some point. !FIX!
-            string dataFileFullName = dataFileName + dataFileFormat;
-
-            // Now that we know the file path and name, it's time to execute a powershell script to run an excel conversion from DBF, XLS, or XLSX.
-            try
-            {
-                using (PowerShell instanceExcelConvert = PowerShell.Create())
-                {
-                    // Build the powershell script. Call Excel, turn off visibility, open the workbook, convert and save it out.
-                    instanceExcelConvert.AddScript("$Excel = New-Object -ComObject Excel.Application;");
-                    instanceExcelConvert.AddScript("$Excel.Visible = $false; $Excel.DisplayAlerts = $false;");
-                    instanceExcelConvert.AddScript("$wb = $Excel.Workbooks.Open(" + dataFilePath + dataFileFullName + ");");
-                    instanceExcelConvert.AddScript("foreach ($ws in $wb.Worksheets) { $ws.SaveAs(($File.FullName -replace '.xlsx$') + '.csv', 6)" );
-                    var errorsDebug = instanceExcelConvert.Streams.Debug.ReadAll();
-                    var errorsError = instanceExcelConvert.Streams.Information.ReadAll();
-                    return true;
-                }
-            }
-            // This is a sloppy catch. Study up on the powershell class. !FIX!
-            catch (Exception pshellException)
-            {
-                MessageBox.Show("The Excel Convert script failed because " + pshellException, "Powershell Error");
-                return false;
-            }
-            
-        }
     }
 
 }
