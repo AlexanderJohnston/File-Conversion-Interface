@@ -226,8 +226,10 @@ namespace MainWindow
                                 dataFileContent.Add("");
                                 u++;
                             }
-
-                            dataFileContent.Add(regexMatch.ToString().TrimStart(finalDelimiterChar));
+                            else
+                            {
+                                dataFileContent.Add(regexMatch.ToString().TrimStart(finalDelimiterChar));
+                            }
                             u++;
                         }
 
