@@ -555,10 +555,132 @@ namespace MainWindow
             {
                 // Change the selected file to the new csv.
                 textBoxFileName.Text = dataFilePath + dataFileName + ".csv";
+                // Send a click event to load the new csv.
                 buttonLoadDataFile.PerformClick();
             }       
             // End buttonExcelConvert_Click method.
         }
+
+        private void buttonChopHeader_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Ensure that a data file is loaded and exists.
+                if (File.Exists(textBoxFileName.Text.ToString()) == true)
+                {
+                    // Prepare a list since we are just appending strings in order.
+                    List<string> dataFileContent = new List<string>();
+
+                    // Get the file as a string.
+                    string dataFilePath = textBoxFileName.Text.ToString();
+                    StreamReader dataFileStream = new StreamReader(dataFilePath);
+                    // Skip one line to remove the current header.
+                    dataFileStream.ReadLine();
+
+                    // Iterate over the file into a list. 
+                    // Save the while as a variable so that it can be used to test and then save if not null.
+                    string nextLine = null;
+                    while ((nextLine = dataFileStream.ReadLine()) != null)
+                    {
+                        dataFileContent.Add(nextLine);
+                    }
+                    // Close the stream reader.
+                    dataFileStream.Close();
+
+                    // Save the file out.
+                    File.WriteAllLines(dataFilePath, dataFileContent);
+
+                    // Send a click event to load the new csv or tab file.
+                    buttonLoadDataFile.PerformClick();
+                }
+                else
+                {
+                    MessageBox.Show("Please load a file before attempting to use Chop Header.", "Data Missing!");
+                }
+                // End try statement.
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Chop Header was unable to run on this file.\r\n" + ex.ToString(), "File Error!");
+            }
+            // End buttonChopHeader method onClick.
+        }
+
+        private void buttonAddSourceCode_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Ensure that a data file is loaded and exists.
+                if (File.Exists(textBoxFileName.Text.ToString()) == true)
+                {
+                    // Ask the user which source code they wish to add.
+                    string sourceCode = null;
+
+                    // Make sure user has entered something.
+                    if (textBoxSourceCode.Text.ToString() != null && textBoxSourceCode.Text.ToString() != "Type your source here.")
+                    {
+                        // Accept the source code.
+                        sourceCode = textBoxSourceCode.Text.ToString();
+
+                        // Prepare a list since we are just appending strings in order.
+                        List<string> dataFileContent = new List<string>();
+
+                        // Get the file as a string.
+                        string dataFilePath = textBoxFileName.Text.ToString();
+
+                        // Get the extension to determine delimiting character.
+                        char charDelimiter = ',';
+                        switch (Path.GetExtension(dataFilePath).ToUpper())
+                        {
+                            case ".CSV":
+                                // Already set it to CSV as default.
+                                break;
+                            case ".TAB":
+                                charDelimiter = '\t';
+                                break;
+                        }
+
+                        // Open a stream reader for the file.
+                        StreamReader dataFileStream = new StreamReader(dataFilePath);
+
+                        // Add the header record.
+                        dataFileContent.Add(dataFileStream.ReadLine() + charDelimiter + "Engage Source");
+
+                        // Iterate over the file into a list. 
+                        // Save the while as a variable so that it can be used to test and then save if not null.
+                        string nextLine = null;
+                        while ((nextLine = dataFileStream.ReadLine()) != null)
+                        {
+                            // Add the new line with a delimiter and the new source code.
+                            dataFileContent.Add(nextLine + charDelimiter + sourceCode);
+                        }
+                        // Close the stream reader.
+                        dataFileStream.Close();
+
+                        // Save the file out.
+                        File.WriteAllLines(dataFilePath, dataFileContent);
+
+                        // Send a click event to load the new csv or tab file.
+                        buttonLoadDataFile.PerformClick();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Enter your source code into the text box first.", "Missing Source");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please load a file before attempting to add a source code.", "Data Missing!");
+                }
+                // End try statement.
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to add source code.\r\n" + ex.ToString(), "Add Source");
+            }
+            // End buttonAddSourceCode method with click event.
+        }
+        // End fileConversionInterface class.
     }
 
     public class InitialSetup
@@ -690,6 +812,7 @@ namespace MainWindow
 
             return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
+        // End Prompt class.
     }
 
     /* 
