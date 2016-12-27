@@ -550,12 +550,14 @@ namespace MainWindow
             dataFilePath = Path.GetDirectoryName(dataFilePath) + @"\";
 
             // Pass these variables to Excel Convert.
-            //ConversionUtilities.ExcelConvert(dataFilePath, dataFileName, dataFileFormat);
-
-            // Change the selected file to the new csv.
-            textBoxFileName.Text = dataFilePath + dataFileName + ".csv";
-            buttonLoadDataFile.PerformClick();
-
+            bool fileConverted = ExcelConvert.ConversionTools.TablesToCSV(dataFilePath, dataFileName, dataFileFormat);
+            if (fileConverted == true)
+            {
+                // Change the selected file to the new csv.
+                textBoxFileName.Text = dataFilePath + dataFileName + ".csv";
+                buttonLoadDataFile.PerformClick();
+            }       
+            // End buttonExcelConvert_Click method.
         }
     }
 
