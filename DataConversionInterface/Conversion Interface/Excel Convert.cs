@@ -43,19 +43,47 @@ namespace ExcelConvert
         }
         public static bool TablesToCSV(string dataFilePath, string dataFileName, string dataFileFormat)
         {
-            // Request validation to continue from Entry.
-            bool continueStep = Entry();
-            if (continueStep == true)
+            try
             {
-                // Replace this constant with a config file at some point. !FIX!
-                string dataFileFullName = dataFileName + dataFileFormat;
+                // Request validation to continue from Entry.
+                bool continueStep = Entry();
+                if (continueStep == true)
+                {
+                    // This feels lazy. !FIX!
+                    string dataFileFullName = dataFileName + dataFileFormat;
 
-                // Now that we know the file path and name, it's time to execute a powershell script to run an excel conversion from DBF, XLS, or XLSX.
+                    // Open a new Excel application.
+                    Microsoft.Office.Interop.Excel.Application instanceExcel = new Microsoft.Office.Interop.Excel.Application();
 
+                    // Run silently.
+                    instanceExcel.DisplayAlerts = false;
+
+                    // Load in the selected file as a new workbook in Excel.
+                    Microsoft.Office.Interop.Excel.Workbook instanceWorkBook = instanceExcel.Workbooks.Open(dataFilePath + dataFileFullName);
+                    instanceWorkBook.SaveAs(dataFilePath + dataFileName + ".csv", Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV);
+
+                    // Close the WorkBook and then close Excel. Return the bool if successful.
+                    instanceWorkBook.Close();
+                    instanceExcel.Quit();
+                    return true;
+                }
+                // End try statement.
+                // Send a false bool if the continueStep conditional was false.
+                else
+                {
+                    return false;
+                }
             }
-            return false;
-            
-
+            // Expand these exceptions !FIX!.
+            catch (Exception ex)
+            {
+                MessageBox.Show("The Excel conversion failed between validation and actual conversion.\r\n" + ex.ToString(), "TablesToCSV Method");
+                // Return false because our code failed by exception.
+                return false;
+            }
+            // End TablesToCSV method.
         }
+        // End ConversionTools class.
     }
+    // End ExcelConvert namespace.
 }
