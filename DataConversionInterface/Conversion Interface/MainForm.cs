@@ -653,7 +653,7 @@ namespace MainWindow
             Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
             textLabel.AutoSize = true;
             TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
-            Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+            System.Windows.Forms.Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
             confirmation.Click += (sender, e) => { prompt.Close(); };
             prompt.Controls.Add(textBox);
             prompt.Controls.Add(confirmation);
@@ -1094,8 +1094,6 @@ namespace MainWindow
         public static bool ExcelConvert(string dataFilePath, string dataFileName, string dataFileFormat)
         {
             // Replace this constant with a config file at some point. !FIX!
-            string excelConvertPath = AppDomain.CurrentDomain.BaseDirectory + @"scripts\";
-            string excelScript = "\"" + excelConvertPath + "Excel Convert.ps1\"";
             string dataFileFullName = dataFileName + dataFileFormat;
 
             // Now that we know the file path and name, it's time to execute a powershell script to run an excel conversion from DBF, XLS, or XLSX.
@@ -1103,15 +1101,13 @@ namespace MainWindow
             {
                 using (PowerShell instanceExcelConvert = PowerShell.Create())
                 {
-                    // Move the original file into the conversion folder.
-                    File.Move(dataFilePath + dataFileFullName, excelConvertPath + dataFileFullName);
-                    instanceExcelConvert.AddScript(excelScript);
-                    instanceExcelConvert.Invoke();
-                    var errors = instanceExcelConvert.Streams.Error.ReadAll();
-                    // Move the original file back to the original folder.
-                    File.Move(excelConvertPath + dataFileFullName, dataFilePath + dataFileFullName);
-                    // Move the converted file back to original folder.
-                    File.Move(excelConvertPath + dataFileName + ".csv", dataFilePath + dataFileName + ".csv");
+                    // Build the powershell script. Call Excel, turn off visibility, open the workbook, convert and save it out.
+                    instanceExcelConvert.AddScript("$Excel = New-Object -ComObject Excel.Application;");
+                    instanceExcelConvert.AddScript("$Excel.Visible = $false; $Excel.DisplayAlerts = $false;");
+                    instanceExcelConvert.AddScript("$wb = $Excel.Workbooks.Open(" + dataFilePath + dataFileFullName + ");");
+                    instanceExcelConvert.AddScript("foreach ($ws in $wb.Worksheets) { $ws.SaveAs(($File.FullName -replace '.xlsx$') + '.csv', 6)" );
+                    var errorsDebug = instanceExcelConvert.Streams.Debug.ReadAll();
+                    var errorsError = instanceExcelConvert.Streams.Information.ReadAll();
                     return true;
                 }
             }
