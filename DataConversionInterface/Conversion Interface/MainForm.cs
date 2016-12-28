@@ -215,6 +215,7 @@ namespace MainWindow
                     if (linesViewAll == false) { displayTotalLines = linesViewCount; }
                     else { displayTotalLines = lineCounter; }
                     if (displayTotalLines > lineCounter) { displayTotalLines = lineCounter; }
+
                     // Build the data to display.
                     for (i = 1; i < displayTotalLines; i++)
                     {
