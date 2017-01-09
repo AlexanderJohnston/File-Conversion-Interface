@@ -365,7 +365,7 @@ namespace MainWindow
         private void buttonStartConversion_Click(object sender, EventArgs e)
         {
             // Safety check!
-            if ((MessageBox.Show("Are you sure you want to start conversion?", "Safety Check!")) == DialogResult.OK)
+            if ((MessageBox.Show("Are you sure you want to start conversion?", "Safety Check!", MessageBoxButtons.YesNo)) == DialogResult.Yes)
             {
                 string dataFilePath = textBoxFileName.Text.ToString();
 
@@ -380,6 +380,10 @@ namespace MainWindow
                 string dataClientCode = conversionTablesList.Text.ToString();
                 dataClientCode = dataClientCode.Substring(0, 2);
                 bool boolConversionSuccesss = ConversionUtilities.StartConversion(dataFilePath, dataClientCode, dataFileFormat);
+            }
+            else
+            {
+
             }
         }
 
