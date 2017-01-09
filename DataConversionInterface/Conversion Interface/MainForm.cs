@@ -38,7 +38,7 @@ namespace MainWindow
         List<string> statusMessages = new List<string>();
 
         // Start methods.
-        
+
         public fileConversionInterface()
         {
             InitializeComponent();
@@ -261,6 +261,9 @@ namespace MainWindow
 
                     // Color the header cells.
                     colorHeaderCellsByComparison();
+
+                    // Disable column sorting.
+                    DisableColumnSorting();
                 }
 
             }
@@ -269,6 +272,14 @@ namespace MainWindow
                 MessageBox.Show("The file you have selected does not exist, or is not a CSV/TAB file.", "Missing File");
             }
 
+        }
+
+        private void DisableColumnSorting()
+        {
+            foreach (DataGridViewColumn column in dataGridViewGeneral.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
         }
 
         private void colorHeaderCellsByComparison()
@@ -683,6 +694,13 @@ namespace MainWindow
             }
             // End buttonAddSourceCode method with click event.
         }
+
+        // This will allow a user to select new fields and add them to the table.
+        private void dataGridViewGeneral_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            String dataColumnName = dataGridViewGeneral.Columns[e.ColumnIndex].ToString();
+            MessageBox.Show(dataColumnName);
+        }
         // End fileConversionInterface class.
     }
 
@@ -738,10 +756,7 @@ namespace MainWindow
             {
                 Environment.Exit(1);
             }
-
             // Program setup is now complete.
-
-
         }
 
         public static string UserName()
@@ -763,6 +778,8 @@ namespace MainWindow
             userPassword = Prompt.ShowDialogPass(userFormText, userFormCaption);
             return userPassword;
         }
+
+        // End the start class.
     }
 
     public static class Prompt

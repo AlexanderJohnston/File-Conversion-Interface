@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                //toolTipExcelConvert.SetToolTip(buttonExcelConvert, )
             }
             base.Dispose(disposing);
         }
@@ -29,7 +30,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
             this.conversionTablesList = new System.Windows.Forms.ComboBox();
             this.tablesListLabel = new System.Windows.Forms.Label();
@@ -57,14 +58,15 @@
             this.textBoxViewLines = new System.Windows.Forms.TextBox();
             this.buttonViewAllLines = new System.Windows.Forms.Button();
             this.panelTools = new System.Windows.Forms.Panel();
+            this.textBoxSourceCode = new System.Windows.Forms.TextBox();
+            this.labelAddSourceCode = new System.Windows.Forms.Label();
+            this.buttonAddSourceCode = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.buttonChopHeader = new System.Windows.Forms.Button();
+            this.labelExcelConvert = new System.Windows.Forms.Label();
             this.buttonExcelConvert = new System.Windows.Forms.Button();
             this.labelConversionTools = new System.Windows.Forms.Label();
-            this.labelExcelConvert = new System.Windows.Forms.Label();
-            this.buttonChopHeader = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.buttonAddSourceCode = new System.Windows.Forms.Button();
-            this.labelAddSourceCode = new System.Windows.Forms.Label();
-            this.textBoxSourceCode = new System.Windows.Forms.TextBox();
+            this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
@@ -77,17 +79,18 @@
             this.dataGridViewGeneral.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGeneral.Location = new System.Drawing.Point(12, 32);
             this.dataGridViewGeneral.Name = "dataGridViewGeneral";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewGeneral.RowTemplate.ReadOnly = true;
             this.dataGridViewGeneral.Size = new System.Drawing.Size(1107, 205);
             this.dataGridViewGeneral.TabIndex = 0;
+            this.dataGridViewGeneral.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewGeneral_ColumnHeaderMouseClick);
             this.dataGridViewGeneral.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridViewGeneral_DataBindingComplete);
             // 
             // conversionTablesList
@@ -349,6 +352,69 @@
             this.panelTools.Size = new System.Drawing.Size(357, 357);
             this.panelTools.TabIndex = 23;
             // 
+            // textBoxSourceCode
+            // 
+            this.textBoxSourceCode.Location = new System.Drawing.Point(132, 183);
+            this.textBoxSourceCode.Name = "textBoxSourceCode";
+            this.textBoxSourceCode.Size = new System.Drawing.Size(156, 20);
+            this.textBoxSourceCode.TabIndex = 30;
+            this.textBoxSourceCode.Text = "Type your source here.";
+            // 
+            // labelAddSourceCode
+            // 
+            this.labelAddSourceCode.AutoSize = true;
+            this.labelAddSourceCode.Location = new System.Drawing.Point(129, 143);
+            this.labelAddSourceCode.MaximumSize = new System.Drawing.Size(225, 0);
+            this.labelAddSourceCode.Name = "labelAddSourceCode";
+            this.labelAddSourceCode.Size = new System.Drawing.Size(220, 26);
+            this.labelAddSourceCode.TabIndex = 29;
+            this.labelAddSourceCode.Text = "Add your own source code as a new column at the far right with header \"Engage Sou" +
+    "rce.\"";
+            // 
+            // buttonAddSourceCode
+            // 
+            this.buttonAddSourceCode.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
+            this.buttonAddSourceCode.Location = new System.Drawing.Point(20, 146);
+            this.buttonAddSourceCode.Name = "buttonAddSourceCode";
+            this.buttonAddSourceCode.Size = new System.Drawing.Size(96, 23);
+            this.buttonAddSourceCode.TabIndex = 28;
+            this.buttonAddSourceCode.Text = "Add Source";
+            this.buttonAddSourceCode.UseVisualStyleBackColor = true;
+            this.buttonAddSourceCode.Click += new System.EventHandler(this.buttonAddSourceCode_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(129, 92);
+            this.label2.MaximumSize = new System.Drawing.Size(225, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(214, 26);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Use the next line as a header if the data file contains more than one header line" +
+    ".";
+            // 
+            // buttonChopHeader
+            // 
+            this.buttonChopHeader.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
+            this.buttonChopHeader.Location = new System.Drawing.Point(20, 95);
+            this.buttonChopHeader.Name = "buttonChopHeader";
+            this.buttonChopHeader.Size = new System.Drawing.Size(96, 23);
+            this.buttonChopHeader.TabIndex = 26;
+            this.buttonChopHeader.Text = "Chop Header";
+            this.toolTipControl.SetToolTip(this.buttonChopHeader, "This will actually remove the current header from the file.");
+            this.buttonChopHeader.UseVisualStyleBackColor = true;
+            this.buttonChopHeader.Click += new System.EventHandler(this.buttonChopHeader_Click);
+            // 
+            // labelExcelConvert
+            // 
+            this.labelExcelConvert.AutoSize = true;
+            this.labelExcelConvert.Location = new System.Drawing.Point(129, 40);
+            this.labelExcelConvert.MaximumSize = new System.Drawing.Size(225, 0);
+            this.labelExcelConvert.Name = "labelExcelConvert";
+            this.labelExcelConvert.Size = new System.Drawing.Size(203, 26);
+            this.labelExcelConvert.TabIndex = 25;
+            this.labelExcelConvert.Text = "Convert any Excel readable file into CSV. Doesn\'t delete old file.";
+            // 
             // buttonExcelConvert
             // 
             this.buttonExcelConvert.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
@@ -369,68 +435,6 @@
             this.labelConversionTools.Size = new System.Drawing.Size(105, 13);
             this.labelConversionTools.TabIndex = 16;
             this.labelConversionTools.Text = "Conversion Tools";
-            // 
-            // labelExcelConvert
-            // 
-            this.labelExcelConvert.AutoSize = true;
-            this.labelExcelConvert.Location = new System.Drawing.Point(129, 40);
-            this.labelExcelConvert.MaximumSize = new System.Drawing.Size(225, 0);
-            this.labelExcelConvert.Name = "labelExcelConvert";
-            this.labelExcelConvert.Size = new System.Drawing.Size(203, 26);
-            this.labelExcelConvert.TabIndex = 25;
-            this.labelExcelConvert.Text = "Convert any Excel readable file into CSV. Doesn\'t delete old file.";
-            // 
-            // buttonChopHeader
-            // 
-            this.buttonChopHeader.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
-            this.buttonChopHeader.Location = new System.Drawing.Point(20, 95);
-            this.buttonChopHeader.Name = "buttonChopHeader";
-            this.buttonChopHeader.Size = new System.Drawing.Size(96, 23);
-            this.buttonChopHeader.TabIndex = 26;
-            this.buttonChopHeader.Text = "Chop Header";
-            this.buttonChopHeader.UseVisualStyleBackColor = true;
-            this.buttonChopHeader.Click += new System.EventHandler(this.buttonChopHeader_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(129, 92);
-            this.label2.MaximumSize = new System.Drawing.Size(225, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(214, 26);
-            this.label2.TabIndex = 27;
-            this.label2.Text = "Use the next line as a header if the data file contains more than one header line" +
-    ".";
-            // 
-            // buttonAddSourceCode
-            // 
-            this.buttonAddSourceCode.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
-            this.buttonAddSourceCode.Location = new System.Drawing.Point(20, 146);
-            this.buttonAddSourceCode.Name = "buttonAddSourceCode";
-            this.buttonAddSourceCode.Size = new System.Drawing.Size(96, 23);
-            this.buttonAddSourceCode.TabIndex = 28;
-            this.buttonAddSourceCode.Text = "Add Source";
-            this.buttonAddSourceCode.UseVisualStyleBackColor = true;
-            this.buttonAddSourceCode.Click += new System.EventHandler(this.buttonAddSourceCode_Click);
-            // 
-            // labelAddSourceCode
-            // 
-            this.labelAddSourceCode.AutoSize = true;
-            this.labelAddSourceCode.Location = new System.Drawing.Point(129, 143);
-            this.labelAddSourceCode.MaximumSize = new System.Drawing.Size(225, 0);
-            this.labelAddSourceCode.Name = "labelAddSourceCode";
-            this.labelAddSourceCode.Size = new System.Drawing.Size(220, 26);
-            this.labelAddSourceCode.TabIndex = 29;
-            this.labelAddSourceCode.Text = "Add your own source code as a new column at the far right with header \"Engage Sou" +
-    "rce.\"";
-            // 
-            // textBoxSourceCode
-            // 
-            this.textBoxSourceCode.Location = new System.Drawing.Point(132, 183);
-            this.textBoxSourceCode.Name = "textBoxSourceCode";
-            this.textBoxSourceCode.Size = new System.Drawing.Size(156, 20);
-            this.textBoxSourceCode.TabIndex = 30;
-            this.textBoxSourceCode.Text = "Type your source here.";
             // 
             // fileConversionInterface
             // 
@@ -508,6 +512,7 @@
         private System.Windows.Forms.Label labelAddSourceCode;
         private System.Windows.Forms.Button buttonAddSourceCode;
         private System.Windows.Forms.TextBox textBoxSourceCode;
+        private System.Windows.Forms.ToolTip toolTipControl;
     }
 }
 
