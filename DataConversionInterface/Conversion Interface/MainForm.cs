@@ -720,18 +720,32 @@ namespace MainWindow
         // This will allow a user to select new fields and add them to the table.
         private void dataGridViewGeneral_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            // Get the column name for later.
             String dataColumnName = dataGridViewGeneral.Columns[e.ColumnIndex].Name.ToString();
+            
+            // Select a menu item and add it as a newrow with the selected item being column index 1 on the table.
             contextMenuHeaders.Show(e.Location);
 
+            // Call up the data table.
+            var newItemAdded = (dataGridViewTables.DataSource as DataTable);
 
+            // The count of rows will equal the last row in the table, and we need to add our selected header to index 0.
+            int countRows = newItemAdded.Rows.Count;
+            DataRow dr = newItemAdded.Rows[countRows];
+            dr[0] = dataColumnName.ToString();
 
+            // Set the datasource once more for our table view.
+            dataGridViewGeneral.DataSource = newItemAdded;
         }
 
         private void contextMenuHeaders_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var newItemAdded = dataGridViewTables.DataSource.AsEnumerable();
-
-            }
+            var newItemAdded = (dataGridViewTables.DataSource as DataTable);
+            DataRow dr = newItemAdded.NewRow();
+            dr[0] = "";
+            dr[1] = e.ClickedItem.ToString();
+            newItemAdded.Rows.Add(dr);
+            dataGridViewTables.DataSource = newItemAdded;
         }
         // End fileConversionInterface class.
     }
