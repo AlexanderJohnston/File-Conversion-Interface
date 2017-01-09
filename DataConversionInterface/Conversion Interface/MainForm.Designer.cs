@@ -67,6 +67,7 @@
             this.buttonExcelConvert = new System.Windows.Forms.Button();
             this.labelConversionTools = new System.Windows.Forms.Label();
             this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
+            this.contextMenuHeaders = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
@@ -436,6 +437,12 @@
             this.labelConversionTools.TabIndex = 16;
             this.labelConversionTools.Text = "Conversion Tools";
             // 
+            // contextMenuHeaders
+            // 
+            this.contextMenuHeaders.Name = "contextMenuHeaders";
+            this.contextMenuHeaders.Size = new System.Drawing.Size(153, 26);
+            this.contextMenuHeaders.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuHeaders_ItemClicked);
+            // 
             // fileConversionInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -513,6 +520,7 @@
         private System.Windows.Forms.Button buttonAddSourceCode;
         private System.Windows.Forms.TextBox textBoxSourceCode;
         private System.Windows.Forms.ToolTip toolTipControl;
+        private System.Windows.Forms.ContextMenuStrip contextMenuHeaders;
     }
 }
 

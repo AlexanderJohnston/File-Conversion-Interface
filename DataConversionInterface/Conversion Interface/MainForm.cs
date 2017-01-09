@@ -44,11 +44,20 @@ namespace MainWindow
             InitializeComponent();
             InitialSetup.Start();
             InitializeTableList();
-            // Call up a dropdown list used for conversions when a user clicks on a column header.
-            InitializeHouseFields();
+            InitializeContextMenu();
 
             // Double buffer the data grid view to prevent flickering.
             dataGridViewGeneral.DoubleBuffered(true);
+        }
+
+        // Set up the context menu for header cells.
+        private void InitializeContextMenu()
+        {
+            String[] houseFields = new string[] { "Finder_Number", "Keycode", "Title", "First_Name", "Middle_Name", "Last_Name", "Suffix", "Gender", "Company", "Primary_Addr", "Secondary_Addr", "City", "State", "Zip", "Zip4", "Occupation", "Employer", "Work_Phone", "Home_Phone", "Cell_Phone", "Fax", "Email", "Client_Source", "Entity", "LCV_Account_ID", "Contact_ID", "EML_Appeal_ID", "Package_Type", "Client_Code", "Spouse_Title", "Spouse_First", "Spouse_Mid", "Spouse_Last", "Spouse_Suffix", "Address3", "Country", "Import_Id", "Address_Import_Id" };
+            foreach (string item in houseFields)
+            {
+                contextMenuHeaders.Items.Add(item);
+            }
         }
 
         // Set up the table list and remove the definition file from an array of existing files.
@@ -61,14 +70,6 @@ namespace MainWindow
             // Remove the house fields reference table.
             cleanedTablesContent = cleanedTablesContent.Where(s => s!= "HOUSE_FIELDS.txt").ToArray();
             conversionTablesList.DataSource = cleanedTablesContent;
-        }
-
-        // Store the dropdown table.
-
-
-        private void InitializeHouseFields()
-        {
-
         }
 
         // This event fires whenever a new lookup table is selected by the user.
@@ -274,6 +275,9 @@ namespace MainWindow
 
                     // Disable column sorting.
                     DisableColumnSorting();
+
+                    // Set column header context menus.
+                    SetHeaderCellContextMenu();
                 }
 
             }
@@ -289,6 +293,14 @@ namespace MainWindow
             foreach (DataGridViewColumn column in dataGridViewGeneral.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+        }
+
+        private void SetHeaderCellContextMenu()
+        {
+            foreach (DataGridViewColumn column in dataGridViewGeneral.Columns)
+            {
+                column.HeaderCell.ContextMenuStrip = contextMenuHeaders;
             }
         }
 
@@ -709,7 +721,17 @@ namespace MainWindow
         private void dataGridViewGeneral_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             String dataColumnName = dataGridViewGeneral.Columns[e.ColumnIndex].Name.ToString();
-            MessageBox.Show(dataColumnName);
+            contextMenuHeaders.Show(e.Location);
+
+
+
+        }
+
+        private void contextMenuHeaders_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var newItemAdded = dataGridViewTables.DataSource.AsEnumerable();
+
+            }
         }
         // End fileConversionInterface class.
     }
