@@ -44,6 +44,8 @@ namespace MainWindow
             InitializeComponent();
             InitialSetup.Start();
             InitializeTableList();
+            // Call up a dropdown list used for conversions when a user clicks on a column header.
+            InitializeHouseFields();
 
             // Double buffer the data grid view to prevent flickering.
             dataGridViewGeneral.DoubleBuffered(true);
@@ -59,6 +61,14 @@ namespace MainWindow
             // Remove the house fields reference table.
             cleanedTablesContent = cleanedTablesContent.Where(s => s!= "HOUSE_FIELDS.txt").ToArray();
             conversionTablesList.DataSource = cleanedTablesContent;
+        }
+
+        // Store the dropdown table.
+
+
+        private void InitializeHouseFields()
+        {
+
         }
 
         // This event fires whenever a new lookup table is selected by the user.
@@ -698,7 +708,7 @@ namespace MainWindow
         // This will allow a user to select new fields and add them to the table.
         private void dataGridViewGeneral_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            String dataColumnName = dataGridViewGeneral.Columns[e.ColumnIndex].ToString();
+            String dataColumnName = dataGridViewGeneral.Columns[e.ColumnIndex].Name.ToString();
             MessageBox.Show(dataColumnName);
         }
         // End fileConversionInterface class.
