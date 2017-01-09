@@ -376,7 +376,10 @@ namespace MainWindow
             string dataFileFormat = Path.GetExtension(dataFilePath);
             string dataClientCode = conversionTablesList.Text.ToString();
             dataClientCode = dataClientCode.Substring(0, 2);
-            bool boolConversionSuccesss = ConversionUtilities.StartConversion(dataFilePath, dataClientCode, dataFileFormat);
+            if ((MessageBox.Show("Are you sure you want to start conversion?", "Safety Check!")) == DialogResult.OK)
+            {
+                bool boolConversionSuccesss = ConversionUtilities.StartConversion(dataFilePath, dataClientCode, dataFileFormat);
+            }
         }
 
         // This timer handles the update of the progress bar and status message below it.
