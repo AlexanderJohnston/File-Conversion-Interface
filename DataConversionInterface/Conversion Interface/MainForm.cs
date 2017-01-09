@@ -275,9 +275,6 @@ namespace MainWindow
 
                     // Disable column sorting.
                     DisableColumnSorting();
-
-                    // Set column header context menus.
-                    SetHeaderCellContextMenu();
                 }
 
             }
@@ -293,14 +290,6 @@ namespace MainWindow
             foreach (DataGridViewColumn column in dataGridViewGeneral.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
-        }
-
-        private void SetHeaderCellContextMenu()
-        {
-            foreach (DataGridViewColumn column in dataGridViewGeneral.Columns)
-            {
-                column.HeaderCell.ContextMenuStrip = contextMenuHeaders;
             }
         }
 
@@ -724,18 +713,20 @@ namespace MainWindow
             String dataColumnName = dataGridViewGeneral.Columns[e.ColumnIndex].Name.ToString();
             
             // Select a menu item and add it as a newrow with the selected item being column index 1 on the table.
-            contextMenuHeaders.Show(e.Location);
+            contextMenuHeaders.Show(Cursor.Position);
+            // Do not move on until an item is selected.
+            while (contextMenuHeaders.Visible == true) Application.DoEvents();
 
             // Call up the data table.
             var newItemAdded = (dataGridViewTables.DataSource as DataTable);
 
-            // The count of rows will equal the last row in the table, and we need to add our selected header to index 0.
+            // The count of rows will equal the last row in the table off by one, and we need to add our selected header to index 0.
             int countRows = newItemAdded.Rows.Count;
-            DataRow dr = newItemAdded.Rows[countRows];
+            DataRow dr = newItemAdded.Rows[countRows-1];
             dr[0] = dataColumnName.ToString();
 
             // Set the datasource once more for our table view.
-            dataGridViewGeneral.DataSource = newItemAdded;
+            dataGridViewTables.DataSource = newItemAdded;
         }
 
         private void contextMenuHeaders_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
