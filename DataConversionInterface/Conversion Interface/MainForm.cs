@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using FileHelpers;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
@@ -69,7 +68,7 @@ namespace MainWindow
             // Get a list of available tables and clean up path data for the combo box.
             string[] cleanedTablesContent = displayTables.GetTableList(tablesPath).Select(s => s.Replace(tablesPath, "")).ToArray();
             // Remove the house fields reference table.
-            cleanedTablesContent = cleanedTablesContent.Where(s => s!= "HOUSE_FIELDS.txt").ToArray();
+            cleanedTablesContent = cleanedTablesContent.Where(s => s != "HOUSE_FIELDS.txt").ToArray();
             conversionTablesList.DataSource = cleanedTablesContent;
         }
 
@@ -100,7 +99,7 @@ namespace MainWindow
                 // !FIX! make this more detailed.
                 MessageBox.Show("Not enough columns in your table.", "Table Error");
             }
-            
+
 
             // Display the data table.
             dataGridViewTables.DataSource = selectedTable;
@@ -132,9 +131,9 @@ namespace MainWindow
                     textBoxFileName.Text.Substring(
                     textBoxFileName.Text.Length - 3, 3)
                     )
-                    // End contains statement.
+                // End contains statement.
                 )
-                // End if statement.
+            // End if statement.
             {
                 // Store the file selection textbox as a string.
                 string dataFilePath = textBoxFileName.Text.ToString();
@@ -160,24 +159,115 @@ namespace MainWindow
                     // Counter for header array
                     int u = 0;
                     int i = 0;
-                    
+                    // Regex for parsing.
+                    Regex regexSplitFinal = new Regex("");
+                    // Delimiter character.
+                    char finalDelimiterChar = ',';
 
+                    // Determine which type of file we are reading.
+                    string fileTabOrCSV = FileManagement.fileTABorCSV(dataFilePath);
 
+                    // Time to read the file into memory for display to grab header record.
+                    // Load Regex to parse the strings.
+                    if (fileTabOrCSV == "TAB")
+                    {
+                        regexSplitFinal = new Regex("(?:^|\t)(\"(?:[^\"]+|\"\")*\"|[^\t]*)", RegexOptions.Compiled);
+                        foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
+                        {
+                            regexMatch = match.Value;
+                            if (0 == regexMatch.Length)
+                            {
+                                dataFileContent.Add("");
+                                u++;
+                            }
+
+                            dataFileContent.Add(regexMatch.ToString().TrimStart('\t'));
+                            u++;
+                        }
+                        finalDelimiterChar = '\t';
+                    }
+                    else if (fileTabOrCSV == "CSV")
+                    {
+                        regexSplitFinal = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
+                        foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
+                        {
+                            regexMatch = match.Value;
+                            if (0 == regexMatch.Length)
+                            {
+                                dataFileContent.Add("");
+                                u++;
+                            }
+
+                            dataFileContent.Add(regexMatch.ToString().TrimStart(','));
+                            u++;
+                        }
+                        finalDelimiterChar = ',';
+                    }
+
+                    // Build the data grid view with a variable number of columns set as the header record.
+                    DataTable dataTableGeneral = DataViewerControls.DataFileVariableGrid(dataFileContent.Count(), dataFileContent.ToArray());
+
+                    // Clear out the dataFileContent array.
+                    dataFileContent.Clear();
+
+                    // Load all lines into a list of string arrays to make a data structure with columns and rows.
+                    // Skip over the header using int i = 1 as starting point.
+                    int sizeArray = dataFileContent.Count();
+                    List<string[]> dataFileLines = new List<string[]>(sizeArray);
+
+                    // Load a number of arrays where each value is a column, one at a time into the list dataFileLines.
+                    // First, find out if there are less than 60 lines.
                     var lineCounter = File.ReadLines(dataFilePath).Count();
 
                     // Display the line count for the file.
                     labelRecordCount.Text = "Record Count: " + lineCounter.ToString();
 
-                    // Load the data file into memory.
-                    DataTable newTableForDisplay = new DataTable();
+                    // Initialize a variable to determine line count for display.
+                    if (linesViewAll == false) { displayTotalLines = linesViewCount; }
+                    else { displayTotalLines = lineCounter; }
+                    if (displayTotalLines > lineCounter) { displayTotalLines = lineCounter; }
+
+                    // Build the data to display.
+                    for (i = 1; i < displayTotalLines; i++)
+                    {
+                        foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
+                        {
+                            regexMatch = match.Value;
+                            if (0 == regexMatch.Length)
+                            {
+                                dataFileContent.Add("");
+                                u++;
+                            }
+                            else
+                            {
+                                dataFileContent.Add(regexMatch.ToString().TrimStart(finalDelimiterChar));
+                            }
+                            u++;
+                        }
+
+                        dataFileLines.Add(dataFileContent.ToArray());
+                        dataFileContent.Clear();
+                    }
+
+                    // Close the file.
+                    dataFileReader.Close();
+
+                    // Add the rows to the data grid viewer.
                     try
                     {
-                        newTableForDisplay = CommonEngine.CsvToDataTable(dataFilePath, "ImportRecord", ',', true);
-                        dataGridViewGeneral.DataSource = newTableForDisplay;
+                        foreach (string[] rows in dataFileLines)
+                        {
+                            dataTableGeneral.Rows.Add(rows);
+                        }
+                        dataGridViewGeneral.DataSource = dataTableGeneral;
                     }
-                    catch (Exception ex)
+                    catch (NullReferenceException)
                     {
-                        MessageBox.Show("Your file might be in use by another program.\r\n" + ex, "Read File Error!");
+                        MessageBox.Show("The file you are trying to open does not have enough columns.", "Not a table!");
+                    }
+                    catch (ArgumentException)
+                    {
+                        MessageBox.Show("This program can't view that type of file yet.", "Bad file!");
                     }
 
                     // Color the header cells.
@@ -246,7 +336,7 @@ namespace MainWindow
                 // !FIX!
                 MessageBox.Show("The header cell colors failed. Please let me know about this.", "Header Color Failure");
             }
-            
+
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -275,7 +365,9 @@ namespace MainWindow
         private void buttonStartConversion_Click(object sender, EventArgs e)
         {
             // Safety check!
-            if ((MessageBox.Show("Are you sure you want to start conversion?", "Safety Check!", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            if ((MessageBox.Show("Are you sure you want to start conversion using "
+                + conversionTablesList.Text.ToString()
+                + "?", "Safety Check!", MessageBoxButtons.YesNo)) == DialogResult.Yes)
             {
                 string dataFilePath = textBoxFileName.Text.ToString();
 
@@ -358,7 +450,7 @@ namespace MainWindow
                 else
                 {
                     textBoxStatusMessages.Text = "0: Conversion has not started.";
-                        progressBarConversion.Value = 0;
+                    progressBarConversion.Value = 0;
                 }
             }
         }
@@ -421,15 +513,15 @@ namespace MainWindow
 
         private void textBoxViewLines_TextChanged(object sender, EventArgs e)
         {
-                try
-                {
-                    linesViewCount = Convert.ToInt32(textBoxViewLines.Text.ToString());
-                    buttonLoadDataFile.PerformClick();
-                }
+            try
+            {
+                linesViewCount = Convert.ToInt32(textBoxViewLines.Text.ToString());
+                buttonLoadDataFile.PerformClick();
+            }
             // Catch just so that nothing weird happens. No need to alert the user.
-                catch (Exception)
-                {
-                }
+            catch (Exception)
+            {
+            }
         }
 
         private void dataGridViewGeneral_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -500,7 +592,7 @@ namespace MainWindow
                 textBoxFileName.Text = dataFilePath + dataFileName + ".csv";
                 // Send a click event to load the new csv.
                 buttonLoadDataFile.PerformClick();
-            }       
+            }
             // End buttonExcelConvert_Click method.
         }
 
@@ -594,7 +686,7 @@ namespace MainWindow
                         string nextLine = null;
                         while ((nextLine = dataFileStream.ReadLine()) != null)
                         {
-                            // Add the new line with a delimiter and the new source     code.
+                            // Add the new line with a delimiter and the new source code.
                             dataFileContent.Add(nextLine + charDelimiter + sourceCode);
                         }
                         // Close the stream reader.
@@ -629,7 +721,7 @@ namespace MainWindow
         {
             // Get the column name for later.
             String dataColumnName = dataGridViewGeneral.Columns[e.ColumnIndex].Name.ToString();
-            
+
             // Select a menu item and add it as a newrow with the selected item being column index 1 on the table.
             contextMenuHeaders.Show(Cursor.Position);
             // Do not move on until an item is selected.
@@ -640,7 +732,7 @@ namespace MainWindow
 
             // The count of rows will equal the last row in the table off by one, and we need to add our selected header to index 0.
             int countRows = newItemAdded.Rows.Count;
-            DataRow dr = newItemAdded.Rows[countRows-1];
+            DataRow dr = newItemAdded.Rows[countRows - 1];
             dr[0] = dataColumnName.ToString();
 
             // Set the datasource once more for our table view.
@@ -686,7 +778,7 @@ namespace MainWindow
 
             // Check for user in the config file.
             bool existingUser = FileManagement.UserExistsConfig(userName);
-            
+
             // Add the user to the config file if they do not exist.
             if (existingUser == false)
             {
@@ -700,7 +792,7 @@ namespace MainWindow
             }
 
             // Exit the application if the login is false.
-            if ( validLogin == false &&
+            if (validLogin == false &&
                 MessageBox.Show("Invalid login, try again?", "Login Attempt",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
             {
@@ -815,7 +907,7 @@ namespace MainWindow
             byte[] saltAsByteArray = Guid.NewGuid().ToByteArray();
 
             // Hash the salt/password combination
-            byte[] hashedPassAndSalt = HashPassword( 
+            byte[] hashedPassAndSalt = HashPassword(
                 saltAsByteArray, passwordAsByteArray, hashAlg);
 
             // Prepend the salt to the hashed data
@@ -845,7 +937,7 @@ namespace MainWindow
 
             // Hash the salt/password combination
             return hashAlg.ComputeHash(passAndSaltForHashing);
-        }   
+        }
 
         /// <summary>
         /// Compares a plaintext password provided by the user to the
@@ -1006,7 +1098,7 @@ namespace MainWindow
 
             while (userAdded != 1)
             {
-                if (configContent[i] == "" && configContent[i+1] == "#1")
+                if (configContent[i] == "" && configContent[i + 1] == "#1")
                 {
                     configContent[i] = userName + "\r\n";
                     userAdded = 1;
@@ -1071,7 +1163,7 @@ namespace MainWindow
 
             // Set up the list of integers to store count of commas and tabs.
             List<int> fileTypeChooser = new List<int>();
-            for (int i = dataFileContent.IndexOf(','); i > -1; i = dataFileContent.IndexOf(',', i + 1) )
+            for (int i = dataFileContent.IndexOf(','); i > -1; i = dataFileContent.IndexOf(',', i + 1))
             {
                 // If no more of the character is found, then -1 will return and end it.
                 fileTypeChooser.Add(i);
@@ -1121,16 +1213,16 @@ namespace MainWindow
 
     public class ConversionTable
     {
-      public string[] GetTableList(string tablesPath)
+        public string[] GetTableList(string tablesPath)
         {
             string[] tableFiles = Directory.GetFiles(tablesPath);
             return tableFiles;
-        }  
+        }
     }
 
     public class DataViewerControls
     {
-        public static DataTable DataFileVariableGrid(int numberOfColumns, string[]headerRecord)
+        public static DataTable DataFileVariableGrid(int numberOfColumns, string[] headerRecord)
         {
             // Define a new data grid view to build.
             DataTable dataVariableGrid = new DataTable();
