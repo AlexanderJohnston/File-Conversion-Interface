@@ -173,6 +173,7 @@ namespace MainWindow
                     try
                     {
                         newTableForDisplay = CommonEngine.CsvToDataTable(dataFilePath, "ImportRecord", ',', true);
+                        dataGridViewGeneral.DataSource = newTableForDisplay;
                     }
                     catch (Exception ex)
                     {
