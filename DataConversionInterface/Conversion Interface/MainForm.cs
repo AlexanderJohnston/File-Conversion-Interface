@@ -275,9 +275,7 @@ namespace MainWindow
         private void buttonStartConversion_Click(object sender, EventArgs e)
         {
             // Safety check!
-            if ((MessageBox.Show("Are you sure you want to start conversion using " 
-                + conversionTablesList.Text.ToString() 
-                + "?", "Safety Check!", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            if ((MessageBox.Show("Are you sure you want to start conversion?", "Safety Check!", MessageBoxButtons.YesNo)) == DialogResult.Yes)
             {
                 string dataFilePath = textBoxFileName.Text.ToString();
 
