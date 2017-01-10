@@ -68,6 +68,8 @@
             this.labelConversionTools = new System.Windows.Forms.Label();
             this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuHeaders = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.label3 = new System.Windows.Forms.Label();
+            this.buttonLeadingZero = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
@@ -339,6 +341,8 @@
             // panelTools
             // 
             this.panelTools.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelTools.Controls.Add(this.label3);
+            this.panelTools.Controls.Add(this.buttonLeadingZero);
             this.panelTools.Controls.Add(this.textBoxSourceCode);
             this.panelTools.Controls.Add(this.labelAddSourceCode);
             this.panelTools.Controls.Add(this.buttonAddSourceCode);
@@ -355,7 +359,7 @@
             // 
             // textBoxSourceCode
             // 
-            this.textBoxSourceCode.Location = new System.Drawing.Point(132, 183);
+            this.textBoxSourceCode.Location = new System.Drawing.Point(132, 172);
             this.textBoxSourceCode.Name = "textBoxSourceCode";
             this.textBoxSourceCode.Size = new System.Drawing.Size(156, 20);
             this.textBoxSourceCode.TabIndex = 30;
@@ -440,8 +444,29 @@
             // contextMenuHeaders
             // 
             this.contextMenuHeaders.Name = "contextMenuHeaders";
-            this.contextMenuHeaders.Size = new System.Drawing.Size(153, 26);
+            this.contextMenuHeaders.Size = new System.Drawing.Size(61, 4);
             this.contextMenuHeaders.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuHeaders_ItemClicked);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(129, 198);
+            this.label3.MaximumSize = new System.Drawing.Size(225, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(220, 26);
+            this.label3.TabIndex = 32;
+            this.label3.Text = "Add your own source code as a new column at the far right with header \"Engage Sou" +
+    "rce.\"";
+            // 
+            // buttonLeadingZero
+            // 
+            this.buttonLeadingZero.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
+            this.buttonLeadingZero.Location = new System.Drawing.Point(20, 201);
+            this.buttonLeadingZero.Name = "buttonLeadingZero";
+            this.buttonLeadingZero.Size = new System.Drawing.Size(96, 23);
+            this.buttonLeadingZero.TabIndex = 31;
+            this.buttonLeadingZero.Text = "Add Source";
+            this.buttonLeadingZero.UseVisualStyleBackColor = true;
             // 
             // fileConversionInterface
             // 
@@ -521,6 +546,8 @@
         private System.Windows.Forms.TextBox textBoxSourceCode;
         private System.Windows.Forms.ToolTip toolTipControl;
         private System.Windows.Forms.ContextMenuStrip contextMenuHeaders;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button buttonLeadingZero;
     }
 }
 

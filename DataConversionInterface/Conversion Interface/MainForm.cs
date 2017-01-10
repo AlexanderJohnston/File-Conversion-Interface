@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using FileHelpers;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
@@ -159,115 +160,23 @@ namespace MainWindow
                     // Counter for header array
                     int u = 0;
                     int i = 0;
-                    // Regex for parsing.
-                    Regex regexSplitFinal = new Regex("");
-                    // Delimiter character.
-                    char finalDelimiterChar = ',';
+                    
 
-                    // Determine which type of file we are reading.
-                    string fileTabOrCSV = FileManagement.fileTABorCSV(dataFilePath);
 
-                    // Time to read the file into memory for display to grab header record.
-                    // Load Regex to parse the strings.
-                    if (fileTabOrCSV == "TAB")
-                    {
-                        regexSplitFinal = new Regex("(?:^|\t)(\"(?:[^\"]+|\"\")*\"|[^\t]*)", RegexOptions.Compiled);
-                        foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
-                        {
-                            regexMatch = match.Value;
-                            if (0 == regexMatch.Length)
-                            {
-                                dataFileContent.Add("");
-                                u++;
-                            }
-
-                            dataFileContent.Add(regexMatch.ToString().TrimStart('\t'));
-                            u++;
-                        }
-                        finalDelimiterChar = '\t';
-                    }
-                    else if (fileTabOrCSV == "CSV")
-                    {
-                        regexSplitFinal = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
-                        foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
-                        {
-                            regexMatch = match.Value;
-                            if (0 == regexMatch.Length)
-                            {
-                                dataFileContent.Add("");
-                                u++;
-                            }
-
-                            dataFileContent.Add(regexMatch.ToString().TrimStart(','));
-                            u++;
-                        }
-                        finalDelimiterChar = ',';
-                    }
-
-                    // Build the data grid view with a variable number of columns set as the header record.
-                    DataTable dataTableGeneral = DataViewerControls.DataFileVariableGrid(dataFileContent.Count(), dataFileContent.ToArray());
-
-                    // Clear out the dataFileContent array.
-                    dataFileContent.Clear();
-
-                    // Load all lines into a list of string arrays to make a data structure with columns and rows.
-                    // Skip over the header using int i = 1 as starting point.
-                    int sizeArray = dataFileContent.Count();
-                    List<string[]> dataFileLines = new List<string[]>(sizeArray);
-
-                    // Load a number of arrays where each value is a column, one at a time into the list dataFileLines.
-                    // First, find out if there are less than 60 lines.
                     var lineCounter = File.ReadLines(dataFilePath).Count();
 
                     // Display the line count for the file.
                     labelRecordCount.Text = "Record Count: " + lineCounter.ToString();
 
-                    // Initialize a variable to determine line count for display.
-                    if (linesViewAll == false) { displayTotalLines = linesViewCount; }
-                    else { displayTotalLines = lineCounter; }
-                    if (displayTotalLines > lineCounter) { displayTotalLines = lineCounter; }
-
-                    // Build the data to display.
-                    for (i = 1; i < displayTotalLines; i++)
-                    {
-                        foreach (Match match in regexSplitFinal.Matches(dataFileReader.ReadLine()))
-                        {
-                            regexMatch = match.Value;
-                            if (0 == regexMatch.Length)
-                            {
-                                dataFileContent.Add("");
-                                u++;
-                            }
-                            else
-                            {
-                                dataFileContent.Add(regexMatch.ToString().TrimStart(finalDelimiterChar));
-                            }
-                            u++;
-                        }
-
-                        dataFileLines.Add(dataFileContent.ToArray());
-                        dataFileContent.Clear();
-                    }
-
-                    // Close the file.
-                    dataFileReader.Close();
-
-                    // Add the rows to the data grid viewer.
+                    // Load the data file into memory.
+                    DataTable newTableForDisplay = new DataTable();
                     try
                     {
-                        foreach (string[] rows in dataFileLines)
-                        {
-                            dataTableGeneral.Rows.Add(rows);
-                        }
-                        dataGridViewGeneral.DataSource = dataTableGeneral;
+                        newTableForDisplay = CommonEngine.CsvToDataTable(dataFilePath, "ImportRecord", ',', true);
                     }
-                    catch (NullReferenceException)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("The file you are trying to open does not have enough columns.", "Not a table!");
-                    }
-                    catch (ArgumentException)
-                    {
-                        MessageBox.Show("This program can't view that type of file yet.", "Bad file!");
+                        MessageBox.Show("Your file might be in use by another program.\r\n" + ex, "Read File Error!");
                     }
 
                     // Color the header cells.
@@ -686,7 +595,7 @@ namespace MainWindow
                         string nextLine = null;
                         while ((nextLine = dataFileStream.ReadLine()) != null)
                         {
-                            // Add the new line with a delimiter and the new source code.
+                            // Add the new line with a delimiter and the new source     code.
                             dataFileContent.Add(nextLine + charDelimiter + sourceCode);
                         }
                         // Close the stream reader.
