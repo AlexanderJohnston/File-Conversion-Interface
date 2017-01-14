@@ -884,8 +884,6 @@ namespace MainWindow
 
     /* 
      This password hashing block is still being studied. Once I am finished, it will be re-written from scratch.  
-     http://www.dreamincode.net/forums/topic/196519-basic-login-system-part-i-password-handling/
-     I'm saving this link for personal study this weekend.
     */
     public static class PasswordManagement
     {
