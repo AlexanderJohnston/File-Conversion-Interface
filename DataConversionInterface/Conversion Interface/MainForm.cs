@@ -27,8 +27,10 @@ namespace MainWindow
     public partial class fileConversionInterface : Form
     {
         // Replace this with a config file later.
-        const string tablesPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
-        const string statusPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
+        const string tablesFinderFiles = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
+        const string tablesCreditCards = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Credit Cards\Tables\";
+        const string statusFinderFiles = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
+        const string statusCreditCards = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
         const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
         const string dataPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
         int linesViewCount = 1000;
@@ -66,7 +68,7 @@ namespace MainWindow
             ConversionTable displayTables = new ConversionTable();
 
             // Get a list of available tables and clean up path data for the combo box.
-            string[] cleanedTablesContent = displayTables.GetTableList(tablesPath).Select(s => s.Replace(tablesPath, "")).ToArray();
+            string[] cleanedTablesContent = displayTables.GetTableList(tablesFinderFiles).Select(s => s.Replace(tablesFinderFiles, "")).ToArray();
             // Remove the house fields reference table.
             cleanedTablesContent = cleanedTablesContent.Where(s => s != "HOUSE_FIELDS.txt").ToArray();
             conversionTablesList.DataSource = cleanedTablesContent;
@@ -79,7 +81,19 @@ namespace MainWindow
             DataTable selectedTable = new DataTable();
             selectedTable.Columns.Add("CLIENT");
             selectedTable.Columns.Add("HOUSE");
-            string tableLocation = tablesPath + conversionTablesList.SelectedValue.ToString();
+            string tableLocation = null;
+            if (checkCreditCards.Checked == true)
+            {
+                // Return the credit card tables.
+                tableLocation = tablesCreditCards + conversionTablesList.SelectedValue.ToString();
+            }
+            else
+            {
+                // Select the finder file tables.
+                tableLocation = tablesFinderFiles + conversionTablesList.SelectedValue.ToString();
+            }
+
+
 
             // Fill in the gridviewer rows with the new conversion table.
             StreamReader tableReader = new StreamReader(tableLocation);
@@ -389,12 +403,40 @@ namespace MainWindow
             }
         }
 
-        // This timer handles the update of the progress bar and status message below it.
-        private void timerConvertProgress_Tick(object sender, EventArgs e)
+        private void buttonConvertCredit_Click(object sender, EventArgs e)
+        {
+
+            // Safety check!
+            if ((MessageBox.Show("Are you sure you want to start conversion using "
+                + conversionTablesList.Text.ToString()
+                + "?", "Safety Check!", MessageBoxButtons.YesNo)) == DialogResult.Yes)
+            {
+                string dataFilePath = textBoxFileName.Text.ToString();
+
+                // Open select file window if one has not been chosen.
+                if (dataFilePath == "") { buttonOpenDataFile_Click(sender, e); }
+
+                // Start the timer which handles the progress bar and status messages.
+                timerConvertProgress.Enabled = true;
+
+                // Start the conversion process by moving the selected file into Redpoint's automation folders.
+                string dataFileFormat = Path.GetExtension(dataFilePath);
+                string dataClientCode = conversionTablesList.Text.ToString();
+                dataClientCode = dataClientCode.Substring(0, 2);
+                bool boolConversionSuccesss = ConversionUtilities.StartConversion(dataFilePath, dataClientCode, dataFileFormat);
+            }
+            else
+            {
+
+            }
+        }
+
+    // This timer handles the update of the progress bar and status message below it.
+    private void timerConvertProgress_Tick(object sender, EventArgs e)
         {
             // The status messages file is 60 byte fixed width.
             // Check to see if file size has changed.
-            using (FileStream redPointLogStream = File.Open(statusPath + "CurrentStatus.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream redPointLogStream = File.Open(statusFinderFiles + "CurrentStatus.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 // Go to the end of the file and roll back 60 KB.
                 if (redPointLogStream.Length > 59)
@@ -439,7 +481,73 @@ namespace MainWindow
                             break;
                         case '0':
                             Thread.Sleep(2250);
-                            System.IO.File.WriteAllText(statusPath + "CurrentStatus.txt", string.Empty);
+                            System.IO.File.WriteAllText(statusFinderFiles + "CurrentStatus.txt", string.Empty);
+                            timerConvertProgress.Enabled = false;
+                            textBoxStatusMessages.Text = "";
+                            progressBarConversion.Value = 0;
+                            break;
+                    }
+
+                }
+                else
+                {
+                    textBoxStatusMessages.Text = "0: Conversion has not started.";
+                    progressBarConversion.Value = 0;
+                }
+            }
+        }
+
+        // This timer handles the credit card conversion status messages.
+        private void timerCreditCards_Tick(object sender, EventArgs e)
+        {
+            // The status messages file is 60 byte fixed width.
+            // Check to see if file size has changed.
+            using (FileStream redPointLogStream = File.Open(statusCreditCards + "CurrentStatus.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                // Go to the end of the file and roll back 60 KB.
+                if (redPointLogStream.Length > 59)
+                {
+                    redPointLogStream.Seek(-60, SeekOrigin.End);
+                    // Read the bytes that were rolled back.
+                    byte[] bytesNew = new byte[60];
+                    redPointLogStream.Read(bytesNew, 0, 60);
+                    // Convert the bytes to a string.
+                    string newLogData = Encoding.Default.GetString(bytesNew);
+                    textBoxStatusMessages.Text = newLogData.ToString();
+                    // Run a switch based on the first byte of the line we're reading, which is numbered by Redpoint's conversion step.
+                    // I bet I could write this much smaller. !FIX!
+                    switch (newLogData.ToString()[0])
+                    {
+                        case '1':
+                            progressBarConversion.Value = 1;
+                            break;
+                        case '2':
+                            progressBarConversion.Value = 2;
+                            break;
+                        case '3':
+                            progressBarConversion.Value = 3;
+                            break;
+                        case '4':
+                            progressBarConversion.Value = 4;
+                            break;
+                        case '5':
+                            progressBarConversion.Value = 5;
+                            break;
+                        case '6':
+                            progressBarConversion.Value = 6;
+                            break;
+                        case '7':
+                            progressBarConversion.Value = 7;
+                            break;
+                        case '8':
+                            progressBarConversion.Value = 8;
+                            break;
+                        case '9':
+                            progressBarConversion.Value = 9;
+                            break;
+                        case '0':
+                            Thread.Sleep(2250);
+                            System.IO.File.WriteAllText(statusFinderFiles + "CurrentStatus.txt", string.Empty);
                             timerConvertProgress.Enabled = false;
                             textBoxStatusMessages.Text = "";
                             progressBarConversion.Value = 0;
@@ -544,7 +652,7 @@ namespace MainWindow
             try
             {
                 // Write the data table to a file using stream writer, iterating over rows and columns.
-                StreamWriter tablesWriter = new System.IO.StreamWriter(tablesPath + conversionTablesList.Text.ToString());
+                StreamWriter tablesWriter = new System.IO.StreamWriter(tablesFinderFiles + conversionTablesList.Text.ToString());
                 int count = dataGridViewTables.Rows.Count;
                 tablesWriter.WriteLine("CLIENT,HOUSE");
 
@@ -748,6 +856,32 @@ namespace MainWindow
             newItemAdded.Rows.Add(dr);
             dataGridViewTables.DataSource = newItemAdded;
         }
+
+        private void checkCreditCards_CheckStateChanged(object sender, EventArgs e)
+        {
+            // Initialize a ConversionTable to hold the new values.
+            ConversionTable displayTables = new ConversionTable();
+
+            // This checkbox will determine which conversion tables we use, and where the files end up later.
+            if (checkCreditCards.Checked == true)
+            {
+                // Get a list of available tables and clean up path data for the combo box.
+                string[] cleanedTablesContent = displayTables.GetTableList(tablesCreditCards).Select(s => s.Replace(tablesCreditCards, "")).ToArray();
+                // Remove the house fields reference table.
+                cleanedTablesContent = cleanedTablesContent.Where(s => s != "HOUSE_FIELDS.txt").ToArray();
+                conversionTablesList.DataSource = cleanedTablesContent;
+            }
+            else
+            {
+                // Get a list of available tables and clean up path data for the combo box.
+                string[] cleanedTablesContent = displayTables.GetTableList(tablesFinderFiles).Select(s => s.Replace(tablesFinderFiles, "")).ToArray();
+                // Remove the house fields reference table.
+                cleanedTablesContent = cleanedTablesContent.Where(s => s != "HOUSE_FIELDS.txt").ToArray();
+                conversionTablesList.DataSource = cleanedTablesContent;
+            }
+        }
+
+
         // End fileConversionInterface class.
     }
 

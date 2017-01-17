@@ -30,7 +30,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
             this.conversionTablesList = new System.Windows.Forms.ComboBox();
             this.tablesListLabel = new System.Windows.Forms.Label();
@@ -42,6 +42,7 @@
             this.textBoxFileName = new System.Windows.Forms.TextBox();
             this.labelFilePath = new System.Windows.Forms.Label();
             this.panelConversionTable = new System.Windows.Forms.Panel();
+            this.checkCreditCards = new System.Windows.Forms.CheckBox();
             this.buttonSaveTable = new System.Windows.Forms.Button();
             this.progressBarConversion = new System.Windows.Forms.ProgressBar();
             this.labelConversionStatus = new System.Windows.Forms.Label();
@@ -52,7 +53,6 @@
             this.buttonViewReport = new System.Windows.Forms.Button();
             this.buttonDeclineReport = new System.Windows.Forms.Button();
             this.buttonAcceptReport = new System.Windows.Forms.Button();
-            this.buttonViewOriginalFile = new System.Windows.Forms.Button();
             this.labelRecordCount = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxViewLines = new System.Windows.Forms.TextBox();
@@ -68,13 +68,21 @@
             this.labelConversionTools = new System.Windows.Forms.Label();
             this.toolTipControl = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuHeaders = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.label3 = new System.Windows.Forms.Label();
-            this.buttonLeadingZero = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.textCreditCards = new System.Windows.Forms.TextBox();
+            this.buttonConvertCredit = new System.Windows.Forms.Button();
+            this.labelCreditCardStatus = new System.Windows.Forms.Label();
+            this.progressBarCredit = new System.Windows.Forms.ProgressBar();
+            this.buttonViewCredit = new System.Windows.Forms.Button();
+            this.buttonSendCredit = new System.Windows.Forms.Button();
+            this.buttonRestartCredit = new System.Windows.Forms.Button();
+            this.timerCreditCards = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).BeginInit();
             this.panelConversionTable.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelTools.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridViewGeneral
@@ -82,14 +90,14 @@
             this.dataGridViewGeneral.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGeneral.Location = new System.Drawing.Point(12, 32);
             this.dataGridViewGeneral.Name = "dataGridViewGeneral";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewGeneral.RowTemplate.ReadOnly = true;
             this.dataGridViewGeneral.Size = new System.Drawing.Size(1107, 205);
             this.dataGridViewGeneral.TabIndex = 0;
@@ -182,6 +190,7 @@
             // panelConversionTable
             // 
             this.panelConversionTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelConversionTable.Controls.Add(this.checkCreditCards);
             this.panelConversionTable.Controls.Add(this.buttonSaveTable);
             this.panelConversionTable.Controls.Add(this.dataGridViewTables);
             this.panelConversionTable.Controls.Add(this.conversionTablesList);
@@ -192,11 +201,22 @@
             this.panelConversionTable.Size = new System.Drawing.Size(353, 357);
             this.panelConversionTable.TabIndex = 11;
             // 
+            // checkCreditCards
+            // 
+            this.checkCreditCards.AutoSize = true;
+            this.checkCreditCards.Location = new System.Drawing.Point(242, 311);
+            this.checkCreditCards.Name = "checkCreditCards";
+            this.checkCreditCards.Size = new System.Drawing.Size(83, 17);
+            this.checkCreditCards.TabIndex = 16;
+            this.checkCreditCards.Text = "Credit Cards";
+            this.checkCreditCards.UseVisualStyleBackColor = true;
+            this.checkCreditCards.CheckStateChanged += new System.EventHandler(this.checkCreditCards_CheckStateChanged);
+            // 
             // buttonSaveTable
             // 
-            this.buttonSaveTable.Location = new System.Drawing.Point(250, 327);
+            this.buttonSaveTable.Location = new System.Drawing.Point(242, 327);
             this.buttonSaveTable.Name = "buttonSaveTable";
-            this.buttonSaveTable.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveTable.Size = new System.Drawing.Size(83, 23);
             this.buttonSaveTable.TabIndex = 15;
             this.buttonSaveTable.Text = "Sav&e Table";
             this.buttonSaveTable.UseVisualStyleBackColor = true;
@@ -216,9 +236,9 @@
             this.labelConversionStatus.AutoSize = true;
             this.labelConversionStatus.Location = new System.Drawing.Point(2, 2);
             this.labelConversionStatus.Name = "labelConversionStatus";
-            this.labelConversionStatus.Size = new System.Drawing.Size(110, 13);
+            this.labelConversionStatus.Size = new System.Drawing.Size(172, 13);
             this.labelConversionStatus.TabIndex = 13;
-            this.labelConversionStatus.Text = "Redpoint Status Feed";
+            this.labelConversionStatus.Text = "Redpoint Status Feed - Finder Files";
             // 
             // panel1
             // 
@@ -290,17 +310,6 @@
             this.buttonAcceptReport.MouseEnter += new System.EventHandler(this.buttonAcceptReport_MouseEnter);
             this.buttonAcceptReport.MouseLeave += new System.EventHandler(this.buttonAcceptReport_MouseLeave);
             // 
-            // buttonViewOriginalFile
-            // 
-            this.buttonViewOriginalFile.Location = new System.Drawing.Point(371, 434);
-            this.buttonViewOriginalFile.Name = "buttonViewOriginalFile";
-            this.buttonViewOriginalFile.Size = new System.Drawing.Size(75, 34);
-            this.buttonViewOriginalFile.TabIndex = 18;
-            this.buttonViewOriginalFile.Text = "View Data (broke)";
-            this.buttonViewOriginalFile.UseVisualStyleBackColor = true;
-            this.buttonViewOriginalFile.Visible = false;
-            this.buttonViewOriginalFile.Click += new System.EventHandler(this.buttonViewOriginalFile_Click);
-            // 
             // labelRecordCount
             // 
             this.labelRecordCount.AutoSize = true;
@@ -341,8 +350,6 @@
             // panelTools
             // 
             this.panelTools.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panelTools.Controls.Add(this.label3);
-            this.panelTools.Controls.Add(this.buttonLeadingZero);
             this.panelTools.Controls.Add(this.textBoxSourceCode);
             this.panelTools.Controls.Add(this.labelAddSourceCode);
             this.panelTools.Controls.Add(this.buttonAddSourceCode);
@@ -447,38 +454,99 @@
             this.contextMenuHeaders.Size = new System.Drawing.Size(61, 4);
             this.contextMenuHeaders.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuHeaders_ItemClicked);
             // 
-            // label3
+            // panel2
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(129, 198);
-            this.label3.MaximumSize = new System.Drawing.Size(225, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(220, 26);
-            this.label3.TabIndex = 32;
-            this.label3.Text = "Add your own source code as a new column at the far right with header \"Engage Sou" +
-    "rce.\"";
+            this.panel2.Controls.Add(this.textCreditCards);
+            this.panel2.Controls.Add(this.buttonConvertCredit);
+            this.panel2.Controls.Add(this.labelCreditCardStatus);
+            this.panel2.Controls.Add(this.progressBarCredit);
+            this.panel2.Location = new System.Drawing.Point(371, 424);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(291, 110);
+            this.panel2.TabIndex = 17;
             // 
-            // buttonLeadingZero
+            // textCreditCards
             // 
-            this.buttonLeadingZero.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
-            this.buttonLeadingZero.Location = new System.Drawing.Point(20, 201);
-            this.buttonLeadingZero.Name = "buttonLeadingZero";
-            this.buttonLeadingZero.Size = new System.Drawing.Size(96, 23);
-            this.buttonLeadingZero.TabIndex = 31;
-            this.buttonLeadingZero.Text = "Add Source";
-            this.buttonLeadingZero.UseVisualStyleBackColor = true;
+            this.textCreditCards.Location = new System.Drawing.Point(5, 74);
+            this.textCreditCards.Multiline = true;
+            this.textCreditCards.Name = "textCreditCards";
+            this.textCreditCards.ReadOnly = true;
+            this.textCreditCards.Size = new System.Drawing.Size(282, 28);
+            this.textCreditCards.TabIndex = 16;
+            // 
+            // buttonConvertCredit
+            // 
+            this.buttonConvertCredit.Location = new System.Drawing.Point(212, 2);
+            this.buttonConvertCredit.Name = "buttonConvertCredit";
+            this.buttonConvertCredit.Size = new System.Drawing.Size(75, 23);
+            this.buttonConvertCredit.TabIndex = 15;
+            this.buttonConvertCredit.Text = "Convert";
+            this.buttonConvertCredit.UseVisualStyleBackColor = true;
+            this.buttonConvertCredit.Click += new System.EventHandler(this.buttonConvertCredit_Click);
+            // 
+            // labelCreditCardStatus
+            // 
+            this.labelCreditCardStatus.AutoSize = true;
+            this.labelCreditCardStatus.Location = new System.Drawing.Point(2, 2);
+            this.labelCreditCardStatus.Name = "labelCreditCardStatus";
+            this.labelCreditCardStatus.Size = new System.Drawing.Size(176, 13);
+            this.labelCreditCardStatus.TabIndex = 13;
+            this.labelCreditCardStatus.Text = "Redpoint Status Feed - Credit Cards";
+            // 
+            // progressBarCredit
+            // 
+            this.progressBarCredit.Location = new System.Drawing.Point(5, 27);
+            this.progressBarCredit.Maximum = 9;
+            this.progressBarCredit.Name = "progressBarCredit";
+            this.progressBarCredit.Size = new System.Drawing.Size(282, 23);
+            this.progressBarCredit.Step = 1;
+            this.progressBarCredit.TabIndex = 12;
+            // 
+            // buttonViewCredit
+            // 
+            this.buttonViewCredit.Location = new System.Drawing.Point(371, 540);
+            this.buttonViewCredit.Name = "buttonViewCredit";
+            this.buttonViewCredit.Size = new System.Drawing.Size(75, 23);
+            this.buttonViewCredit.TabIndex = 24;
+            this.buttonViewCredit.Text = "View Cards";
+            this.buttonViewCredit.UseVisualStyleBackColor = true;
+            // 
+            // buttonSendCredit
+            // 
+            this.buttonSendCredit.Location = new System.Drawing.Point(480, 540);
+            this.buttonSendCredit.Name = "buttonSendCredit";
+            this.buttonSendCredit.Size = new System.Drawing.Size(75, 23);
+            this.buttonSendCredit.TabIndex = 25;
+            this.buttonSendCredit.Text = "Send Out";
+            this.buttonSendCredit.UseVisualStyleBackColor = true;
+            // 
+            // buttonRestartCredit
+            // 
+            this.buttonRestartCredit.Location = new System.Drawing.Point(583, 540);
+            this.buttonRestartCredit.Name = "buttonRestartCredit";
+            this.buttonRestartCredit.Size = new System.Drawing.Size(75, 23);
+            this.buttonRestartCredit.TabIndex = 26;
+            this.buttonRestartCredit.Text = "Restart";
+            this.buttonRestartCredit.UseVisualStyleBackColor = true;
+            // 
+            // timerCreditCards
+            // 
+            this.timerCreditCards.Tick += new System.EventHandler(this.timerCreditCards_Tick);
             // 
             // fileConversionInterface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1148, 636);
+            this.Controls.Add(this.buttonRestartCredit);
+            this.Controls.Add(this.buttonSendCredit);
+            this.Controls.Add(this.buttonViewCredit);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelTools);
             this.Controls.Add(this.buttonViewAllLines);
             this.Controls.Add(this.textBoxViewLines);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labelRecordCount);
-            this.Controls.Add(this.buttonViewOriginalFile);
             this.Controls.Add(this.buttonAcceptReport);
             this.Controls.Add(this.buttonDeclineReport);
             this.Controls.Add(this.buttonViewReport);
@@ -492,7 +560,7 @@
             this.Controls.Add(this.dataGridViewGeneral);
             this.KeyPreview = true;
             this.Name = "fileConversionInterface";
-            this.Text = "A";
+            this.Text = "Conversion Interface";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeneral)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTables)).EndInit();
@@ -502,6 +570,8 @@
             this.panel1.PerformLayout();
             this.panelTools.ResumeLayout(false);
             this.panelTools.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -530,7 +600,6 @@
         private System.Windows.Forms.Button buttonViewReport;
         private System.Windows.Forms.Button buttonDeclineReport;
         private System.Windows.Forms.Button buttonAcceptReport;
-        private System.Windows.Forms.Button buttonViewOriginalFile;
         private System.Windows.Forms.Label labelRecordCount;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxViewLines;
@@ -546,8 +615,16 @@
         private System.Windows.Forms.TextBox textBoxSourceCode;
         private System.Windows.Forms.ToolTip toolTipControl;
         private System.Windows.Forms.ContextMenuStrip contextMenuHeaders;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button buttonLeadingZero;
+        private System.Windows.Forms.CheckBox checkCreditCards;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TextBox textCreditCards;
+        private System.Windows.Forms.Button buttonConvertCredit;
+        private System.Windows.Forms.Label labelCreditCardStatus;
+        private System.Windows.Forms.ProgressBar progressBarCredit;
+        private System.Windows.Forms.Button buttonViewCredit;
+        private System.Windows.Forms.Button buttonSendCredit;
+        private System.Windows.Forms.Button buttonRestartCredit;
+        private System.Windows.Forms.Timer timerCreditCards;
     }
 }
 
