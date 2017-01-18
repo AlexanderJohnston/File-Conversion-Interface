@@ -30,7 +30,7 @@ namespace MainWindow
         const string tablesFinderFiles = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Tables\";
         const string tablesCreditCards = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Credit Cards\Tables\";
         const string statusFinderFiles = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
-        const string statusCreditCards = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Layout\Status Files\";
+        const string statusCreditCards = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Credit Cards\Status Files\";
         const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
         const string dataPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
         int linesViewCount = 1000;
@@ -395,7 +395,7 @@ namespace MainWindow
                 string dataFileFormat = Path.GetExtension(dataFilePath);
                 string dataClientCode = conversionTablesList.Text.ToString();
                 dataClientCode = dataClientCode.Substring(0, 2);
-                bool boolConversionSuccesss = ConversionUtilities.StartConversion(dataFilePath, dataClientCode, dataFileFormat);
+                bool boolConversionSuccesss = ConversionUtilities.StartConversionFinder(dataFilePath, dataClientCode, dataFileFormat);
             }
             else
             {
@@ -417,13 +417,13 @@ namespace MainWindow
                 if (dataFilePath == "") { buttonOpenDataFile_Click(sender, e); }
 
                 // Start the timer which handles the progress bar and status messages.
-                timerConvertProgress.Enabled = true;
+                timerCreditCards.Enabled = true;
 
                 // Start the conversion process by moving the selected file into Redpoint's automation folders.
                 string dataFileFormat = Path.GetExtension(dataFilePath);
                 string dataClientCode = conversionTablesList.Text.ToString();
                 dataClientCode = dataClientCode.Substring(0, 2);
-                bool boolConversionSuccesss = ConversionUtilities.StartConversion(dataFilePath, dataClientCode, dataFileFormat);
+                bool boolConversionSuccesss = ConversionUtilities.StartConversionCredit(dataFilePath, dataClientCode, dataFileFormat);
             }
             else
             {
@@ -480,6 +480,7 @@ namespace MainWindow
                             progressBarConversion.Value = 9;
                             break;
                         case '0':
+                            // Sleep so that the operator can read the final code.
                             Thread.Sleep(2250);
                             System.IO.File.WriteAllText(statusFinderFiles + "CurrentStatus.txt", string.Empty);
                             timerConvertProgress.Enabled = false;
@@ -513,52 +514,42 @@ namespace MainWindow
                     redPointLogStream.Read(bytesNew, 0, 60);
                     // Convert the bytes to a string.
                     string newLogData = Encoding.Default.GetString(bytesNew);
-                    textBoxStatusMessages.Text = newLogData.ToString();
+                    textCreditCards.Text = newLogData.ToString();
                     // Run a switch based on the first byte of the line we're reading, which is numbered by Redpoint's conversion step.
                     // I bet I could write this much smaller. !FIX!
                     switch (newLogData.ToString()[0])
                     {
                         case '1':
-                            progressBarConversion.Value = 1;
+                            progressBarCredit.Value = 1;
                             break;
                         case '2':
-                            progressBarConversion.Value = 2;
+                            progressBarCredit.Value = 2;
                             break;
                         case '3':
-                            progressBarConversion.Value = 3;
+                            progressBarCredit.Value = 3;
                             break;
                         case '4':
-                            progressBarConversion.Value = 4;
+                            progressBarCredit.Value = 4;
                             break;
                         case '5':
-                            progressBarConversion.Value = 5;
+                            progressBarCredit.Value = 5;
                             break;
                         case '6':
-                            progressBarConversion.Value = 6;
-                            break;
-                        case '7':
-                            progressBarConversion.Value = 7;
-                            break;
-                        case '8':
-                            progressBarConversion.Value = 8;
-                            break;
-                        case '9':
-                            progressBarConversion.Value = 9;
-                            break;
-                        case '0':
+                            progressBarCredit.Value = 6;
+                            // Sleep so that the operator can read the final code.
                             Thread.Sleep(2250);
-                            System.IO.File.WriteAllText(statusFinderFiles + "CurrentStatus.txt", string.Empty);
-                            timerConvertProgress.Enabled = false;
-                            textBoxStatusMessages.Text = "";
-                            progressBarConversion.Value = 0;
+                            System.IO.File.WriteAllText(statusCreditCards + "CurrentStatus.txt", string.Empty);
+                            timerCreditCards.Enabled = false;
+                            textCreditCards.Text = "";
+                            progressBarCredit.Value = 0;
                             break;
                     }
 
                 }
                 else
                 {
-                    textBoxStatusMessages.Text = "0: Conversion has not started.";
-                    progressBarConversion.Value = 0;
+                    textCreditCards.Text = "0: Conversion has not started.";
+                    progressBarCredit.Value = 0;
                 }
             }
         }
@@ -1382,7 +1373,7 @@ namespace MainWindow
 
     static class ConversionUtilities
     {
-        public static bool StartConversion(string dataFilePath, string dataClientCode, string dataFileFormat)
+        public static bool StartConversionFinder(string dataFilePath, string dataClientCode, string dataFileFormat)
         {
             // Replace conversionFolder with a config file. !FIX!
             const string conversionFolder = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
@@ -1391,6 +1382,43 @@ namespace MainWindow
             try
             {
                 File.Copy(dataFilePath, conversionFolder + dataClientCode + dataFileFormat);
+                return true;
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("There is already a file in the conversion folder, or the file you selected was not found.", "File Error");
+                return false;
+            }
+            catch (ArgumentNullException)
+            {
+                MessageBox.Show("Either you do not have a file selected, or a client table isn't selected.", "File Error");
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Your filename contains invalid characters.", "Name Error");
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have access to move this file into conversion.", "Permissions Error");
+                return false;
+            }
+        }
+
+        public static bool StartConversionCredit(string dataFilePath, string dataClientCode, string dataFileFormat)
+        {
+            // Replace conversionFolder with a config file. !FIX!
+            const string conversionFolder = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Credit Cards\";
+
+            // Get the date to be used as part of the filename.
+            DateTime currentDate = DateTime.Today;
+            string formattedCurrentDate = currentDate.ToString("MMddyy");
+
+            // Move the data file to the conversion folder and change the name to Client Code + Extension.
+            try
+            {
+                File.Copy(dataFilePath, conversionFolder + dataClientCode + "_" + formattedCurrentDate + dataFileFormat);
                 return true;
             }
             catch (IOException)
