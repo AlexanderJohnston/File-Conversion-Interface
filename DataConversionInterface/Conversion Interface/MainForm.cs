@@ -536,8 +536,9 @@ namespace MainWindow
                             break;
                         case '6':
                             progressBarCredit.Value = 6;
-                            // Sleep so that the operator can read the final code.
-                            Thread.Sleep(2250);
+                            break;
+                        case '0':
+                            // The sleep is built into Redpoint this time.
                             System.IO.File.WriteAllText(statusCreditCards + "CurrentStatus.txt", string.Empty);
                             timerCreditCards.Enabled = false;
                             textCreditCards.Text = "";
