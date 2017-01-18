@@ -30,7 +30,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
             this.conversionTablesList = new System.Windows.Forms.ComboBox();
             this.tablesListLabel = new System.Windows.Forms.Label();
@@ -90,14 +90,14 @@
             this.dataGridViewGeneral.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGeneral.Location = new System.Drawing.Point(12, 32);
             this.dataGridViewGeneral.Name = "dataGridViewGeneral";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewGeneral.RowTemplate.ReadOnly = true;
             this.dataGridViewGeneral.Size = new System.Drawing.Size(1107, 205);
             this.dataGridViewGeneral.TabIndex = 0;
@@ -496,7 +496,7 @@
             // progressBarCredit
             // 
             this.progressBarCredit.Location = new System.Drawing.Point(5, 27);
-            this.progressBarCredit.Maximum = 6;
+            this.progressBarCredit.Maximum = 5;
             this.progressBarCredit.Name = "progressBarCredit";
             this.progressBarCredit.Size = new System.Drawing.Size(282, 23);
             this.progressBarCredit.Step = 1;
@@ -510,6 +510,7 @@
             this.buttonViewCredit.TabIndex = 24;
             this.buttonViewCredit.Text = "View Cards";
             this.buttonViewCredit.UseVisualStyleBackColor = true;
+            this.buttonViewCredit.Click += new System.EventHandler(this.buttonViewCredit_Click);
             // 
             // buttonSendCredit
             // 
@@ -519,6 +520,7 @@
             this.buttonSendCredit.TabIndex = 25;
             this.buttonSendCredit.Text = "Send Out";
             this.buttonSendCredit.UseVisualStyleBackColor = true;
+            this.buttonSendCredit.Click += new System.EventHandler(this.buttonSendCredit_Click);
             // 
             // buttonRestartCredit
             // 

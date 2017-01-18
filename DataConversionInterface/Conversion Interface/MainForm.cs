@@ -534,9 +534,6 @@ namespace MainWindow
                         case '5':
                             progressBarCredit.Value = 5;
                             break;
-                        case '6':
-                            progressBarCredit.Value = 6;
-                            break;
                         case '0':
                             // The sleep is built into Redpoint this time.
                             System.IO.File.WriteAllText(statusCreditCards + "CurrentStatus.txt", string.Empty);
@@ -871,6 +868,28 @@ namespace MainWindow
                 cleanedTablesContent = cleanedTablesContent.Where(s => s != "HOUSE_FIELDS.txt").ToArray();
                 conversionTablesList.DataSource = cleanedTablesContent;
             }
+        }
+
+        private void buttonViewCredit_Click(object sender, EventArgs e)
+        {
+            // Replace the completed output folder with a config file! !FIX!
+            const string completedFolder = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Credit Cards\Complete\";
+
+            // Get the date to be used as part of the filename.
+            DateTime currentDate = DateTime.Today;
+            string formattedCurrentDate = currentDate.ToString("dd MMM yyyy");
+
+            // Load the report file path into the selected file box and then initiate a click event.
+            textBoxFileName.Text = completedFolder 
+                + conversionTablesList.Text.Substring(0,2)
+                + "_" + formattedCurrentDate
+                + @"\Remit Copy_JG_011817" +".csv";
+            buttonLoadDataFile.PerformClick();
+        }
+
+        private void buttonSendCredit_Click(object sender, EventArgs e)
+        {
+
         }
 
 
