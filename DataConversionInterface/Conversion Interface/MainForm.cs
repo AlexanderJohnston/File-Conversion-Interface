@@ -33,7 +33,7 @@ namespace MainWindow
         const string statusCreditCards = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Credit Cards\Status Files\";
         const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
         const string dataPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
-        constg string creditPath = @"\\ENGAGESTS1\File Imports\CreditCards\TM\TM_To be Imported\";
+        const string creditPath = @"\\ENGAGESTS1\File Imports\CreditCards\TM\TM_To be Imported\";
         int linesViewCount = 1000;
         bool linesViewAll = false;
 
@@ -915,36 +915,40 @@ namespace MainWindow
 
         private void buttonSendCredit_Click(object sender, EventArgs e)
         {
-            // Ensure that our file selector and views are updated. I could probably save CPU time by making this a flag.
+            // Ensure that our file selector and views are updated. I could SERIOUSLY save CPU time by making this a flag.
             buttonViewCredit.PerformClick();
 
-
+            string fileName = Path.GetFileName(textBoxFileName.Text.ToString());
 
             //Copy the file out to the credit cards drive based on which client we've converted.
             try
             {
-                File.Copy(dataFilePath, conversionFolder + dataClientCode + "_" + formattedCurrentDate + dataFileFormat);
-                return true;
+                // PH cards go to a different folder.
+                if (conversionTablesList.Substring(0,2) = "PH")
+                {
+
+                }
+                else
+                {
+                    File.Copy(textBoxFileName.Text.ToString(), creditPath + fileName);
+                }
+                
             }
             catch (IOException)
             {
                 MessageBox.Show("There is already a file in the conversion folder, or the file you selected was not found.", "File Error");
-                return false;
             }
             catch (ArgumentNullException)
             {
                 MessageBox.Show("Either you do not have a file selected, or a client table isn't selected.", "File Error");
-                return false;
             }
             catch (ArgumentException)
             {
                 MessageBox.Show("Your filename contains invalid characters.", "Name Error");
-                return false;
             }
             catch (UnauthorizedAccessException)
             {
                 MessageBox.Show("You do not have access to move this file into conversion.", "Permissions Error");
-                return false;
             }
 
         }
