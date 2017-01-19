@@ -926,7 +926,7 @@ namespace MainWindow
                 // PH cards go to a different folder.
                 if (conversionTablesList.Substring(0,2) = "PH")
                 {
-
+                    // comment
                 }
                 else
                 {
