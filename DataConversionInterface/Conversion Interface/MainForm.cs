@@ -34,6 +34,7 @@ namespace MainWindow
         const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
         const string dataPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
         const string creditPath = @"\\ENGAGESTS1\File Imports\CreditCards\TM\TM_To be Imported\";
+        const string creditPathPH = @"\\ENGAGESTS1\File Imports\PH\PH_CreditCards\";
         int linesViewCount = 1000;
         bool linesViewAll = false;
 
@@ -924,13 +925,14 @@ namespace MainWindow
             try
             {
                 // PH cards go to a different folder.
-                if (conversionTablesList.Substring(0,2) = "PH")
+                if (conversionTablesList.Text.Substring(0,2) == "PH")
                 {
-                    // comment
+                    File.Copy(textBoxFileName.Text.ToString(), creditPathPH + fileName.Replace("Remit Copy_", ""));
                 }
                 else
                 {
-                    File.Copy(textBoxFileName.Text.ToString(), creditPath + fileName);
+                    // Copy the file out and remove the leading string.
+                    File.Copy(textBoxFileName.Text.ToString(), creditPath + fileName.Replace("Remit Copy_",""));
                 }
                 
             }
