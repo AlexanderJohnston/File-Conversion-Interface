@@ -33,6 +33,7 @@ namespace MainWindow
         const string statusCreditCards = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Credit Cards\Status Files\";
         const string reportPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\Staging\";
         const string dataPath = @"\\engagests1\Elements\Prospect Jobs\Conversions\01-File Conversions\Redpoint Finder\Downloaded\";
+        constg string creditPath = @"\\ENGAGESTS1\File Imports\CreditCards\TM\TM_To be Imported\";
         int linesViewCount = 1000;
         bool linesViewAll = false;
 
@@ -590,6 +591,26 @@ namespace MainWindow
             File.Move(reportPath + "DECLINED.csv", reportPath + @"Report\DECLINED.csv");
         }
 
+        private void buttonSendCredit_MouseEnter(object sender, EventArgs e)
+        {
+            buttonSendCredit.BackColor = Color.LightGreen;
+        }
+
+        private void buttonSendCredit_MouseLeave(object sender, EventArgs e)
+        {
+            buttonSendCredit.BackColor = default(Color);
+        }
+
+        private void buttonRestartCredit_MouseEnter(object sender, EventArgs e)
+        {
+            buttonRestartCredit.BackColor = Color.Tomato;
+        }
+
+        private void buttonRestartCredit_MouseLeave(object sender, EventArgs e)
+        {
+            buttonRestartCredit.BackColor = default(Color);
+        }
+
         private void buttonViewOriginalFile_Click(object sender, EventArgs e)
         {
             /*if (File.Exists(dataPath + "*.csv"))
@@ -879,20 +900,54 @@ namespace MainWindow
             DateTime currentDate = DateTime.Today;
             string formattedCurrentDate = currentDate.ToString("dd MMM yyyy");
 
+            // Get a second date format to be used as part of the filename.
+            DateTime currentDateShort = DateTime.Today;
+            string formattedDateShort = currentDate.ToString("MMddyy");
+
             // Load the report file path into the selected file box and then initiate a click event.
             textBoxFileName.Text = completedFolder 
                 + conversionTablesList.Text.Substring(0,2)
                 + "_" + formattedCurrentDate
-                + @"\Remit Copy_JG_011817" +".csv";
+                + @"\Remit Copy_" + conversionTablesList.Text.Substring(0, 2)
+                +"_" + formattedDateShort + ".csv";
             buttonLoadDataFile.PerformClick();
         }
 
         private void buttonSendCredit_Click(object sender, EventArgs e)
         {
+            // Ensure that our file selector and views are updated. I could probably save CPU time by making this a flag.
+            buttonViewCredit.PerformClick();
+
+
+
+            //Copy the file out to the credit cards drive based on which client we've converted.
+            try
+            {
+                File.Copy(dataFilePath, conversionFolder + dataClientCode + "_" + formattedCurrentDate + dataFileFormat);
+                return true;
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("There is already a file in the conversion folder, or the file you selected was not found.", "File Error");
+                return false;
+            }
+            catch (ArgumentNullException)
+            {
+                MessageBox.Show("Either you do not have a file selected, or a client table isn't selected.", "File Error");
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Your filename contains invalid characters.", "Name Error");
+                return false;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have access to move this file into conversion.", "Permissions Error");
+                return false;
+            }
 
         }
-
-
         // End fileConversionInterface class.
     }
 
@@ -908,6 +963,7 @@ namespace MainWindow
             bool validLogin = false;
             string userName = UserName();
             string userPass = Password();
+            // Yes, I know it's not cryptographically strong. I just don't want people snooping on each other's passwords in plaintext.
             MD5 md5Hash = MD5.Create();
             byte[] finalPassword = PasswordManagement.HashPassword(userPass, md5Hash);
 
@@ -966,7 +1022,7 @@ namespace MainWindow
             // Hash the password.
             string userPassword = null;
             string userFormCaption = "Password";
-            string userFormText = "Please enter your password.";
+            string userFormText = "Please enter your password. (Encrypted)";
             userPassword = Prompt.ShowDialogPass(userFormText, userFormCaption);
             return userPassword;
         }

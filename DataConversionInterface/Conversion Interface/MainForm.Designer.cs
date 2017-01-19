@@ -30,7 +30,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewGeneral = new System.Windows.Forms.DataGridView();
             this.conversionTablesList = new System.Windows.Forms.ComboBox();
             this.tablesListLabel = new System.Windows.Forms.Label();
@@ -90,14 +90,14 @@
             this.dataGridViewGeneral.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGeneral.Location = new System.Drawing.Point(12, 32);
             this.dataGridViewGeneral.Name = "dataGridViewGeneral";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewGeneral.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridViewGeneral.RowTemplate.ReadOnly = true;
             this.dataGridViewGeneral.Size = new System.Drawing.Size(1107, 205);
             this.dataGridViewGeneral.TabIndex = 0;
@@ -246,7 +246,7 @@
             this.panel1.Controls.Add(this.buttonStartConversion);
             this.panel1.Controls.Add(this.labelConversionStatus);
             this.panel1.Controls.Add(this.progressBarConversion);
-            this.panel1.Location = new System.Drawing.Point(371, 276);
+            this.panel1.Location = new System.Drawing.Point(415, 304);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(291, 110);
             this.panel1.TabIndex = 14;
@@ -276,7 +276,7 @@
             // 
             // buttonViewReport
             // 
-            this.buttonViewReport.Location = new System.Drawing.Point(371, 392);
+            this.buttonViewReport.Location = new System.Drawing.Point(415, 420);
             this.buttonViewReport.Name = "buttonViewReport";
             this.buttonViewReport.Size = new System.Drawing.Size(75, 23);
             this.buttonViewReport.TabIndex = 15;
@@ -287,7 +287,7 @@
             // buttonDeclineReport
             // 
             this.buttonDeclineReport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.OrangeRed;
-            this.buttonDeclineReport.Location = new System.Drawing.Point(587, 392);
+            this.buttonDeclineReport.Location = new System.Drawing.Point(631, 420);
             this.buttonDeclineReport.Name = "buttonDeclineReport";
             this.buttonDeclineReport.Size = new System.Drawing.Size(75, 23);
             this.buttonDeclineReport.TabIndex = 16;
@@ -300,7 +300,7 @@
             // buttonAcceptReport
             // 
             this.buttonAcceptReport.FlatAppearance.MouseOverBackColor = System.Drawing.Color.LightGreen;
-            this.buttonAcceptReport.Location = new System.Drawing.Point(480, 392);
+            this.buttonAcceptReport.Location = new System.Drawing.Point(523, 420);
             this.buttonAcceptReport.Name = "buttonAcceptReport";
             this.buttonAcceptReport.Size = new System.Drawing.Size(75, 23);
             this.buttonAcceptReport.TabIndex = 17;
@@ -460,7 +460,7 @@
             this.panel2.Controls.Add(this.buttonConvertCredit);
             this.panel2.Controls.Add(this.labelCreditCardStatus);
             this.panel2.Controls.Add(this.progressBarCredit);
-            this.panel2.Location = new System.Drawing.Point(371, 424);
+            this.panel2.Location = new System.Drawing.Point(415, 452);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(291, 110);
             this.panel2.TabIndex = 17;
@@ -504,7 +504,7 @@
             // 
             // buttonViewCredit
             // 
-            this.buttonViewCredit.Location = new System.Drawing.Point(371, 540);
+            this.buttonViewCredit.Location = new System.Drawing.Point(415, 568);
             this.buttonViewCredit.Name = "buttonViewCredit";
             this.buttonViewCredit.Size = new System.Drawing.Size(75, 23);
             this.buttonViewCredit.TabIndex = 24;
@@ -514,22 +514,26 @@
             // 
             // buttonSendCredit
             // 
-            this.buttonSendCredit.Location = new System.Drawing.Point(480, 540);
+            this.buttonSendCredit.Location = new System.Drawing.Point(523, 568);
             this.buttonSendCredit.Name = "buttonSendCredit";
             this.buttonSendCredit.Size = new System.Drawing.Size(75, 23);
             this.buttonSendCredit.TabIndex = 25;
             this.buttonSendCredit.Text = "Send Out";
             this.buttonSendCredit.UseVisualStyleBackColor = true;
             this.buttonSendCredit.Click += new System.EventHandler(this.buttonSendCredit_Click);
+            this.buttonSendCredit.MouseEnter += new System.EventHandler(this.buttonSendCredit_MouseEnter);
+            this.buttonSendCredit.MouseLeave += new System.EventHandler(this.buttonSendCredit_MouseLeave);
             // 
             // buttonRestartCredit
             // 
-            this.buttonRestartCredit.Location = new System.Drawing.Point(583, 540);
+            this.buttonRestartCredit.Location = new System.Drawing.Point(631, 568);
             this.buttonRestartCredit.Name = "buttonRestartCredit";
             this.buttonRestartCredit.Size = new System.Drawing.Size(75, 23);
             this.buttonRestartCredit.TabIndex = 26;
             this.buttonRestartCredit.Text = "Restart";
             this.buttonRestartCredit.UseVisualStyleBackColor = true;
+            this.buttonRestartCredit.MouseEnter += new System.EventHandler(this.buttonRestartCredit_MouseEnter);
+            this.buttonRestartCredit.MouseLeave += new System.EventHandler(this.buttonRestartCredit_MouseLeave);
             // 
             // timerCreditCards
             // 
