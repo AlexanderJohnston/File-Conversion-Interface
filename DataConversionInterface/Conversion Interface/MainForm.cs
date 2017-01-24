@@ -116,7 +116,6 @@ namespace MainWindow
                 MessageBox.Show("Not enough columns in your table.", "Table Error");
             }
 
-
             // Display the data table.
             dataGridViewTables.DataSource = selectedTable;
             tableReader.Close();
@@ -660,38 +659,64 @@ namespace MainWindow
 
         private void buttonSaveTable_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Write the data table to a file using stream writer, iterating over rows and columns.
-                StreamWriter tablesWriter = new System.IO.StreamWriter(tablesFinderFiles + conversionTablesList.Text.ToString());
-                int count = dataGridViewTables.Rows.Count;
-                tablesWriter.WriteLine("CLIENT,HOUSE");
+            // Make sure that no house field is mapped twice in the same table.
+            // Cast the rows to be enumerable.
+            var rowConflictsExist = dataGridViewTables.Rows.Cast<DataGridViewRow>()
+                .GroupBy(r => r.Cells[0].Value)
+                .Where(gr => gr.Count() > 1)
+                .ToList();
 
-                foreach (DataGridViewRow dataRow in dataGridViewTables.Rows)
+            // Check if results exist.
+            if (rowConflictsExist.Count > 0)
+            {
+                // Cast the key from the Linq List of DataRows to a String List and join it by newlines in string format.
+                List<string> badRows = new List<string>();
+                for (int i = 0; i < rowConflictsExist.Count; i++)
                 {
-                    if (dataRow.Cells[0].Value != null)
-                    {
-                        // Join the columns for a specific row together by commas.
-                        tablesWriter.WriteLine(
-                            string.Join(",", dataRow.Cells
-                                .Cast<DataGridViewCell>()
-                                .Where(c => c.Value != null)
-                                .Select(c => c.Value.ToString()).ToArray())
-                                );
-                    }
+                    badRows.Add(rowConflictsExist[i].Key.ToString());
                 }
+                var joinedConflicts = string.Join(Environment.NewLine, badRows);
 
-                // Close the writer.
-                tablesWriter.Close();
-
-                // Color cells with the new change.
-                colorHeaderCellsByComparison();
+                // Display the problem to user.
+                MessageBox.Show("The following client fields are mapped to more than one house field:" + Environment.NewLine + joinedConflicts, "Check your table!");
             }
-            catch (Exception)
+            // Otherwise, we're safe to proceed.
+            else
             {
-                // !FIX!
-                MessageBox.Show("Table failed to save. Let me know about this.", "Save Error");
+                try
+                {
+                    // Write the data table to a file using stream writer, iterating over rows and columns.
+                    StreamWriter tablesWriter = new System.IO.StreamWriter(tablesFinderFiles + conversionTablesList.Text.ToString());
+                    int count = dataGridViewTables.Rows.Count;
+                    tablesWriter.WriteLine("CLIENT,HOUSE");
+
+                    foreach (DataGridViewRow dataRow in dataGridViewTables.Rows)
+                    {
+                        if (dataRow.Cells[0].Value != null)
+                        {
+                            // Join the columns for a specific row together by commas.
+                            tablesWriter.WriteLine(
+                                string.Join(",", dataRow.Cells
+                                    .Cast<DataGridViewCell>()
+                                    .Where(c => c.Value != null)
+                                    .Select(c => c.Value.ToString()).ToArray())
+                                    );
+                        }
+                    }
+
+                    // Close the writer.
+                    tablesWriter.Close();
+
+                    // Color cells with the new change.
+                    colorHeaderCellsByComparison();
+                }
+                catch (Exception)
+                {
+                    // !FIX!
+                    MessageBox.Show("Table failed to save. Let me know about this.", "Save Error");
+                }
             }
+            // End Method.
         }
 
         private void buttonExcelConvert_Click(object sender, EventArgs e)
