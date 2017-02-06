@@ -2,6 +2,8 @@
 
 A screenshot of the GUI is available as "Interface.png" in the root. Personal information of customers has been blacked out.
 
+I am aware of the lack of inheritance using classes and some betrayal of SOLID principles in this repo. I rushed the first codebase and am in the process of refactoring it.
+
 **Please navigate to** /DataConversionInterface/Conversion Interface/MainForm.cs to begin reading.
 
 # File-Conversion-Interface
